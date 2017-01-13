@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MM">
+
+    <FrameLayout
+        android:id="@+id/AuthActivity_FragmentContainer"
+        style="@style/MM"/>
+    <ProgressBar
+        android:id="@+id/AuthActivity_ProgressBar"
+        style="@style/WW"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

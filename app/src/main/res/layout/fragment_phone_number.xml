@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MM"
+    android:background="@drawable/background_phone_number"
+    android:scaleType="centerCrop"
+    android:padding="30dp">
+
+    <ImageView
+        android:id="@+id/PhoneNumberFragment_Logo_IV"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/app_logo_white_vert"
+        android:layout_marginBottom="40dp" />
+
+    <TableLayout
+        android:id="@+id/PhoneNumberFragment_Data_TL"
+        style="@style/WW"
+        android:layout_below="@+id/PhoneNumberFragment_Logo_IV"
+        android:layout_marginBottom="10dp">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/PhoneNumberFragment_PhoneText_TV"
+                style="@style/WW"
+                android:textColor="@color/white"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="@string/phone_text" />
+            <View
+                android:layout_width="20dp"
+                android:layout_height="0dp"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/PhoneNumberFragment_PhoneHead_TV"
+                style="@style/WW"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="@string/phone_head_hint" />
+            <View
+                android:layout_width="20dp"
+                android:layout_height="0dp"/>
+            <EditText
+                android:id="@+id/PhoneNumberFragment_PhoneTail_ET"
+                style="@style/WW"
+                android:padding="10dp"
+                android:paddingRight="15dp"
+                android:ems="10"
+                android:selectAllOnFocus="false"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:maxLength="10"
+                android:background="@android:color/transparent"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:hint="@string/phone_body_hint"/>
+        </TableRow>
+        <TableRow>
+            <View
+                style="@style/HLine"
+                android:background="@color/white"/>
+            <View
+                android:layout_width="20dp"
+                android:layout_height="0dp"/>
+            <View
+                style="@style/HLine"
+                android:background="@color/white"/>
+        </TableRow>
+
+    </TableLayout>
+    <Button
+        android:id="@+id/PhoneNumberFragment_Enter_BTN"
+        style="@style/MW"
+        android:layout_below="@+id/PhoneNumberFragment_Data_TL"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:longClickable="false"
+        android:background="@drawable/enter_btn_selector"
+        android:textColor="@drawable/enter_btn_text_selector"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textStyle="bold"
+        android:text="@string/enter_text" />
+
+
+</RelativeLayout>
