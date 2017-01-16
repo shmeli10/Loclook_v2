@@ -3,6 +3,7 @@ package com.androiditgroup.loclook.v2;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.utils.Constants;
@@ -21,6 +22,9 @@ public class LocLookApp extends Application {
     public static User user;
     protected static final String APP_PREFERENCES = "loclook_preferences";
 
+    public static Typeface bold, boldItalic, extraBold, extraBoldItalic, italic,
+            light, lightItalic, regular, semiBold, semiBoldItalic;
+
     public static LocLookApp getInstance() {
         return instance;
     }
@@ -31,6 +35,17 @@ public class LocLookApp extends Application {
         instance = this;
         context = getApplicationContext();
         preferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+
+        bold = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Bold.ttf");
+        boldItalic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-BoldItalic.ttf");
+        extraBold = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-ExtraBold.ttf");
+        extraBoldItalic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-ExtraBoldItalic.ttf");
+        italic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Italic.ttf");
+        light = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Light.ttf");
+        lightItalic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-LightItalic.ttf");
+        regular = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
+        semiBold = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Semibold.ttf");
+        semiBoldItalic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-SemiboldItalic.ttf");
 
         if (isFirstLaunch()) {
             String language = Locale.getDefault().getDisplayLanguage();
@@ -51,7 +66,19 @@ public class LocLookApp extends Application {
         preferences.edit().putString("language", language).apply();
     }
 
+    public void setLoginStatus(boolean isLoggedIn) {
+        preferences.edit().putBoolean("login status", isLoggedIn).apply();
+    }
+
+    public boolean isLoggedIn() {
+        return preferences.getBoolean("login status", false);
+    }
+
     public void savePhoneNumber(String phoneNumber) {
         preferences.edit().putString("phone", phoneNumber).apply();
+    }
+
+    public String getPhoneNumber() {
+        return preferences.getString("phone", "");
     }
 }

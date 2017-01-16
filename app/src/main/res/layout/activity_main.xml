@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.androiditgroup.loclook.v2.utils.LockableSlidingPane
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MainActivity_SlidingPanel"
+    style="@style/MM"
+    tools:context=".ui.general.MainActivity">
+
+    <LinearLayout
+        style="@style/WW"
+        android:orientation="vertical">
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/MainActivity_NavigationView"
+            style="@style/WM"
+            app:theme="@style/NavigationDrawerStyle"
+            android:layout_gravity="start"
+            android:background="@color/colorPrimary"
+            app:itemTextColor="@color/nav_item_selector"
+            app:itemIconTint="@color/nav_item_selector"
+            app:itemBackground="@android:color/transparent"
+            app:headerLayout="@layout/nav_header_layout"
+            app:menu="@menu/activity_main_drawer"/>
+
+    </LinearLayout>
+    <LinearLayout
+        style="@style/MM"
+        android:elevation="4dp"
+        android:layout_gravity="end">
+
+        <include
+            layout="@layout/content_main"
+            style="@style/MM"/>
+
+    </LinearLayout>
+
+</com.androiditgroup.loclook.v2.utils.LockableSlidingPane>

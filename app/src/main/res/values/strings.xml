@@ -7,4 +7,6 @@
     <string name="phone_body_hint"> (900) 000 - 00 - 00 </string>
     <!--<string name="enter_text"> ВОЙТИ </string>-->
     <string name="enter_text"> Войти </string>
+
+    <string name="open_left_menu">Open left menu</string>
 </resources>
