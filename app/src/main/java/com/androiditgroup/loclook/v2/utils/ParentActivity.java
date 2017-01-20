@@ -33,7 +33,8 @@ public abstract class ParentActivity extends AppCompatActivity {
 
     public abstract void setToolbarTitle(final String title);
 
-    public abstract void addFragment(Fragment fragment, boolean animate);
+    // public abstract void addFragment(Fragment fragment, boolean animate);
+    public abstract void setFragment(Fragment fragment, boolean animate, boolean addToBackStack);
 
     public abstract void changeFragment(Fragment fragment);
 

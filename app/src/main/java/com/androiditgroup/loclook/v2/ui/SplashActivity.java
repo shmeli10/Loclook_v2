@@ -1,11 +1,11 @@
 package com.androiditgroup.loclook.v2.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.ui.auth.AuthActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 
@@ -17,21 +17,15 @@ import java.util.concurrent.TimeUnit;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private SharedPreferences shPref;
-
     private String userId;
-
     private MyTask myTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // определить переменную для работы с Preferences
-        shPref = getSharedPreferences("user_data", MODE_PRIVATE);
-
-        // подгрузить данные из Preferences
-        loadTextFromPreferences();
+        // получаем номер телефона из Preferences
+        userId = LocLookApp.getInstance().getPhoneNumber();
     }
 
     @Override
@@ -43,16 +37,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * загрузка сохраненных значений из Preferences
-     */
-    private void loadTextFromPreferences() {
-        // если параметр существует
-        if(shPref.contains("user_id"))
-            // получаем его значение
-            userId = shPref.getString("user_id", "");
-    }
 
     class MyTask extends AsyncTask<Void, Void, Void> {
 

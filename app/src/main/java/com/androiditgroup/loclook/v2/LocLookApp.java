@@ -16,14 +16,18 @@ import java.util.Locale;
 
 public class LocLookApp extends Application {
 
-    protected static LocLookApp instance;
-    public static Context context;
-    private static SharedPreferences preferences;
-    public static User user;
-    protected static final String APP_PREFERENCES = "loclook_preferences";
+    public static       User        user;
+    public static       Context     context;
+    protected static    LocLookApp  instance;
+
+    private static      SharedPreferences preferences;
+
+    public static String authCode;
 
     public static Typeface bold, boldItalic, extraBold, extraBoldItalic, italic,
             light, lightItalic, regular, semiBold, semiBoldItalic;
+
+    protected static final String APP_PREFERENCES = "loclook_preferences";
 
     public static LocLookApp getInstance() {
         return instance;
@@ -80,5 +84,13 @@ public class LocLookApp extends Application {
 
     public String getPhoneNumber() {
         return preferences.getString("phone", "");
+    }
+
+    public void saveEnteredUserName(String userName) {
+        preferences.edit().putString("user_name", userName).apply();
+    }
+
+    public String getEnteredUserName() {
+        return preferences.getString("user_name", "");
     }
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Root_Container"
+    android:padding="30dp">
+
+    <ImageView
+        android:id="@+id/UserNameFragment_Logo_IV"
+        style="@style/Auth_AppLogo"/>
+    <TableLayout
+        android:id="@+id/UserNameFragment_Data_TL"
+        style="@style/MW"
+        android:layout_below="@+id/UserNameFragment_Logo_IV"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="10dp">
+
+        <TableRow android:gravity="center_horizontal">
+
+            <LinearLayout
+                style="@style/MW"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <TextView style="@style/Auth_EnterLabel"/>
+                <View
+                    style="@style/HLine_Blue"
+                    android:layout_weight="20"/>
+
+            </LinearLayout>
+
+        </TableRow>
+        <TableRow android:gravity="center_horizontal">
+
+            <TextView
+                style="@style/Auth_EnterDataLabel"
+                android:text="@string/enter_your_name_text"/>
+
+        </TableRow>
+        <EditText
+            android:id="@+id/UserNameFragment_Name_ET"
+            style="@style/Auth_EnterDataText"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="50dp"
+            android:maxLength="25"
+            android:hint="@string/user_name_hint"/>
+
+        <RelativeLayout style="@style/MW">
+
+            <ImageView
+                android:id="@+id/UserNameFragment_Back_IV"
+                style="@style/WW"
+                android:layout_centerInParent="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/auth_arrow_back"/>
+            <TextView
+                style="@style/Auth_BackText"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/UserNameFragment_Back_IV"/>
+            <TextView
+                style="@style/Auth_ForwardText"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@+id/UserNameFragment_Forward_IV"/>
+            <ImageView
+                android:id="@+id/UserNameFragment_Forward_IV"
+                style="@style/WW"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/auth_arrow_forward"/>
+
+        </RelativeLayout>
+
+    </TableLayout>
+
+</RelativeLayout>
