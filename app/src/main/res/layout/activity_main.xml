@@ -16,7 +16,7 @@
             style="@style/WM"
             app:theme="@style/NavigationDrawerStyle"
             android:layout_gravity="start"
-            android:background="@color/colorPrimary"
+            android:background="@color/white"
             app:itemTextColor="@color/nav_item_selector"
             app:itemIconTint="@color/nav_item_selector"
             app:itemBackground="@android:color/transparent"

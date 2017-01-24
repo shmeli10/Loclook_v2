@@ -1,30 +1,29 @@
 package com.androiditgroup.loclook.v2.ui.auth;
 
-import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.app.Fragment;
+import android.widget.Toast;
 import android.text.Editable;
+import android.view.ViewGroup;
+import android.content.Context;
+import android.widget.EditText;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.ui.general.MainActivity;
+import com.androiditgroup.loclook.v2.LocLookApp;
+import android.view.inputmethod.InputMethodManager;
 
 /**
- * Created by sostrovschi on 1/19/17.
+ * Created by sostrovschi on 19.01.2017.
  */
 
 public class SMSCodeFragment extends Fragment {
 
     private EditText        smsCodeET;
     private AuthActivity    mAuthActivity;
+
+    private String authCode = "";
 
     public SMSCodeFragment() {
         // Required empty public constructor
@@ -39,7 +38,6 @@ public class SMSCodeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sms_code, container, false);
         mAuthActivity = (AuthActivity) getActivity();
 
@@ -63,19 +61,12 @@ public class SMSCodeFragment extends Fragment {
             public void afterTextChanged(Editable s) { }
         });
 
-        if((LocLookApp.authCode != null) && (!LocLookApp.authCode.equals("")))
-            // вывести на экран код авторизации, который должен ввести пользователь
-            Toast.makeText(LocLookApp.context, LocLookApp.authCode, Toast.LENGTH_LONG).show();
-        // если код авторизации не получен
-        else
-            // вывести на экран предупреждение
-            Toast.makeText(LocLookApp.context, R.string.no_sms_code_text, Toast.LENGTH_LONG).show();
+        generateCode();
 
         // кнопка "Назад"
         (view.findViewById(R.id.SMSCodeFragment_Back_IV)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 mAuthActivity.onBackPressed();
             }
         });
@@ -84,17 +75,34 @@ public class SMSCodeFragment extends Fragment {
         (view.findViewById(R.id.SMSCodeFragment_Forward_IV)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // если введенный код авторизации не совпадает с ожидаемым системой
-                if((!smsCodeET.getText().toString().equals(LocLookApp.authCode)))
+                if((!smsCodeET.getText().toString().equals(authCode)))
                     // стоп
                     return;
 
-                // переход на Главный экран
-                startActivity(new Intent(LocLookApp.context, MainActivity.class));
+                // фиксируем вход пользователя
+                LocLookApp.getInstance().setLoginStatus(true);
+
+                // двигаемся к следующему окну приложения
+                mAuthActivity.moveForward();
             }
         });
 
         return view;
+    }
+
+    private void generateCode() {
+        int minVal = 111111;
+        int maxVal = 999999;
+
+        authCode = String.valueOf(minVal + (int)(Math.random() * ((maxVal - minVal) + 1)));
+
+        if((authCode != null) && (!authCode.equals("")))
+            // вывести на экран код авторизации, который должен ввести пользователь
+            Toast.makeText(LocLookApp.context, authCode, Toast.LENGTH_LONG).show();
+        // если код авторизации не получен
+        else
+            // вывести на экран предупреждение
+            Toast.makeText(LocLookApp.context, R.string.no_sms_code_text, Toast.LENGTH_LONG).show();
     }
 }

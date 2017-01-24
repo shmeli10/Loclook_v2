@@ -22,7 +22,7 @@ public class LocLookApp extends Application {
 
     private static      SharedPreferences preferences;
 
-    public static String authCode;
+//    public static String authCode;
 
     public static Typeface bold, boldItalic, extraBold, extraBoldItalic, italic,
             light, lightItalic, regular, semiBold, semiBoldItalic;

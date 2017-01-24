@@ -1,16 +1,15 @@
 package com.androiditgroup.loclook.v2.ui.auth;
 
-import android.app.Fragment;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.app.Fragment;
 import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
-
-import com.androiditgroup.loclook.v2.LocLookApp;
+import android.database.Cursor;
+import android.view.LayoutInflater;
 import com.androiditgroup.loclook.v2.R;
+import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 
@@ -20,11 +19,9 @@ import com.androiditgroup.loclook.v2.utils.DBManager;
 
 public class PhoneNumberFragment extends Fragment {
 
-    private EditText phoneBodyET;
-    private Button   enterButton;
+    private EditText     phoneBodyET;
+    private Button       enterButton;
     private AuthActivity mAuthActivity;
-
-    public static final String TAG = "PhoneNumberFragment";
 
     public PhoneNumberFragment() {
         // Required empty public constructor
@@ -39,7 +36,6 @@ public class PhoneNumberFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_phone_number, container, false);
         mAuthActivity = (AuthActivity) getActivity();
 
@@ -56,7 +52,6 @@ public class PhoneNumberFragment extends Fragment {
     View.OnClickListener myClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             // если номер телефона при этом не был введен
             if((phoneBodyET.length() == 0) || (phoneBodyET.length() < 10))
                 // стоп
@@ -70,36 +65,19 @@ public class PhoneNumberFragment extends Fragment {
     };
 
     private void moveForward() {
-
-        // Cursor data = DBManager.getInstance().queryColumns(Constants.DataBase.USER_DATA_TABLE, null, "PHONE_NUMBER", phoneBodyET.getText().toString());
         Cursor data = DBManager.getInstance().queryColumns(Constants.DataBase.USER_DATA_TABLE, null, "PHONE_NUMBER", phoneBodyET.getText().toString());
 
         // если это существующий в БД пользователь
         if(data.getCount() > 0) {
-
+            // Log.e("ABC", "PhoneNumberFragment: moveForward(): это существующий в БД пользователь");
             if(mAuthActivity.setUserData(data)) {
-
-                // сохраняем код авторизации
-                LocLookApp.authCode = String.valueOf(getRandomValue());
-
-                // mAuthActivity.addFragment(SMSCodeFragment.newInstance(), false);
                 mAuthActivity.setFragment(SMSCodeFragment.newInstance(), false, true);
-
-                // MainActivity.selectedFragment = MainActivity.SelectedFragment.subcategory;
             }
         }
         // если это новый пользователь
         else {
-            // mAuthActivity.addFragment(UserNameFragment.newInstance(), false);
+            // Log.e("ABC", "PhoneNumberFragment: moveForward(): это новый пользователь");
             mAuthActivity.setFragment(UserNameFragment.newInstance(), false, true);
         }
-    }
-
-    private int getRandomValue() {
-
-        int minVal = 111111;
-        int maxVal = 999999;
-
-        return (minVal + (int)(Math.random() * ((maxVal - minVal) + 1)));
     }
 }

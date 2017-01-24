@@ -1,31 +1,22 @@
 package com.androiditgroup.loclook.v2.ui;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-
-import com.androiditgroup.loclook.v2.LocLookApp;
-import com.androiditgroup.loclook.v2.ui.auth.AuthActivity;
-import com.androiditgroup.loclook.v2.ui.general.MainActivity;
-
+import android.os.AsyncTask;
+import android.content.Intent;
 import java.util.concurrent.TimeUnit;
+import android.support.v7.app.AppCompatActivity;
+import com.androiditgroup.loclook.v2.ui.auth.AuthActivity;
 
 /**
  * Created by sostrovschi on 10.01.2017.
  */
 
 public class SplashActivity extends AppCompatActivity {
-
-    private String userId;
     private MyTask myTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // получаем номер телефона из Preferences
-        userId = LocLookApp.getInstance().getPhoneNumber();
     }
 
     @Override
@@ -47,21 +38,8 @@ public class SplashActivity extends AppCompatActivity {
                 // задержка перехода в 3 секунды
                 TimeUnit.SECONDS.sleep(3);
 
-                ///////////////////////////////////////////////////////////////////////////////
-
-                Intent intent = null;
-
-                // если идентификатор пользователя получен
-                if((userId != null) && (!userId.equals("")))
-                    // переход к ленте
-                    intent = new Intent(SplashActivity.this, MainActivity.class);
-                    // если идентификатор пользователя отсутствует
-                else
-                    // переход к окну ввода номера телефона
-                    intent = new Intent(SplashActivity.this, AuthActivity.class);
-
-                if(intent != null)
-                    startActivity(intent);
+                // переходим вперед
+                startActivity(new Intent(SplashActivity.this, AuthActivity.class));
 
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -1,15 +1,15 @@
 package com.androiditgroup.loclook.v2.ui.auth;
 
-import android.app.Fragment;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 
-import com.androiditgroup.loclook.v2.LocLookApp;
+import android.os.Bundle;
+import android.view.View;
+import android.app.Fragment;
+import android.view.ViewGroup;
+import android.database.Cursor;
+import android.widget.EditText;
+import android.view.LayoutInflater;
 import com.androiditgroup.loclook.v2.R;
+import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 
 /**
@@ -46,9 +46,7 @@ public class UserNameFragment extends Fragment {
         (view.findViewById(R.id.UserNameFragment_Back_IV)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 LocLookApp.getInstance().saveEnteredUserName(userNameET.getText().toString());
-
                 mAuthActivity.onBackPressed();
             }
         });
@@ -57,7 +55,6 @@ public class UserNameFragment extends Fragment {
         (view.findViewById(R.id.UserNameFragment_Forward_IV)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // получаем имя введенное пользователем
                 String enteredUserName = userNameET.getText().toString();
 
@@ -66,18 +63,18 @@ public class UserNameFragment extends Fragment {
                     // стоп
                     return;
 
-                // сохраняем введенное имя пользователя
-                LocLookApp.getInstance().saveEnteredUserName(enteredUserName);
-
+                // создаем нового пользователя
                 Cursor data = DBManager.getInstance().createUser(enteredUserName, LocLookApp.getInstance().getPhoneNumber());
 
                 // если курсор с данными пользователя получен
                 if(data != null) {
-
+                    // если создан объект "пользователь"
                     if(mAuthActivity.setUserData(data)) {
-                        // переключаемся на другой фрагмент
-                        mAuthActivity.setFragment(SMSCodeFragment.newInstance(), false, false);
-                        // MainActivity.selectedFragment = MainActivity.SelectedFragment.subcategory;
+                        // "затираем" введенное имя пользователя
+                        LocLookApp.getInstance().saveEnteredUserName("");
+
+                        // переходим вперед
+                        mAuthActivity.setFragment(SMSCodeFragment.newInstance(), false, true);
                     }
                 }
             }

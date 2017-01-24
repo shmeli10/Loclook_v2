@@ -42,17 +42,16 @@
             android:layout_marginTop="40dp"
             android:layout_marginBottom="50dp"
             android:maxLength="25"
-            android:hint="@string/user_name_hint"/>
+            android:hint="@string/user_name_hint">
+
+            <requestFocus> </requestFocus>
+        </EditText>
 
         <RelativeLayout style="@style/MW">
 
             <ImageView
                 android:id="@+id/UserNameFragment_Back_IV"
-                style="@style/WW"
-                android:layout_centerInParent="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/auth_arrow_back"/>
+                style="@style/Auth_BackButton"/>
             <TextView
                 style="@style/Auth_BackText"
                 android:layout_centerInParent="true"
@@ -63,11 +62,7 @@
                 android:layout_toLeftOf="@+id/UserNameFragment_Forward_IV"/>
             <ImageView
                 android:id="@+id/UserNameFragment_Forward_IV"
-                style="@style/WW"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/auth_arrow_forward"/>
+                style="@style/Auth_ForwardButton"/>
 
         </RelativeLayout>
 

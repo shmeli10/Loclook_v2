@@ -39,17 +39,16 @@
             android:layout_marginBottom="50dp"
             android:inputType="number"
             android:maxLength="6"
-            android:hint="@string/enter_sms_code_hint"/>
+            android:hint="@string/enter_sms_code_hint">
+
+            <requestFocus> </requestFocus>
+        </EditText>
 
         <RelativeLayout style="@style/MW">
 
             <ImageView
                 android:id="@+id/SMSCodeFragment_Back_IV"
-                style="@style/WW"
-                android:layout_centerInParent="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/auth_arrow_back"/>
+                style="@style/Auth_BackButton"/>
             <TextView
                 style="@style/Auth_BackText"
                 android:layout_centerInParent="true"
@@ -60,11 +59,7 @@
                 android:layout_toLeftOf="@+id/SMSCodeFragment_Forward_IV"/>
             <ImageView
                 android:id="@+id/SMSCodeFragment_Forward_IV"
-                style="@style/WW"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/auth_arrow_forward"/>
+                style="@style/Auth_ForwardButton"/>
 
         </RelativeLayout>
 

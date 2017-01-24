@@ -3,14 +3,17 @@ package com.androiditgroup.loclook.v2.ui.auth;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.User;
+import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.utils.ParentActivity;
 
 /**
@@ -28,18 +31,13 @@ public class AuthActivity   extends     ParentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
+        Log.e("ABC", "AuthActivity: onCreate()");
+
         mUserBuilder = new User.Builder();
 
         getFragmentManager().addOnBackStackChangedListener(this);
 
         mProgressBar = (ProgressBar) findViewById(R.id.AuthActivity_ProgressBar);
-
-//        PhoneNumberFragment fragment = PhoneNumberFragment.newInstance();
-//
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        transaction.add(R.id.AuthActivity_FragmentContainer, fragment, fragment.getClass().getName());
-//          transaction.replace(R.id.AuthActivity_FragmentContainer, fragment_logo, fragment_logo.TAG);
-//        transaction.commit();
 
         setFragment(PhoneNumberFragment.newInstance(), false, false);
     }
@@ -66,13 +64,6 @@ public class AuthActivity   extends     ParentActivity
 
         transaction.commit();
     }
-
-//    private void clearStack(){
-//        FragmentManager fm = getFragmentManager();
-//        for (int f = 0; f < fm.getBackStackEntryCount(); f++) {
-//            fm.popBackStack();
-//        }
-//    }
 
     @Override
     public void changeFragment(Fragment fragment) {
@@ -108,11 +99,10 @@ public class AuthActivity   extends     ParentActivity
     }
 
     public boolean setUserData(Cursor data) {
-
         data.moveToFirst();
 
         String userId       = data.getString(data.getColumnIndex("_ID"));
-        String login        = data.getString(data.getColumnIndex("LOGIN"));
+        String login        = data.getString(data.getColumnIndex("NAME"));
         String phoneNumber  = data.getString(data.getColumnIndex("PHONE_NUMBER"));
         String rate         = data.getString(data.getColumnIndex("RATE"));
         String bgImgUrl     = data.getString(data.getColumnIndex("BG_IMG_URL"));
@@ -174,7 +164,14 @@ public class AuthActivity   extends     ParentActivity
 
     @Override
     public void onBackPressed() {
-        if(getFragmentManager().getBackStackEntryCount() > 0)
-            getFragmentManager().popBackStack();
+        FragmentManager fragmentManager = getFragmentManager();
+
+        for (int f = 0; f < fragmentManager.getBackStackEntryCount(); f++)
+            fragmentManager.popBackStack();
+    }
+
+    // двигаемся к следующему окну приложения
+    public void moveForward() {
+        startActivity(new Intent(LocLookApp.context, MainActivity.class));
     }
 }

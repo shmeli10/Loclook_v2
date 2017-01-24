@@ -1,6 +1,8 @@
 package com.androiditgroup.loclook.v2.ui.general;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +44,8 @@ public class MainActivity   extends     ParentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.e("ABC", "MainActivity: onCreate()");
+
         // initialize toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         assert toolbar != null;
@@ -64,6 +69,8 @@ public class MainActivity   extends     ParentActivity
         mNavigationBtn = (ImageButton) findViewById(R.id.toolbar_navButton);
         assert mNavigationBtn != null;
         mNavigationBtn.setOnClickListener(mMenuClickListener);
+
+        Log.e("ABC", "MainActivity: onCreate(): isLoggedIn: " +(LocLookApp.getInstance().isLoggedIn()));
 
         // if user is not logged in
         if (!LocLookApp.getInstance().isLoggedIn()) {
@@ -100,7 +107,7 @@ public class MainActivity   extends     ParentActivity
     }
 
     @Override
-    public void addFragment(Fragment fragment, boolean animate) {
+    public void setFragment(Fragment fragment, boolean animate, boolean addToBackStack) {
 
     }
 

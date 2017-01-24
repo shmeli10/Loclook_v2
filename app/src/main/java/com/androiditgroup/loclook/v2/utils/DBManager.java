@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import com.androiditgroup.loclook.v2.LocLookApp;
 
 import java.util.Arrays;
@@ -25,6 +27,8 @@ public class DBManager {
                     // sqLiteDatabase.execSQL(Constants.DataBase.CREATE_USER_DATA_TABLE);
                     // sqLiteDatabase.execSQL(Constants.DataBase.CREATE_HISTORY_TABLE);
 
+                    Log.e("ABC", "DBManager: onCreate()");
+
                     createTable(sqLiteDatabase, Constants.DataBase.USER_DATA_TABLE, Constants.DataBase.USER_DATA_TABLE_COLUMNS);
                     // createTable(sqLiteDatabase, Constants.DataBase.USER_AUTH_DATA_TABLE, Constants.DataBase.USER_AUTH_DATA_TABLE_COLUMNS);
 
@@ -38,6 +42,9 @@ public class DBManager {
                 try {
                     // sqLiteDatabase.execSQL(Constants.DataBase.DROP_USER_DATA_TABLE);
                     // sqLiteDatabase.execSQL(Constants.DataBase.DROP_HISTORY_TABLE);
+
+                    Log.e("ABC", "DBManager: onUpgrade()");
+
                     onCreate(sqLiteDatabase);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -54,7 +61,7 @@ public class DBManager {
     }
 
     private void createTable(SQLiteDatabase db,String tableName, String columns) {
-        // Log.d(LOG_TAG, "--- create table " + tableName + " ---");
+        Log.e("ABC", "--- create table " + tableName + " ---");
 
         // String createQuery = "CREATE TABLE IF NOT EXISTS " +tableName+ " (" + "id integer primary key autoincrement, " +columns+ ");";
 
@@ -160,11 +167,14 @@ public class DBManager {
      * @return Возвращаем идентификатор пользователя
      */
     public Cursor createUser(String userName, String phoneNumber) {
+        Log.e("ABC", "DBManager: createUser()");
 
         String[] columnsArr = {"NAME", "PHONE_NUMBER", "RATE"};
         String[] dataArr    = {userName, phoneNumber, "0"};
 
         int userId = addRow(Constants.DataBase.USER_DATA_TABLE, columnsArr, dataArr);
+
+        Log.e("ABC", "DBManager: createUser(): userId= " +userId);
 
         // если идентификатор созданного пользователя получен
         if(userId > 0)
