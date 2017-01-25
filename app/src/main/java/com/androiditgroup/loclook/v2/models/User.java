@@ -7,7 +7,7 @@ package com.androiditgroup.loclook.v2.models;
 public class User {
 
     private String mUserId;
-    private String mLogin;
+    private String mName;
     private String mPhoneNumber;
     private String mRate;
     private String mBgImgUrl;
@@ -26,9 +26,13 @@ public class User {
         return mUserId;
     }
 
+    public String getName() {
+        return mName;
+    }
+
     public static class Builder {
         private String mUserId;
-        private String mLogin;
+        private String mName;
         private String mPhoneNumber;
         private String mRate;
         private String mBgImgUrl;
@@ -46,8 +50,8 @@ public class User {
             return this;
         }
 
-        public Builder login(String login) {
-            mLogin = login;
+        public Builder name(String name) {
+            mName = name;
             return this;
         }
 
@@ -109,7 +113,7 @@ public class User {
         public User build() {
             User user = new User();
             user.mUserId = this.mUserId;
-            user.mLogin = this.mLogin;
+            user.mName = this.mName;
             user.mPhoneNumber = this.mPhoneNumber;
             user.mRate = this.mRate;
             user.mBgImgUrl = this.mBgImgUrl;

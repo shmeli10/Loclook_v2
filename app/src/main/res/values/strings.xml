@@ -20,4 +20,11 @@
     <string name="back_text">Назад</string>
     <string name="continue_text">Продолжить</string>
 
+    <string name="feed_text">Лента</string>
+    <string name="favorites_text">Избранное</string>
+    <string name="notifications_text">Уведомления</string>
+    <string name="badges_text">Бейджики</string>
+    <string name="geolocation_text">Регион</string>
+    <string name="exit_text">Выход</string>
+
 </resources>

@@ -24,21 +24,13 @@ public class AuthActivity   extends     ParentActivity
                             implements  FragmentManager.OnBackStackChangedListener{
 
     private ProgressBar mProgressBar;
-    private User.Builder mUserBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
-
-        Log.e("ABC", "AuthActivity: onCreate()");
-
-        mUserBuilder = new User.Builder();
-
         getFragmentManager().addOnBackStackChangedListener(this);
-
         mProgressBar = (ProgressBar) findViewById(R.id.AuthActivity_ProgressBar);
-
         setFragment(PhoneNumberFragment.newInstance(), false, false);
     }
 
@@ -77,7 +69,6 @@ public class AuthActivity   extends     ParentActivity
 
     @Override
     public void onBackStackChanged() {
-
 //            FragmentManager manager = getFragmentManager();
 //            // get index of the last fragment to be able to get it's tag
 //            int currentStackIndex = manager.getBackStackEntryCount() - 1;
@@ -96,70 +87,6 @@ public class AuthActivity   extends     ParentActivity
 //            toggleSearchBtnVisibility(true);
 //            // now we need to update the current selected fragment
 //            selectedFragment = fragment.getSelectedFragment();
-    }
-
-    public boolean setUserData(Cursor data) {
-        data.moveToFirst();
-
-        String userId       = data.getString(data.getColumnIndex("_ID"));
-        String login        = data.getString(data.getColumnIndex("NAME"));
-        String phoneNumber  = data.getString(data.getColumnIndex("PHONE_NUMBER"));
-        String rate         = data.getString(data.getColumnIndex("RATE"));
-        String bgImgUrl     = data.getString(data.getColumnIndex("BG_IMG_URL"));
-        String avatarUrl    = data.getString(data.getColumnIndex("AVATAR_URL"));
-        String description  = data.getString(data.getColumnIndex("DESCRIPTION"));
-        String siteUrl      = data.getString(data.getColumnIndex("SITE_URL"));
-        String latitude     = data.getString(data.getColumnIndex("LATITUDE"));
-        String longitude    = data.getString(data.getColumnIndex("LONGITUDE"));
-        String radius       = data.getString(data.getColumnIndex("RADIUS"));
-        String regionName   = data.getString(data.getColumnIndex("REGION_NAME"));
-        String streetName   = data.getString(data.getColumnIndex("STREET_NAME"));
-
-        if((userId != null) && (!userId.equals("")))
-            mUserBuilder.userId(userId);
-        else
-            return false;
-
-        if((login != null) && (!login.equals("")))
-            mUserBuilder.login(login);
-
-        if((phoneNumber != null) && (!phoneNumber.equals("")))
-            mUserBuilder.phone(phoneNumber);
-
-        if((rate != null) && (!rate.equals("")))
-            mUserBuilder.rate(rate);
-
-        if((bgImgUrl != null) && (!bgImgUrl.equals("")))
-            mUserBuilder.bgImgUrl(bgImgUrl);
-
-        if((avatarUrl != null) && (!avatarUrl.equals("")))
-            mUserBuilder.avatarUrl(avatarUrl);
-
-        if((description != null) && (!description.equals("")))
-            mUserBuilder.description(description);
-
-        if((siteUrl != null) && (!siteUrl.equals("")))
-            mUserBuilder.siteUrl(siteUrl);
-
-        if((latitude != null) && (!latitude.equals("")))
-            mUserBuilder.latitude(latitude);
-
-        if((longitude != null) && (!longitude.equals("")))
-            mUserBuilder.longitude(longitude);
-
-        if((radius != null) && (!radius.equals("")))
-            mUserBuilder.radius(radius);
-
-        if((regionName != null) && (!regionName.equals("")))
-            mUserBuilder.regionName(regionName);
-
-        if((streetName != null) && (!streetName.equals("")))
-            mUserBuilder.streetName(streetName);
-
-        // сохраняем пользователя
-        LocLookApp.user = mUserBuilder.build();
-
-        return true;
     }
 
     @Override

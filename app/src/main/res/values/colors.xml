@@ -8,6 +8,7 @@
     <color name="light_blue">#c3e6f1</color>
 
     <color name="light_grey">#dfeaee</color>
+    <color name="dark_grey">#4e7883</color>
 
     <color name="white">#fdfdfe</color>
 </resources>

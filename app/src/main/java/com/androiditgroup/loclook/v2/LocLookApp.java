@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.utils.Constants;
+import com.androiditgroup.loclook.v2.utils.DBManager;
 
 import java.util.Locale;
 
@@ -92,5 +93,11 @@ public class LocLookApp extends Application {
 
     public String getEnteredUserName() {
         return preferences.getString("user_name", "");
+    }
+
+    public void logOut() {
+        user = null;
+        setLoginStatus(false);
+        preferences.edit().clear().commit();
     }
 }

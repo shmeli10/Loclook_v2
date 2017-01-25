@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="none">
-        <item
-            android:id="@+id/nav_main"
-            android:title="item_1"/>
-        <item
-            android:id="@+id/nav_bookings"
-            android:title="item_2"/>
-        <item
-            android:id="@+id/nav_favorites"
-            android:title="item_3"/>
-        <item
-            android:id="@+id/nav_history"
-            android:title="item_4"/>
-        <item
-            android:id="@+id/nav_card"
-            android:title="item_5"/>
-        <item
-            android:id="@+id/nav_settings"
-            android:title="item_6"/>
-    </group>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="none">
+
         <item
-            android:id="@+id/nav_login"
-            android:title="item_7"/>
+            android:id="@+id/nav_feed"
+            android:icon="@drawable/feed_icon"
+            android:title="@string/feed_text"/>
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/favorite_icon"
+            android:title="@string/favorites_text"/>
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/notifications_icon"
+            android:title="@string/notifications_text"/>
+        <item
+            android:id="@+id/nav_badges"
+            android:icon="@drawable/badges_icon"
+            android:title="@string/badges_text"/>
+        <item
+            android:id="@+id/nav_geolocation"
+            android:icon="@drawable/geolocation_icon"
+            android:title="@string/geolocation_text"/>
+
+    </group>
+    <group android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_exit"
+            android:title="@string/exit_text"/>
+
     </group>
 
 </menu>

@@ -4,17 +4,17 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/main_activity_toolbarLayout"
+        android:id="@+id/MainActivity_ToolbarLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/colorPrimary"
         android:elevation="4dp">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/main_activity_toolbar"
+            android:id="@+id/MainActivity_Toolbar"
             style="@style/MM"/>
         <ImageButton
-            android:id="@+id/toolbar_navButton"
+            android:id="@+id/MainActivity_Toolbar_NavButton"
             style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="60dp"
             android:layout_height="match_parent"
@@ -26,7 +26,7 @@
             android:src="@drawable/menu_icon"
             android:contentDescription="@string/open_left_menu"/>
         <TextView
-            android:id="@+id/main_activity_toolbarTitle"
+            android:id="@+id/MainActivity_ToolbarTitle"
             style="@style/WW"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
@@ -43,9 +43,9 @@
 
     </RelativeLayout>
     <FrameLayout
-        android:id="@+id/main_activity_fragmentContainer"
+        android:id="@+id/MainActivity_FragmentContainer"
         style="@style/MM"
-        android:layout_below="@id/main_activity_toolbarLayout"/>
+        android:layout_below="@id/MainActivity_ToolbarLayout"/>
     <ProgressBar
         android:layout_gravity="center"
         style="@style/WW"
