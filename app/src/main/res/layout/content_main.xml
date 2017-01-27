@@ -40,17 +40,32 @@
             android:text="Title"
             android:textColor="@android:color/white"
             android:textSize="18sp"/>
+        <LinearLayout
+            style="@style/WM"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/MainActivity_PublicationButton"
+                style="@style/Publication_Button"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
-    <FrameLayout
-        android:id="@+id/MainActivity_FragmentContainer"
-        style="@style/MM"
-        android:layout_below="@id/MainActivity_ToolbarLayout"/>
+
     <ProgressBar
         android:layout_gravity="center"
         style="@style/WW"
         android:layout_centerInParent="true"
         android:visibility="gone"
         android:id="@+id/mainActivityProgressBar" />
+
+    <FrameLayout
+        android:id="@+id/MainActivity_FragmentContainer"
+        style="@style/MM"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

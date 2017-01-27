@@ -27,4 +27,6 @@
     <string name="geolocation_text">Регион</string>
     <string name="exit_text">Выход</string>
 
+    <string name="publication_text">Публикация</string>
+
 </resources>

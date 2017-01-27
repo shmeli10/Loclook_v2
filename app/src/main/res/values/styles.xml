@@ -64,6 +64,15 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <style name="Standard_IV">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+        <!--<item name="android:layout_weight">0</item>-->
+        <!--<item name="android:layout_gravity">center_vertical</item>-->
+    </style>
+
+    //////////////////////////////////////////////////////////////////
+
     <style name="Auth_AppLogo" parent="@style/WW">
         <item name="android:layout_width">400dp</item>
         <item name="android:layout_height">65dp</item>
@@ -127,6 +136,11 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">14sp</item>
         <item name="android:text">@string/continue_text</item>
+    </style>
+
+    <style name="Publication_Button" parent="@style/Standard_IV">
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:src">@drawable/publication_icon</item>
     </style>
 
 </resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MM"
+    android:gravity="center">
+
+    <TextView
+        style="@style/MW"
+        android:gravity="center"
+        android:text="@string/geolocation_text"/>
+
+</RelativeLayout>

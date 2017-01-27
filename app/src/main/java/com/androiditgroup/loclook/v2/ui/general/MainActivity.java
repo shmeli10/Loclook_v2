@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,8 +26,12 @@ import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.SplashActivity;
 import com.androiditgroup.loclook.v2.ui.auth.PhoneNumberFragment;
+import com.androiditgroup.loclook.v2.ui.badges.BadgesFragment;
 import com.androiditgroup.loclook.v2.ui.favorites.FavoritesFragment;
 import com.androiditgroup.loclook.v2.ui.feed.FeedFragment;
+import com.androiditgroup.loclook.v2.ui.geolocation.GeolocationFragment;
+import com.androiditgroup.loclook.v2.ui.notifications.NotificationsFragment;
+import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.CustomTypefaceSpan;
 import com.androiditgroup.loclook.v2.utils.DBManager;
@@ -39,10 +45,13 @@ import com.mikhaellopez.circularimageview.CircularImageView;
  */
 
 public class MainActivity   extends     ParentActivity
-                            implements  NavigationView.OnNavigationItemSelectedListener {
+                            implements  NavigationView.OnNavigationItemSelectedListener,
+                                        FragmentManager.OnBackStackChangedListener {
 
     private TextView mToolbarTitle;
     private ImageButton mNavigationBtn;
+    private LinearLayout mToolbarBtnContainer;
+    private ImageButton mPublicationBtn;
     private ProgressBar mProgressBar;
 
     private static NavigationView navigationView;
@@ -59,7 +68,7 @@ public class MainActivity   extends     ParentActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // getFragmentManager().addOnBackStackChangedListener(this);
+        getFragmentManager().addOnBackStackChangedListener(this);
 
         // initialize sliding panel layout
         mSlidingPaneLayout = (LockableSlidingPane) findViewById(R.id.MainActivity_SlidingPanel);
@@ -77,6 +86,10 @@ public class MainActivity   extends     ParentActivity
         mNavigationBtn = (ImageButton) findViewById(R.id.MainActivity_Toolbar_NavButton);
         assert mNavigationBtn != null;
         mNavigationBtn.setOnClickListener(mMenuClickListener);
+
+        mPublicationBtn = (ImageButton) findViewById(R.id.MainActivity_PublicationButton);
+        assert mPublicationBtn != null;
+        mPublicationBtn.setOnClickListener(mPublicationClickListener);
 
         navigationView = (NavigationView) findViewById(R.id.MainActivity_NavigationView);
         navigationView.setNavigationItemSelectedListener(this);
@@ -120,6 +133,14 @@ public class MainActivity   extends     ParentActivity
         @Override
         public void onClick(View v) {
             mSlidingPaneLayout.openPane();
+        }
+    };
+
+    private View.OnClickListener mPublicationClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            setFragment(PublicationFragment.newInstance(), false, true);
         }
     };
 
@@ -167,14 +188,10 @@ public class MainActivity   extends     ParentActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        FragmentManager fm = getFragmentManager();
-        for (int f = 0; f < fm.getBackStackEntryCount(); f++) {
-            fm.popBackStack();
-        }
+        clearBackStack();
         switch (item.getItemId()) {
             case R.id.nav_feed:
                 setFragment(FeedFragment.newInstance(), false, false);
-//                selectedFragment = SelectedFragment.supercategory;
                 break;
             case R.id.nav_exit:
                 Intent logoutIntent = new Intent(this, SplashActivity.class);
@@ -184,19 +201,15 @@ public class MainActivity   extends     ParentActivity
                 return true;
             case R.id.nav_favorites:
                 setFragment(FavoritesFragment.newInstance(), false, true);
-//                selectedFragment = SelectedFragment.MY_BOOKINGS;
                 break;
             case R.id.nav_notifications:
-//                addFragment(new FavoritesFragment(), false);
-//                selectedFragment = SelectedFragment.favorites_list;
+                setFragment(NotificationsFragment.newInstance(), false, true);
                 break;
             case R.id.nav_badges:
-//                addFragment(new HistoryFragment(), false);
-//                selectedFragment = SelectedFragment.histories_list;
+                setFragment(BadgesFragment.newInstance(), false, true);
                 break;
             case R.id.nav_geolocation:
-//                Intent settings = new Intent(this, SettingsFragment.class);
-//                startActivity(settings);
+                setFragment(GeolocationFragment.newInstance(), false, true);
                 break;
         }
         mNavigationBtn.setOnClickListener(mMenuClickListener);
@@ -213,28 +226,6 @@ public class MainActivity   extends     ParentActivity
                 Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mi.setTitle(mNewTitle);
     }
-
-//    public void refreshNavItemTitles() {
-//        Menu navMenu = navigationView.getMenu();
-//
-//        MenuItem feed = navMenu.findItem(R.id.nav_feed);
-//        feed.setTitle(R.string.feed_text);
-//
-//        MenuItem favorites = navMenu.findItem(R.id.nav_favorites);
-//        favorites.setTitle(R.string.favorites_text);
-//
-//        MenuItem notifications = navMenu.findItem(R.id.nav_notifications);
-//        notifications.setTitle(R.string.notifications_text);
-//
-//        MenuItem badges = navMenu.findItem(R.id.nav_badges);
-//        badges.setTitle(R.string.badges_text);
-//
-//        MenuItem geolocation = navMenu.findItem(R.id.nav_geolocation);
-//        geolocation.setTitle(R.string.geolocation_text);
-//
-//        MenuItem exit = navMenu.findItem(R.id.nav_exit);
-//        exit.setTitle(R.string.exit_text);
-//    }
 
     // public void setUserData(final User user) {
     public void setUserDataOnNavView() {
@@ -257,5 +248,40 @@ public class MainActivity   extends     ParentActivity
                 }
             }
         });
+    }
+
+    public void clearBackStack() {
+        // Log.e("ABC", "MainActivity: clearBackStack()");
+        FragmentManager fragmentManager = getFragmentManager();
+        for (int f = 0; f < fragmentManager.getBackStackEntryCount(); f++)
+            fragmentManager.popBackStack();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Log.e("ABC", "MainActivity: onBackPressed()");
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        // Log.e("ABC", "MainActivity: onBackStackChanged()");
+        FragmentManager fragmentManager = getFragmentManager();
+        int backStackSize = fragmentManager.getBackStackEntryCount();
+        // if we don't have fragments in back stack just return
+        if (backStackSize == 0) {
+            setToolbarTitle(LocLookApp.getInstance().getResources().getString(R.string.feed_text));
+            return;
+        }
+
+        // get index of the last fragment to be able to get it's tag
+        // int currentStackIndex = fragmentManager.getBackStackEntryCount() - 1;
+        // otherwise get the framgent from backstack and cast it to ParentFragment so we could get it's title
+        ParentFragment fragment = (ParentFragment) fragmentManager.findFragmentByTag(fragmentManager.getBackStackEntryAt(backStackSize - 1).getName());
+        // finaly set the title in the toolbar
+        setToolbarTitle(fragment.getFragmentTitle());
     }
 }

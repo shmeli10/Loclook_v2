@@ -20,8 +20,8 @@ import com.androiditgroup.loclook.v2.utils.ParentActivity;
  * Created by sostrovschi on 10.01.2017.
  */
 
-public class AuthActivity   extends     ParentActivity
-                            implements  FragmentManager.OnBackStackChangedListener{
+public class AuthActivity extends ParentActivity {
+//                            implements  FragmentManager.OnBackStackChangedListener{
 
     private ProgressBar mProgressBar;
 
@@ -29,7 +29,7 @@ public class AuthActivity   extends     ParentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
-        getFragmentManager().addOnBackStackChangedListener(this);
+//        getFragmentManager().addOnBackStackChangedListener(this);
         mProgressBar = (ProgressBar) findViewById(R.id.AuthActivity_ProgressBar);
         setFragment(PhoneNumberFragment.newInstance(), false, false);
     }
@@ -67,8 +67,8 @@ public class AuthActivity   extends     ParentActivity
 
     }
 
-    @Override
-    public void onBackStackChanged() {
+//    @Override
+//    public void onBackStackChanged() {
 //            FragmentManager manager = getFragmentManager();
 //            // get index of the last fragment to be able to get it's tag
 //            int currentStackIndex = manager.getBackStackEntryCount() - 1;
@@ -87,7 +87,7 @@ public class AuthActivity   extends     ParentActivity
 //            toggleSearchBtnVisibility(true);
 //            // now we need to update the current selected fragment
 //            selectedFragment = fragment.getSelectedFragment();
-    }
+//    }
 
     @Override
     public void onBackPressed() {
