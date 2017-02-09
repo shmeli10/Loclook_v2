@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,7 +52,9 @@ public class MainActivity   extends     ParentActivity
     private TextView mToolbarTitle;
     private ImageButton mNavigationBtn;
     private LinearLayout mToolbarBtnContainer;
-    private ImageButton mPublicationBtn;
+    private FrameLayout mPublicationBtn;
+    private FrameLayout mCameraBtn;
+    private FrameLayout mSendBtn;
     private ProgressBar mProgressBar;
 
     private static NavigationView navigationView;
@@ -87,9 +90,18 @@ public class MainActivity   extends     ParentActivity
         assert mNavigationBtn != null;
         mNavigationBtn.setOnClickListener(mMenuClickListener);
 
-        mPublicationBtn = (ImageButton) findViewById(R.id.MainActivity_PublicationButton);
+        mPublicationBtn = (FrameLayout) findViewById(R.id.MainActivity_PublicationButton);
         assert mPublicationBtn != null;
+        mPublicationBtn.setVisibility(View.VISIBLE);
         mPublicationBtn.setOnClickListener(mPublicationClickListener);
+
+        mCameraBtn = (FrameLayout) findViewById(R.id.MainActivity_CameraButton);
+        assert mCameraBtn != null;
+        mCameraBtn.setOnClickListener(mCameraBtnClickListener);
+
+        mSendBtn = (FrameLayout) findViewById(R.id.MainActivity_SendButton);
+        assert mSendBtn != null;
+        mSendBtn.setOnClickListener(mSendBtnClickListener);
 
         navigationView = (NavigationView) findViewById(R.id.MainActivity_NavigationView);
         navigationView.setNavigationItemSelectedListener(this);
@@ -141,6 +153,22 @@ public class MainActivity   extends     ParentActivity
         public void onClick(View v) {
 
             setFragment(PublicationFragment.newInstance(), false, true);
+        }
+    };
+
+    private View.OnClickListener mCameraBtnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            // setFragment(PublicationFragment.newInstance(), false, true);
+        }
+    };
+
+    private View.OnClickListener mSendBtnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            // setFragment(PublicationFragment.newInstance(), false, true);
         }
     };
 
