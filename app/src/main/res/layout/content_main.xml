@@ -27,7 +27,6 @@
             <!--android:contentDescription="@string/open_left_menu"/>-->
         <FrameLayout
             style="@style/WM"
-            android:background="@color/blue"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
@@ -36,7 +35,6 @@
             <ImageButton
                 android:id="@+id/MainActivity_Toolbar_NavButton"
                 style="@style/Standard_IV"
-                android:background="@color/colorAccent"
                 android:src="@drawable/menu_icon"/>
 
         </FrameLayout>

@@ -4,9 +4,181 @@
     style="@style/MM"
     android:gravity="center">
 
-    <TextView
-        style="@style/MW"
-        android:gravity="center"
-        android:text="@string/publication_text"/>
+
+    <ScrollView style="@style/MM">
+
+        <RelativeLayout
+            style="@style/MW"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <EditText
+                android:id="@+id/Publication_PublicationTextET"
+                style="@style/MW"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLength="@integer/publication_length"
+                android:ems="16"
+                android:gravity="top|left"
+                android:selectAllOnFocus="false"
+                android:background="@color/white"
+                android:textColor="@color/dark_grey"
+                android:textSize="14sp"
+                android:textColorHint="@color/dark_grey"
+                android:hint="@string/publication_hint"/>
+            <TextView
+                android:id="@+id/Publication_LeftCharactersHead"
+                style="@style/WW"
+                android:layout_below="@+id/Publication_PublicationTextET"
+                android:textColor="@color/dark_grey"
+                android:text="@string/publication_left_characters_head"/>
+            <TextView
+                android:id="@+id/Publication_LeftCharactersBodyTV"
+                style="@style/WW"
+                android:layout_below="@+id/Publication_PublicationTextET"
+                android:layout_toRightOf="@+id/Publication_LeftCharactersHead"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/deep_blue"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:text="@integer/publication_length"/>
+            <TextView
+                android:id="@+id/Publication_LeftCharactersTail"
+                style="@style/WW"
+                android:layout_below="@+id/Publication_PublicationTextET"
+                android:layout_toRightOf="@+id/Publication_LeftCharactersBodyTV"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/dark_grey"
+                android:text="@string/publication_left_characters_tail"/>
+            <View
+                android:id="@+id/Publication_LeftCharactersBottomLine"
+                style="@style/HLine_Grey"
+                android:layout_below="@+id/Publication_LeftCharactersHead"/>
+            <RelativeLayout
+                android:id="@+id/Publication_AnonymousBlock"
+                style="@style/MW"
+                android:layout_below="@+id/Publication_LeftCharactersBottomLine"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    android:id="@+id/Publication_AnonymousTV"
+                    style="@style/WW"
+                    android:textColor="@color/deep_blue"
+                    android:textSize="16sp"
+                    android:text="@string/publication_anonymous_text"/>
+                <TextView
+                    android:id="@+id/Publication_AnonymousStateTV"
+                    style="@style/WW"
+                    android:layout_toRightOf="@+id/Publication_AnonymousTV"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    android:text="@string/state_off_text"/>
+                <Switch
+                    android:id="@+id/Publication_AnonymousSwitchBTN"
+                    style="@style/WW"
+                    android:layout_alignParentRight="true"
+                    android:checked="false"/>
+                <!--<ToggleButton-->
+                <!--android:id="@+id/Publication_AnonymousSwitchBTN"-->
+                <!--style="@style/Publication_Switch_BTN"/>-->
+
+            </RelativeLayout>
+            <View
+                android:id="@+id/Publication_AnonymousBlockBottomLine"
+                style="@style/HLine_Grey"
+                android:layout_below="@+id/Publication_AnonymousBlock"/>
+            <RelativeLayout
+                android:id="@+id/Publication_QuizBlock"
+                style="@style/MW"
+                android:layout_below="@+id/Publication_AnonymousBlockBottomLine"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    android:id="@+id/Publication_QuizTV"
+                    style="@style/WW"
+                    android:textColor="@color/deep_blue"
+                    android:textSize="16sp"
+                    android:text="@string/publication_quiz_text"/>
+                <TextView
+                    android:id="@+id/Publication_QuizStateTV"
+                    style="@style/WW"
+                    android:layout_toRightOf="@+id/Publication_QuizTV"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    android:text="@string/state_off_text"/>
+                <Switch
+                    android:id="@+id/Publication_QuizSwitchBTN"
+                    style="@style/WW"
+                    android:layout_alignParentRight="true"
+                    android:checked="false"/>
+                <!--<ToggleButton-->
+                <!--android:id="@+id/Publication_QuizSwitchBTN"-->
+                <!--style="@style/Publication_Switch_BTN"/>-->
+
+            </RelativeLayout>
+            <ListView
+                android:id="@+id/Publication_QuizAnswersList"
+                style="@style/MW"
+                android:layout_below="@+id/Publication_QuizBlock"/>
+            <View
+                android:id="@+id/Publication_QuizAnswersListBottomLine"
+                style="@style/HLine_Grey"
+                android:layout_below="@+id/Publication_QuizAnswersList"/>
+            <RelativeLayout
+                android:id="@+id/Publication_BadgeBlock"
+                style="@style/MW"
+                android:layout_below="@+id/Publication_QuizAnswersListBottomLine"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/Publication_BadgeTV"
+                    style="@style/WW"
+                    android:textColor="@color/deep_blue"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/publication_badge_text"/>
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_toRightOf="@+id/Publication_BadgeTV"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="12dp"
+                    android:tint="@color/deep_blue"
+                    android:src="@drawable/show_data"/>
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:rotation="0"
+                    android:layout_centerInParent="true"
+                    android:tint="@color/deep_blue"
+                    android:background="@drawable/show_data"/>
+                <TextView
+                    android:id="@+id/Publication_BadgeNameTV"
+                    style="@style/WW"
+                    android:layout_toLeftOf="@+id/Publication_BadgeImageIV"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    android:text="@string/app_name"/>
+                <ImageView
+                    android:id="@+id/Publication_BadgeImageIV"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="3dp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

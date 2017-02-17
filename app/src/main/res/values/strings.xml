@@ -28,5 +28,16 @@
     <string name="exit_text">Выход</string>
 
     <string name="publication_text">Публикация</string>
+    <string name="publication_left_characters_head">Осталось</string>
+    <string name="publication_left_characters_tail">символов</string>
+    <string name="publication_hint">Сообщите окружающим что-нибудь интересное</string>
+
+    <string name="publication_anonymous_text">Анонимно</string>
+    <string name="publication_quiz_text">Опрос</string>
+    <string name="publication_badge_text">Бейджик</string>
+
+    <string name="state_on_text">(вкл.)</string>
+    <string name="state_off_text">(выкл.)</string>
+
 
 </resources>

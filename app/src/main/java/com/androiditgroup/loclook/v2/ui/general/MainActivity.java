@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
@@ -58,7 +59,13 @@ public class MainActivity   extends     ParentActivity
     private ProgressBar mProgressBar;
 
     private static NavigationView navigationView;
+
     public static LockableSlidingPane mSlidingPaneLayout;
+    public static SelectedFragment selectedFragment;
+
+    public enum SelectedFragment {
+        show_feed, send_publication
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,10 +155,18 @@ public class MainActivity   extends     ParentActivity
         }
     };
 
+    private View.OnClickListener mBackClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onBackPressed();
+        }
+    };
+
     private View.OnClickListener mPublicationClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
+            selectedFragment = SelectedFragment.send_publication;
             setFragment(PublicationFragment.newInstance(), false, true);
         }
     };
@@ -288,9 +303,23 @@ public class MainActivity   extends     ParentActivity
     @Override
     public void onBackPressed() {
         // Log.e("ABC", "MainActivity: onBackPressed()");
-        FragmentManager fragmentManager = getFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStack();
+        if (mSlidingPaneLayout.isOpen()) {
+            mSlidingPaneLayout.closePane();
+        }
+        else if (getFragmentManager().getBackStackEntryCount() > 0) {
+            if (selectedFragment == SelectedFragment.send_publication) {
+                mCameraBtn.setVisibility(View.GONE);
+                mSendBtn.setVisibility(View.GONE);
+            }
+
+            getFragmentManager().popBackStack();
+            if (getFragmentManager().getBackStackEntryCount() == 1) {
+                mNavigationBtn.setOnClickListener(mMenuClickListener);
+                mNavigationBtn.setImageResource(R.drawable.menu_icon);
+                mPublicationBtn.setVisibility(View.VISIBLE);
+            }
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -302,6 +331,7 @@ public class MainActivity   extends     ParentActivity
         // if we don't have fragments in back stack just return
         if (backStackSize == 0) {
             setToolbarTitle(LocLookApp.getInstance().getResources().getString(R.string.feed_text));
+            selectedFragment = SelectedFragment.show_feed;
             return;
         }
 
@@ -311,5 +341,13 @@ public class MainActivity   extends     ParentActivity
         ParentFragment fragment = (ParentFragment) fragmentManager.findFragmentByTag(fragmentManager.getBackStackEntryAt(backStackSize - 1).getName());
         // finaly set the title in the toolbar
         setToolbarTitle(fragment.getFragmentTitle());
+
+        if (selectedFragment == SelectedFragment.send_publication) {
+            mNavigationBtn.setOnClickListener(mBackClickListener);
+            mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);
+            mPublicationBtn.setVisibility(View.GONE);
+            mCameraBtn.setVisibility(View.VISIBLE);
+            mSendBtn.setVisibility(View.VISIBLE);
+        }
     }
 }
