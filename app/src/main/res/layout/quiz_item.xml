@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MW"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp">
+
+    <EditText
+        android:id="@+id/Publication_QuizAnswer"
+        style="@style/MW"
+        android:layout_toLeftOf="@+id/Publication_QuizAnswerDelete"
+        android:padding="5dp"
+        android:maxLength="@integer/custom_length"
+        android:maxLines="4"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/rounded_rect_quiz_answer"/>
+    <ImageView
+        android:id="@+id/Publication_QuizAnswerDelete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_vertical"
+        android:tint="@color/light_grey"
+        android:src="@android:drawable/ic_delete"/>
+
+</RelativeLayout>

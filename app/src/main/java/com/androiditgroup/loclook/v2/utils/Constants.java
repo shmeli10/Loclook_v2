@@ -18,6 +18,8 @@ public class Constants {
 
     public static final String DB_CACHE_DIR = LocLookApp.getInstance().getBaseContext().getCacheDir().getPath() + File.separator + "dbcache" + File.separator;
 
+    public static final int QUIZ_MAX_ANSWERS = 10;
+
     public static class DataBase {
         public static final int DB_VERSION = 1;
         public static final String DATABASE_NAME = "cache_database";

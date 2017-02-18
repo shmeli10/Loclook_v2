@@ -3,6 +3,7 @@ package com.androiditgroup.loclook.v2.ui.general;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,6 +65,8 @@ public class MainActivity   extends     ParentActivity
     public static LockableSlidingPane mSlidingPaneLayout;
     public static SelectedFragment selectedFragment;
 
+    private LayoutInflater mInflater;
+
     public enum SelectedFragment {
         show_feed, send_publication
     }
@@ -79,6 +83,8 @@ public class MainActivity   extends     ParentActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         getFragmentManager().addOnBackStackChangedListener(this);
+
+        mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // initialize sliding panel layout
         mSlidingPaneLayout = (LockableSlidingPane) findViewById(R.id.MainActivity_SlidingPanel);
@@ -167,7 +173,8 @@ public class MainActivity   extends     ParentActivity
         public void onClick(View v) {
 
             selectedFragment = SelectedFragment.send_publication;
-            setFragment(PublicationFragment.newInstance(), false, true);
+            // setFragment(PublicationFragment.newInstance(), false, true);
+            setFragment(PublicationFragment.newInstance(mInflater), false, true);
         }
     };
 

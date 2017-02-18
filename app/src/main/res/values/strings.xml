@@ -39,5 +39,8 @@
     <string name="state_on_text">(вкл.)</string>
     <string name="state_off_text">(выкл.)</string>
 
+    <string name="answers_text">Ответы:</string>
+    <string name="answers_sum_text">Ответов: </string>
+    <string name="add_answer_text">Добавить вариант ответа</string>
 
 </resources>
