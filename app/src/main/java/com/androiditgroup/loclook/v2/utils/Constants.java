@@ -18,6 +18,7 @@ public class Constants {
 
     public static final String DB_CACHE_DIR = LocLookApp.getInstance().getBaseContext().getCacheDir().getPath() + File.separator + "dbcache" + File.separator;
 
+    public static final int QUIZ_MIN_ANSWERS = 2;
     public static final int QUIZ_MAX_ANSWERS = 10;
 
     public static class DataBase {
@@ -34,6 +35,9 @@ public class Constants {
         public static final String USER_DATA_TABLE = "USER_DATA_TABLE";
         public static final String USER_DATA_TABLE_COLUMNS = "NAME TEXT  NOT NULL, PHONE_NUMBER TEXT  NOT NULL, RATE INTEGER, BG_IMG_URL TEXT, AVATAR_URL TEXT, " +
                                                              "DESCRIPTION TEXT, SITE_URL TEXT, LATITUDE TEXT, LONGITUDE TEXT, RADIUS TEXT, REGION_NAME TEXT, STREET_NAME TEXT";
+
+        public static final String BADGE_DATA_TABLE = "BADGE_DATA_TABLE";
+        public static final String BADGE_DATA_TABLE_COLUMNS = "NAME TEXT  NOT NULL, IS_ENABLED INTEGER DEFAULT 1";
 
 //        public static final String USER_AUTH_DATA_TABLE = "USER_AUTH_DATA_TABLE";
 //        public static final String USER_AUTH_DATA_TABLE_COLUMNS = "USER_ID INTEGER NOT NULL, ENTER_DATE TEXT NOT NULL, ENTER_CODE INTEGER NOT NULL";

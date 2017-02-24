@@ -43,4 +43,31 @@
     <string name="answers_sum_text">Ответов: </string>
     <string name="add_answer_text">Добавить вариант ответа</string>
 
+    <string-array name="badges">
+        <item>LocLook</item>
+        <item>Интересные места</item>
+        <item>Одобрение</item>
+        <item>Осуждение</item>
+        <item>Важное</item>
+        <item>Вопрос</item>
+        <item>Спорт</item>
+        <item>Объявления</item>
+        <item>ДТП</item>
+        <item>Сплетни</item>
+        <item>Олень</item>
+        <item>Срочная новость</item>
+        <item>Митинг</item>
+        <item>Плохое обслуживание</item>
+        <item>Работа</item>
+        <item>Мероприятие</item>
+        <item>Спросить дорогу</item>
+        <item>Учеба</item>
+        <item>Игры</item>
+        <item>Новость</item>
+        <item>День рождения</item>
+        <item>ЧП</item>
+        <item>Тусовка</item>
+        <item>Отношения</item>
+    </string-array>
+
 </resources>

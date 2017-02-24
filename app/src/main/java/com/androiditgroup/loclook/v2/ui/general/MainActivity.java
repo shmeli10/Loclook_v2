@@ -152,6 +152,11 @@ public class MainActivity   extends     ParentActivity
         mProgressBar = (ProgressBar) findViewById(R.id.mainActivityProgressBar);
 
         setFragment(FeedFragment.newInstance(), false, false);
+
+        // формируем список бейджей
+        LocLookApp.setBadgesList();
+
+        // Log.e("ABC", "MainActivity: onCreate(): badgesSum = " + LocLookApp.badgesList.size());
     }
 
     private View.OnClickListener mMenuClickListener = new View.OnClickListener() {

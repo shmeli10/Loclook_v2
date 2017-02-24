@@ -3,12 +3,16 @@ package com.androiditgroup.loclook.v2;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Typeface;
+import android.util.Log;
 
+import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -33,6 +37,8 @@ public class LocLookApp extends Application {
     public static LocLookApp getInstance() {
         return instance;
     }
+
+    public static ArrayList<Badge> badgesList = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -99,5 +105,40 @@ public class LocLookApp extends Application {
         user = null;
         setLoginStatus(false);
         preferences.edit().clear().commit();
+    }
+
+    public static void setBadgesList() {
+        // Cursor badgesDataCursor = DBManager.getInstance().getDataBase().queryColumns(Constants.DataBase.BADGE_DATA_TABLE, null, null, null);
+        Cursor cursor = DBManager.getInstance().getDataBase().query(Constants.DataBase.BADGE_DATA_TABLE, null, null, null, null, null, null);
+
+        if(cursor != null) {
+            // Log.e("ABC", "LocLookApp: setBadgesList: badgesSum = " + cursor.getCount());
+
+            String[] cursorArr = cursor.getColumnNames();
+
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+
+                do {
+                    Badge badge = new Badge.Builder()
+                            .id(cursor.getString(cursor.getColumnIndex(cursorArr[0])))
+                            .name(cursor.getString(cursor.getColumnIndex(cursorArr[1])))
+                            .isEnabled(cursor.getInt(cursor.getColumnIndex(cursorArr[2])) == 1)
+                            .iconResId(getDrawableResId("badge_" +cursor.getString(cursor.getColumnIndex(cursorArr[0]))))
+                            .build();
+                    badgesList.add(badge);
+                } while (cursor.moveToNext());
+            }
+        }
+        else
+            Log.e("ABC", "LocLookApp: setBadgesList: badgesDataCursor is null");
+    }
+
+    public static int getDrawableResId(String resource) {
+        return context.getResources().getIdentifier("@drawable/" +resource, null, context.getPackageName());
+    }
+
+    public static int getDpFromPixels(int px) {
+        return (int) (context.getResources().getDisplayMetrics().density * px);
     }
 }

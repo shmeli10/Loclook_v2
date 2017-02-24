@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MM"
     android:gravity="center"
     android:background="@color/white">
 
-    <ScrollView style="@style/MM">
+    <ScrollView
+        android:id="@+id/Publication_ScrollView"
+        style="@style/MM"
+        android:layout_marginTop="45dp">
 
         <RelativeLayout
             style="@style/MW"
-            android:padding="10dp"
-            android:layout_marginTop="45dp">
+            android:padding="10dp">
 
             <EditText
                 android:id="@+id/Publication_PublicationTextET"
@@ -100,12 +101,6 @@
                 android:paddingBottom="15dp">
 
                 <TextView
-                    android:id="@+id/Publication_QuizTV"
-                    style="@style/WW"
-                    android:textColor="@color/deep_blue"
-                    android:textSize="16sp"
-                    android:text="@string/publication_quiz_text"/>
-                <TextView
                     android:id="@+id/Publication_QuizStateTV"
                     style="@style/WW"
                     android:layout_toRightOf="@+id/Publication_QuizTV"
@@ -118,6 +113,16 @@
                     style="@style/WW"
                     android:layout_alignParentRight="true"
                     android:checked="false"/>
+
+                <TextView
+                    android:id="@+id/Publication_QuizTV"
+                    style="@style/WW"
+                    android:textColor="@color/deep_blue"
+                    android:textSize="16sp"
+                    android:text="@string/publication_quiz_text"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
                 <!--<ToggleButton-->
                 <!--android:id="@+id/Publication_QuizSwitchBTN"-->
                 <!--style="@style/Publication_Switch_BTN"/>-->
@@ -173,35 +178,60 @@
                     android:textColor="@color/deep_blue"
                     android:textSize="16sp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/publication_badge_text"/>
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_toRightOf="@+id/Publication_BadgeTV"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginTop="14dp"
-                    android:tint="@color/deep_blue"
-                    android:src="@drawable/show_data"/>
-                <TextView
-                    android:id="@+id/Publication_BadgeNameTV"
-                    style="@style/WW"
-                    android:layout_toLeftOf="@+id/Publication_BadgeImageIV"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="16sp"
-                    android:text="@string/app_name"/>
+                    android:text="@string/publication_badge_text"/>
                 <ImageView
                     android:id="@+id/Publication_BadgeImageIV"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:paddingRight="3dp"
+                    android:layout_toRightOf="@+id/Publication_BadgeTV"
                     android:src="@drawable/badge_1"/>
+                <TextView
+                    android:id="@+id/Publication_BadgeNameTV"
+                    style="@style/WW"
+                    android:layout_toRightOf="@+id/Publication_BadgeImageIV"
+                    android:layout_centerInParent="true"
+                    android:paddingLeft="3dp"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    android:text="@string/app_name"/>
+                <ImageView
+                    android:id="@+id/Publication_ShowBadges"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:tint="@color/dark_grey"
+                    android:src="@drawable/show_data"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="12dp"/>
 
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/Publication_ChooseBadgeBlock"
+                style="@style/MW"
+                android:layout_below="@+id/Publication_BadgeBlock"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone">
+
+                <GridView
+                    android:id="@+id/Publication_ChooseBadgeBlockGV"
+                    style="@style/MW"
+                    android:columnWidth="40dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="2dp"/>
+
+            </RelativeLayout>
+            <View
+                android:id="@+id/Publication_BadgeBlockBottomLine"
+                style="@style/HLine_Grey"
+                android:layout_below="@+id/Publication_ChooseBadgeBlock"/>
 
         </RelativeLayout>
+
 
     </ScrollView>
 

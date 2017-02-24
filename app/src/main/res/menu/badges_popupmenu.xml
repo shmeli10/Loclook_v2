@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <group android:id="@+id/BadgesMenu_Group">
+        <item
+            android:id="@+id/BadgesMenu_Badge1"
+            android:icon="@drawable/badge_1"
+            android:title="@string/app_name"
+            android:checked="true"/>
+        <item
+            android:id="@+id/BadgesMenu_Badge2"
+            android:icon="@drawable/badge_2"
+            android:title="Интересные места"/>
+        <item
+            android:id="@+id/BadgesMenu_Badge3"
+            android:icon="@drawable/badge_3"
+            android:title="Одобрение"/>
+    </group>
+
+</menu>

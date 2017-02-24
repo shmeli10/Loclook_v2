@@ -8,8 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
+import com.androiditgroup.loclook.v2.R;
 
 import java.util.Arrays;
+
+import static com.androiditgroup.loclook.v2.LocLookApp.context;
 
 /**
  * Created by sostrovschi on 1/16/17.
@@ -30,10 +33,13 @@ public class DBManager {
                     Log.e("ABC", "DBManager: onCreate()");
 
                     createTable(sqLiteDatabase, Constants.DataBase.USER_DATA_TABLE, Constants.DataBase.USER_DATA_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.BADGE_DATA_TABLE, Constants.DataBase.BADGE_DATA_TABLE_COLUMNS);
                     // createTable(sqLiteDatabase, Constants.DataBase.USER_AUTH_DATA_TABLE, Constants.DataBase.USER_AUTH_DATA_TABLE_COLUMNS);
 
+                    populateTables(sqLiteDatabase);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.e("ABC", "DBManager: onCreate(): error: " +e.toString());
                 }
             }
 
@@ -83,7 +89,6 @@ public class DBManager {
         return mOpenHelper.getWritableDatabase();
     }
 
-
     /**
      * Записывает данные в таблицу
      *
@@ -91,46 +96,46 @@ public class DBManager {
      * @param values  Данные для добавления
      * @param columns В какие столбцы добавить данные (должны быть в том порядке что и values)
      */
-    public void insertInTable(String table, String[] values, String[] columns) {
-        StringBuilder valueBuilder = new StringBuilder();
-        for (int i = 0; i < values.length; i++) {
-            if (values.length == 1) {
-                valueBuilder.append(values[i]);
-            } else if (i == 0) {
-                valueBuilder.append("");
-                valueBuilder.append(values[i]);
-                valueBuilder.append("'");
-            } else if (i == values.length - 1) {
-                valueBuilder.append(", '");
-                valueBuilder.append(values[i]);
-            } else {
-                valueBuilder.append(", '");
-                valueBuilder.append(values[i]);
-                valueBuilder.append("'");
-            }
-        }
-        String strValues = valueBuilder.toString();
-
-        StringBuilder columnBuilder = new StringBuilder();
-        for (int i = 0; i < columns.length; i++) {
-            if (i == 0) {
-                columnBuilder.append("");
-                columnBuilder.append(columns[i]);
-            } else {
-                columnBuilder.append(", ");
-                columnBuilder.append(columns[i]);
-            }
-        }
-        String strColumns = columnBuilder.toString();
-
-        String insert = "INSERT OR REPLACE INTO " + table + " (" + strColumns + ") VALUES ('" + strValues + "');";
-        ////Log.e(TAG, insert);
-        try {
-            getDataBase().execSQL(insert);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public void insertInTable(String table, String[] values, String[] columns) {
+//        StringBuilder valueBuilder = new StringBuilder();
+//        for (int i = 0; i < values.length; i++) {
+//            if (values.length == 1) {
+//                valueBuilder.append(values[i]);
+//            } else if (i == 0) {
+//                valueBuilder.append("");
+//                valueBuilder.append(values[i]);
+//                valueBuilder.append("'");
+//            } else if (i == values.length - 1) {
+//                valueBuilder.append(", '");
+//                valueBuilder.append(values[i]);
+//            } else {
+//                valueBuilder.append(", '");
+//                valueBuilder.append(values[i]);
+//                valueBuilder.append("'");
+//            }
+//        }
+//        String strValues = valueBuilder.toString();
+//
+//        StringBuilder columnBuilder = new StringBuilder();
+//        for (int i = 0; i < columns.length; i++) {
+//            if (i == 0) {
+//                columnBuilder.append("");
+//                columnBuilder.append(columns[i]);
+//            } else {
+//                columnBuilder.append(", ");
+//                columnBuilder.append(columns[i]);
+//            }
+//        }
+//        String strColumns = columnBuilder.toString();
+//
+//        String insert = "INSERT OR REPLACE INTO " + table + " (" + strColumns + ") VALUES ('" + strValues + "');";
+//        ////Log.e(TAG, insert);
+//        try {
+//            getDataBase().execSQL(insert);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     /**
@@ -167,14 +172,15 @@ public class DBManager {
      * @return Возвращаем идентификатор пользователя
      */
     public Cursor createUser(String userName, String phoneNumber) {
-        Log.e("ABC", "DBManager: createUser()");
+        // Log.e("ABC", "DBManager: createUser()");
 
         String[] columnsArr = {"NAME", "PHONE_NUMBER", "RATE"};
         String[] dataArr    = {userName, phoneNumber, "0"};
 
-        int userId = addRow(Constants.DataBase.USER_DATA_TABLE, columnsArr, dataArr);
+        // int userId = insertData(Constants.DataBase.USER_DATA_TABLE, columnsArr, dataArr);
+        int userId = insertData(getDataBase(), Constants.DataBase.USER_DATA_TABLE, columnsArr, dataArr);
 
-        Log.e("ABC", "DBManager: createUser(): userId= " +userId);
+        // Log.e("ABC", "DBManager: createUser(): userId= " +userId);
 
         // если идентификатор созданного пользователя получен
         if(userId > 0)
@@ -184,7 +190,26 @@ public class DBManager {
         return null;
     }
 
-    public int addRow(String tableName, String[] columnsArr, String[] dataArr) {
+    private void populateTables(SQLiteDatabase db) {
+        Log.e("ABC", "DBManager: populateTables()");
+
+        String[] badgesArr = context.getResources().getStringArray(R.array.badges);
+        // String[] columnsArr = {"NAME", "IS_ENABLED"};
+        String[] columnsArr = {"NAME"};
+
+        // Log.e("ABC", "DBManager: populateTables(): badgesArr length = " +badgesArr.length);
+
+        for(int i=0; i<badgesArr.length; i++)
+            // insertData(db, Constants.DataBase.BADGE_DATA_TABLE, columnsArr, new String[] {badgesArr[i], "0"});
+            insertData(db, Constants.DataBase.BADGE_DATA_TABLE, columnsArr, new String[] {badgesArr[i]});
+
+        showAllTableData(db, Constants.DataBase.BADGE_DATA_TABLE);
+    }
+
+    // public int addRow(String tableName, String[] columnsArr, String[] dataArr) {
+    public int insertData(SQLiteDatabase db, String tableName, String[] columnsArr, String[] dataArr) {
+        Log.e("ABC", "DBManager: insertData(): badge name= " +dataArr[0]);
+
         ContentValues cv = new ContentValues();
         long rowID;
 
@@ -192,10 +217,45 @@ public class DBManager {
             cv.put(columnsArr[i], dataArr[i]);
 
         // вставляем запись и получаем ее ID
-        rowID = getDataBase().insert(tableName, null, cv);
-        // Log.d(LOG_TAG, "row inserted, ID = " + rowID + " in table " +tableName);
+        rowID = db.insert(tableName, null, cv);
+        Log.e("ABC", "badge(" +dataArr[0]+ ")row inserted, ID = " + rowID + " in table " +tableName);
 
         return (int) rowID;
+    }
+
+    public void showAllTableData(SQLiteDatabase db,String table) {
+        Cursor cursor = db.query(table, null, null, null, null, null, null);
+
+        String[] cursorArr = cursor.getColumnNames();
+
+         if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            Log.e("ABC", "----- Table: " + table + " -----");
+
+            StringBuilder sb1 = new StringBuilder();
+
+            for(int i=0; i<cursorArr.length; i++) {
+                sb1.append("" + cursorArr[i] + " \t\t");
+            }
+
+            Log.e("ABC", sb1.toString());
+
+            do {
+                StringBuilder sb2 = new StringBuilder();
+
+                for(int i=0; i<cursorArr.length; i++) {
+                    sb2.append("" +cursor.getString(cursor.getColumnIndex(cursorArr[i])) + "\t\t");
+                }
+
+                Log.e("ABC", sb2.toString());
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        Log.e("ABC", "--------------------------------------------------");
     }
 
     /**
