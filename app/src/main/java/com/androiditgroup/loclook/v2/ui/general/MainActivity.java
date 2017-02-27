@@ -6,9 +6,10 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -16,8 +17,10 @@ import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,6 +42,7 @@ import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.CustomTypefaceSpan;
 import com.androiditgroup.loclook.v2.utils.DBManager;
+import com.androiditgroup.loclook.v2.utils.DefineUserLocationName;
 import com.androiditgroup.loclook.v2.utils.LockableSlidingPane;
 import com.androiditgroup.loclook.v2.utils.ParentActivity;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
@@ -54,16 +58,23 @@ public class MainActivity   extends     ParentActivity
 
     private TextView mToolbarTitle;
     private ImageButton mNavigationBtn;
-    private LinearLayout mToolbarBtnContainer;
-    private FrameLayout mPublicationBtn;
-    private FrameLayout mCameraBtn;
-    private FrameLayout mSendBtn;
-    private ProgressBar mProgressBar;
+//    private LinearLayout mToolbarBtnContainer;
+//    private FrameLayout mPublicationBtn;
+//    private FrameLayout mCameraBtn;
+//    private FrameLayout mSendBtn;
+//    private ProgressBar mProgressBar;
 
-    private static NavigationView navigationView;
+//    private LocationManager locationManager;
 
-    public static LockableSlidingPane mSlidingPaneLayout;
-    public static SelectedFragment selectedFragment;
+    private DefineUserLocationName mLocationDefiner;
+
+    private static NavigationView       mNavigationView;
+    public static CircularImageView     mNavigationUserAvatar;
+    public static TextView              mNavigationUserName;
+    public static TextView              mNavigationUserLocationName;
+
+    public static LockableSlidingPane   mSlidingPaneLayout;
+    public static SelectedFragment      selectedFragment;
 
     private LayoutInflater mInflater;
 
@@ -103,22 +114,13 @@ public class MainActivity   extends     ParentActivity
         assert mNavigationBtn != null;
         mNavigationBtn.setOnClickListener(mMenuClickListener);
 
-        mPublicationBtn = (FrameLayout) findViewById(R.id.MainActivity_PublicationButton);
-        assert mPublicationBtn != null;
-        mPublicationBtn.setVisibility(View.VISIBLE);
-        mPublicationBtn.setOnClickListener(mPublicationClickListener);
+        mLocationDefiner = new DefineUserLocationName((LocationManager) getSystemService(LOCATION_SERVICE));
+//        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.LOCATION_REQUEST_INTERVAL, 10, locationListener);
 
-        mCameraBtn = (FrameLayout) findViewById(R.id.MainActivity_CameraButton);
-        assert mCameraBtn != null;
-        mCameraBtn.setOnClickListener(mCameraBtnClickListener);
-
-        mSendBtn = (FrameLayout) findViewById(R.id.MainActivity_SendButton);
-        assert mSendBtn != null;
-        mSendBtn.setOnClickListener(mSendBtnClickListener);
-
-        navigationView = (NavigationView) findViewById(R.id.MainActivity_NavigationView);
-        navigationView.setNavigationItemSelectedListener(this);
-        Menu menu = navigationView.getMenu();
+        mNavigationView = (NavigationView) findViewById(R.id.MainActivity_NavigationView);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        Menu menu = mNavigationView.getMenu();
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
             applyTypeFaceToMenu(item);
@@ -138,7 +140,7 @@ public class MainActivity   extends     ParentActivity
 
             if (phoneNumber != null) {
 
-                Cursor data = DBManager.getInstance().queryColumns(Constants.DataBase.USER_DATA_TABLE, null, "PHONE_NUMBER", phoneNumber);
+                Cursor data = DBManager.getInstance().queryColumns(Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
 
                 // если данные получены
                 if (data.getCount() > 0) {
@@ -149,7 +151,7 @@ public class MainActivity   extends     ParentActivity
             }
         }
 
-        mProgressBar = (ProgressBar) findViewById(R.id.mainActivityProgressBar);
+//        mProgressBar = (ProgressBar) findViewById(R.id.mainActivityProgressBar);
 
         setFragment(FeedFragment.newInstance(), false, false);
 
@@ -157,6 +159,25 @@ public class MainActivity   extends     ParentActivity
         LocLookApp.setBadgesList();
 
         // Log.e("ABC", "MainActivity: onCreate(): badgesSum = " + LocLookApp.badgesList.size());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // добавить публикацию
+            case R.id.action_write_publication:
+                selectedFragment = SelectedFragment.send_publication;
+                setFragment(PublicationFragment.newInstance(mInflater), false, true);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private View.OnClickListener mMenuClickListener = new View.OnClickListener() {
@@ -170,32 +191,6 @@ public class MainActivity   extends     ParentActivity
         @Override
         public void onClick(View v) {
             onBackPressed();
-        }
-    };
-
-    private View.OnClickListener mPublicationClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            selectedFragment = SelectedFragment.send_publication;
-            // setFragment(PublicationFragment.newInstance(), false, true);
-            setFragment(PublicationFragment.newInstance(mInflater), false, true);
-        }
-    };
-
-    private View.OnClickListener mCameraBtnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            // setFragment(PublicationFragment.newInstance(), false, true);
-        }
-    };
-
-    private View.OnClickListener mSendBtnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            // setFragment(PublicationFragment.newInstance(), false, true);
         }
     };
 
@@ -242,7 +237,7 @@ public class MainActivity   extends     ParentActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {
         clearBackStack();
         switch (item.getItemId()) {
             case R.id.nav_feed:
@@ -284,17 +279,21 @@ public class MainActivity   extends     ParentActivity
 
     // public void setUserData(final User user) {
     public void setUserDataOnNavView() {
-        View navHeaderView = navigationView.getHeaderView(0);
-        final TextView userName = (TextView) navHeaderView.findViewById(R.id.navHeaderUserName);
-        userName.setTypeface(LocLookApp.light);
+        View navHeaderView = mNavigationView.getHeaderView(0);
+        // final TextView userName = (TextView) navHeaderView.findViewById(R.id.navHeaderUserName);
 
-        // final CircularImageView userImage = (CircularImageView) navHeaderView.findViewById(R.id.navHeaderUserImage);
+        mNavigationUserAvatar       = (CircularImageView) navHeaderView.findViewById(R.id.navHeaderUserAvatar);
+        mNavigationUserName         = (TextView) navHeaderView.findViewById(R.id.navHeaderUserName);
+        mNavigationUserName.setTypeface(LocLookApp.light);
+
+        mNavigationUserLocationName = (TextView) navHeaderView.findViewById(R.id.navHeaderUserLocation);
+        mNavigationUserLocationName.setTypeface(LocLookApp.light);
 
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if(LocLookApp.user != null) {
-                    userName.setText(LocLookApp.user.getName());
+                    mNavigationUserName.setText(LocLookApp.user.getName());
 //                    if (LocLookApp.user.getImage() != null) {
 //                        userImage.setImageBitmap(user.getImage());
 //                    } else {
@@ -319,16 +318,10 @@ public class MainActivity   extends     ParentActivity
             mSlidingPaneLayout.closePane();
         }
         else if (getFragmentManager().getBackStackEntryCount() > 0) {
-            if (selectedFragment == SelectedFragment.send_publication) {
-                mCameraBtn.setVisibility(View.GONE);
-                mSendBtn.setVisibility(View.GONE);
-            }
-
             getFragmentManager().popBackStack();
             if (getFragmentManager().getBackStackEntryCount() == 1) {
                 mNavigationBtn.setOnClickListener(mMenuClickListener);
                 mNavigationBtn.setImageResource(R.drawable.menu_icon);
-                mPublicationBtn.setVisibility(View.VISIBLE);
             }
         } else {
             super.onBackPressed();
@@ -340,26 +333,36 @@ public class MainActivity   extends     ParentActivity
         // Log.e("ABC", "MainActivity: onBackStackChanged()");
         FragmentManager fragmentManager = getFragmentManager();
         int backStackSize = fragmentManager.getBackStackEntryCount();
-        // if we don't have fragments in back stack just return
         if (backStackSize == 0) {
             setToolbarTitle(LocLookApp.getInstance().getResources().getString(R.string.feed_text));
             selectedFragment = SelectedFragment.show_feed;
             return;
         }
 
-        // get index of the last fragment to be able to get it's tag
-        // int currentStackIndex = fragmentManager.getBackStackEntryCount() - 1;
-        // otherwise get the framgent from backstack and cast it to ParentFragment so we could get it's title
         ParentFragment fragment = (ParentFragment) fragmentManager.findFragmentByTag(fragmentManager.getBackStackEntryAt(backStackSize - 1).getName());
-        // finaly set the title in the toolbar
         setToolbarTitle(fragment.getFragmentTitle());
 
         if (selectedFragment == SelectedFragment.send_publication) {
             mNavigationBtn.setOnClickListener(mBackClickListener);
             mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);
-            mPublicationBtn.setVisibility(View.GONE);
-            mCameraBtn.setVisibility(View.VISIBLE);
-            mSendBtn.setVisibility(View.VISIBLE);
         }
     }
+
+//    private LocationListener locationListener = new LocationListener() {
+//        @Override
+//        public void onLocationChanged(Location location) {
+//            LocLookApp.setLocation(location);
+//        }
+//
+//        @Override
+//        public void onStatusChanged(String provider, int status, Bundle extras) { }
+//
+//        @Override
+//        public void onProviderEnabled(String provider) {
+//            LocLookApp.setLocation(locationManager.getLastKnownLocation(provider));
+//        }
+//
+//        @Override
+//        public void onProviderDisabled(String provider) { }
+//    };
 }

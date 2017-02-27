@@ -70,4 +70,8 @@
         <item>Отношения</item>
     </string-array>
 
+    <string name="empty_publication_text">Публикация не содержит текста</string>
+    <string name="need_more_answers_text">В опросе должно быть не менее 2 ответов</string>
+    <string name="publication_send_error_text">Отправить публикацию не удалось</string>
+
 </resources>

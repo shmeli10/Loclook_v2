@@ -1,5 +1,8 @@
 package com.androiditgroup.loclook.v2.models;
 
+import android.location.Location;
+import android.text.TextUtils;
+
 /**
  * Created by sostrovschi on 09.01.2017.
  */
@@ -19,15 +22,37 @@ public class User {
     private String mRadius;
     private String mRegionName;
     private String mStreetName;
+    private Location mLocation;
 
     private User() { }
 
-    public String getUserId() {
+    public String getId() {
         return mUserId;
     }
 
     public String getName() {
         return mName;
+    }
+
+    public Location getLocation(){ return mLocation; }
+
+    public String getRegionName(){ return mRegionName; }
+
+    public String getStreetName(){ return mStreetName; }
+
+    public void setLocation(Location value) {
+        if(value != null)
+            mLocation = value;
+    }
+
+    public void setRegionName(String value) {
+        if(!TextUtils.isEmpty(value))
+            mRegionName = value;
+    }
+
+    public void setStreetName(String value) {
+        if(!TextUtils.isEmpty(value))
+            mStreetName = value;
     }
 
     public static class Builder {

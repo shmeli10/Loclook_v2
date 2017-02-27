@@ -1,10 +1,17 @@
 package com.androiditgroup.loclook.v2.ui.publication;
 
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,11 +29,15 @@ import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.adapters.BadgesAdapter;
 import com.androiditgroup.loclook.v2.adapters.QuizAnswersAdapter;
 import com.androiditgroup.loclook.v2.models.Badge;
+import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.utils.Constants;
+import com.androiditgroup.loclook.v2.utils.DBManager;
+import com.androiditgroup.loclook.v2.utils.ExpandableHeightGridView;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sostrovschi on 1/25/17.
@@ -40,6 +51,10 @@ public class PublicationFragment extends    ParentFragment
 
     private static LayoutInflater mInflater;
 
+    private RelativeLayout mPublicationContainer;
+    private RelativeLayout mBadgeBlock;
+    private RelativeLayout mQuizAnswersBlock;
+
     private ScrollView mScroll;
     private EditText mPublicationText;
     private TextView mLeftCharactersBody;
@@ -51,30 +66,27 @@ public class PublicationFragment extends    ParentFragment
     private Switch mAnonymousSwitch;
     private Switch mQuizSwitch;
 
-    private RelativeLayout mQuizAnswersBlock;
-
-    private ArrayList<String> answersList = new ArrayList<>();
-    private QuizAnswersAdapter mAdapter;
-    private ExpandableHeightListView mQuizAnswersList;
-
-    private RelativeLayout mBadgeBlock;
+    private ArrayList<String> mAnswersList = new ArrayList<>();
 
     private ImageView mShowBadgesBlock;
     private ImageView mSelectedBadgeIV;
+    private ExpandableHeightListView mQuizAnswersList;
+    private ExpandableHeightGridView mChooseBadgeBlockGV;
 
-    private RelativeLayout mChooseBadgeBlock;
-    private GridView mChooseBadgeBlockGV;
+    private QuizAnswersAdapter mQuizAnswersAdapter;
     private BadgesAdapter mBadgesAdapter;
 
-    final int anonymousSwitchResId  = R.id.Publication_AnonymousSwitchBTN;
-    final int quizSwitchResId       = R.id.Publication_QuizSwitchBTN;
-    final int badgeBlockResId       = R.id.Publication_BadgeBlock;
-    final int addAnswerResId        = R.id.Publication_QuizAnswersBlockAddAnswer;
+    private final int anonymousSwitchResId  = R.id.Publication_AnonymousSwitchBTN;
+    private final int quizSwitchResId       = R.id.Publication_QuizSwitchBTN;
+    private final int badgeBlockResId       = R.id.Publication_BadgeBlock;
+    private final int addAnswerResId        = R.id.Publication_QuizAnswersBlockAddAnswer;
 
     private int mPublicationTextLimit;
 
     private boolean isAvailableToDelete;
     private boolean isBadgesBlockHidden;
+
+    private Badge selectedBadge;
 
     public PublicationFragment() {
         // Required empty public constructor
@@ -92,9 +104,14 @@ public class PublicationFragment extends    ParentFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_publication, container, false);
 
+        mPublicationContainer   = (RelativeLayout) view.findViewById(R.id.Publication_Container);
+        mQuizAnswersBlock       = (RelativeLayout) view.findViewById(R.id.Publication_QuizAnswersBlock);
+        mBadgeBlock             = (RelativeLayout) view.findViewById(badgeBlockResId);
+
         mScroll = (ScrollView) view.findViewById(R.id.Publication_ScrollView);
 
         mPublicationTextLimit = getActivity().getResources().getInteger(R.integer.publication_length);
+        selectedBadge = LocLookApp.badgesList.get(0);
 
         mPublicationText = (EditText) view.findViewById(R.id.Publication_PublicationTextET);
         mPublicationText.addTextChangedListener(this);
@@ -111,52 +128,48 @@ public class PublicationFragment extends    ParentFragment
         mQuizSwitch = (Switch) view.findViewById(R.id.Publication_QuizSwitchBTN);
         mQuizSwitch.setOnCheckedChangeListener(this);
 
-        mQuizAnswersBlock = (RelativeLayout) view.findViewById(R.id.Publication_QuizAnswersBlock);
-
         mAddAnswerTV = (TextView) view.findViewById(addAnswerResId);
         mAddAnswerTV.setOnClickListener(this);
 
         for(int i=0; i<Constants.QUIZ_MIN_ANSWERS; i++)
-            answersList.add(null);
+            mAnswersList.add(null);
 
-        mAdapter = new QuizAnswersAdapter(mInflater, answersList, this);
+        mQuizAnswersAdapter = new QuizAnswersAdapter(mInflater, mAnswersList, this);
         mQuizAnswersList = (ExpandableHeightListView) view.findViewById(R.id.Publication_QuizAnswersList);
         mQuizAnswersList.setExpanded(true);
-        mQuizAnswersList.setAdapter(mAdapter);
+        mQuizAnswersList.setAdapter(mQuizAnswersAdapter);
 
         isAvailableToDelete = true;
         isBadgesBlockHidden = true;
 
-        mSelectedBadgeIV = (ImageView) view.findViewById(R.id.Publication_BadgeImageIV);
-        mShowBadgesBlock = (ImageView) view.findViewById(R.id.Publication_ShowBadges);
-
-        mSelectedBadgeTV = (TextView) view.findViewById(R.id.Publication_BadgeNameTV);
-
-        mChooseBadgeBlock = (RelativeLayout) view.findViewById(R.id.Publication_ChooseBadgeBlock);
-        mChooseBadgeBlockGV = (GridView) view.findViewById(R.id.Publication_ChooseBadgeBlockGV);
+        mSelectedBadgeIV    = (ImageView) view.findViewById(R.id.Publication_BadgeImageIV);
+        mShowBadgesBlock    = (ImageView) view.findViewById(R.id.Publication_ShowBadges);
+        mSelectedBadgeTV    = (TextView) view.findViewById(R.id.Publication_BadgeNameTV);
+        mChooseBadgeBlockGV = (ExpandableHeightGridView) view.findViewById(R.id.Publication_ChooseBadgeBlockGV);
 
         mBadgesAdapter = new BadgesAdapter(mInflater);
         mChooseBadgeBlockGV.setAdapter(mBadgesAdapter);
         mChooseBadgeBlockGV.setOnItemClickListener(onBadgeClickListener);
 
-        mBadgeBlock = (RelativeLayout) view.findViewById(badgeBlockResId);
-        // mBadgeBlock.setOnClickListener(this);
         mBadgeBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(isBadgesBlockHidden) {
                     mShowBadgesBlock.setImageResource(R.drawable.hide_data);
-                    mChooseBadgeBlock.setVisibility(View.VISIBLE);
+                    mChooseBadgeBlockGV.setVisibility(View.VISIBLE);
                     isBadgesBlockHidden = false;
+                    autoScrollDown();
                 }
                 else {
                     mShowBadgesBlock.setImageResource(R.drawable.show_data);
-                    mChooseBadgeBlock.setVisibility(View.GONE);
+                    mChooseBadgeBlockGV.setVisibility(View.GONE);
                     isBadgesBlockHidden = true;
                 }
             }
         });
+
+        setHasOptionsMenu(true);
 
         return view;
     }
@@ -164,6 +177,29 @@ public class PublicationFragment extends    ParentFragment
     @Override
     public String getFragmentTitle() {
         return LocLookApp.getInstance().getString(R.string.publication_text);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.publication_menu, menu);
+        menu.getItem(0).setVisible(false);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // добавить фото
+            case R.id.action_add_photo:
+
+                return true;
+            // отправить публикацию
+            case R.id.action_send:
+                sendPublication();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -192,6 +228,7 @@ public class PublicationFragment extends    ParentFragment
                 if(checked){
                     mQuizStateTV.setText(R.string.state_on_text);
                     mQuizAnswersBlock.setVisibility(View.VISIBLE);
+                    autoScrollDown();
                 }
                 else {
                     mQuizStateTV.setText(R.string.state_off_text);
@@ -208,21 +245,16 @@ public class PublicationFragment extends    ParentFragment
         switch (view.getId()) {
             // щелчок по "кнопке Добавить вариант ответа"
             case addAnswerResId:
-                if(answersList.size() < Constants.QUIZ_MAX_ANSWERS) {
+                if(mAnswersList.size() < Constants.QUIZ_MAX_ANSWERS) {
                     // добавляем поле с возможностью удаления
-                    answersList.add(null);
+                    mAnswersList.add(null);
 
-                    if (answersList.size() == Constants.QUIZ_MAX_ANSWERS) {
+                    if (mAnswersList.size() == Constants.QUIZ_MAX_ANSWERS) {
                         mAddAnswerTV.setBackgroundResource(R.color.light_grey);
                         mAddAnswerTV.setClickable(false);
                     }
-                    mAdapter.notifyDataSetChanged();
-                    mScroll.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mScroll.smoothScrollTo(0, mScroll.getHeight());
-                        }
-                    });
+                    mQuizAnswersAdapter.notifyDataSetChanged();
+                    autoScrollDown();
                 }
 
                 break;
@@ -233,13 +265,13 @@ public class PublicationFragment extends    ParentFragment
     public void onDelete(int quizAnswerId) {
         if(isAvailableToDelete) {
             // удаляем поле с вариантом ответа
-            answersList.remove(quizAnswerId);
+            mAnswersList.remove(quizAnswerId);
 
-            if (answersList.size() < Constants.QUIZ_MAX_ANSWERS) {
+            if (mAnswersList.size() < Constants.QUIZ_MAX_ANSWERS) {
                 mAddAnswerTV.setBackgroundResource(R.color.colorPrimaryDark);
                 mAddAnswerTV.setClickable(true);
             }
-            mAdapter.notifyDataSetChanged();
+            mQuizAnswersAdapter.notifyDataSetChanged();
 
             isAvailableToDelete = false;
 
@@ -257,7 +289,8 @@ public class PublicationFragment extends    ParentFragment
 
         @Override
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            Badge selectedBadge = LocLookApp.badgesList.get(position);
+            // Badge selectedBadge = LocLookApp.badgesList.get(position);
+            selectedBadge = LocLookApp.badgesList.get(position);
 
             if(selectedBadge != null) {
                 mSelectedBadgeIV.setImageResource(selectedBadge.getIconResId());
@@ -265,4 +298,64 @@ public class PublicationFragment extends    ParentFragment
             }
         }
     };
+
+    private void autoScrollDown() {
+        mScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                mScroll.smoothScrollTo(0, mScroll.getHeight());
+            }
+        });
+    }
+
+    private void sendPublication() {
+        Log.e("ABC", "PublicationFragment: sendPublication()");
+
+        // если публикация без текста
+        if (TextUtils.isEmpty(mPublicationText.getText())) {
+            LocLookApp.showSimpleSnakeBar(mPublicationContainer, "empty_publication_text");
+            return;
+        }
+
+        ArrayList<String> realQuizAnswersList = new ArrayList<>();
+
+        // если надо включить опрос в публикацию
+        if(mQuizSwitch.isChecked()) {
+            // List<Integer> notEmptyQuizAnswerIdsList = new ArrayList<>();
+            for(int i=0; i<mAnswersList.size(); i++) {
+//                if((mAnswersList.get(i) == null) || (mAnswersList.get(i).equals("")))
+//                    mAnswersList.remove(i);
+                if(!TextUtils.isEmpty(mAnswersList.get(i)))
+                    // notEmptyQuizAnswerIdsList.add(i);
+                    realQuizAnswersList.add(mAnswersList.get(i));
+            }
+
+            // if(notEmptyQuizAnswerIdsList.size() >= Constants.QUIZ_MIN_ANSWERS) {
+            if(realQuizAnswersList.size() < Constants.QUIZ_MIN_ANSWERS) {
+                LocLookApp.showSimpleSnakeBar(mPublicationContainer, "need_more_answers_text");
+                return;
+            }
+        }
+
+        ArrayList<Bitmap> imagesList = new ArrayList<>();
+
+        Publication publication = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, imagesList, mAnonymousSwitch.isSelected());
+
+        if(publication != null) {
+            Log.e("ABC", "PublicationFragment: sendPublication(): publication is saved");
+        }
+        else {
+            LocLookApp.showSimpleSnakeBar(mPublicationContainer, "publication_send_error_text");
+        }
+//        // если запись публикации в БД совершена
+//        if(sendPublication()) {
+//
+//            // отключаем кликабельность "кнопки отправки публикации"
+//            sendPublicationLL.setClickable(false);
+//
+//            // переходим на Ленту
+//            Intent intent = new Intent(Publication_Activity.this, Tape_Activity.class);
+//            startActivity(intent);
+//        }
+    }
 }

@@ -63,6 +63,8 @@ public abstract class ParentActivity extends AppCompatActivity {
         String regionName   = data.getString(data.getColumnIndex("REGION_NAME"));
         String streetName   = data.getString(data.getColumnIndex("STREET_NAME"));
 
+        data.close();
+
         if((userId != null) && (!userId.equals("")))
             mUserBuilder.userId(userId);
         else

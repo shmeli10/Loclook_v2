@@ -21,6 +21,8 @@ public class Constants {
     public static final int QUIZ_MIN_ANSWERS = 2;
     public static final int QUIZ_MAX_ANSWERS = 10;
 
+    public static final int LOCATION_REQUEST_INTERVAL = 1000 * 60;
+
     public static class DataBase {
         public static final int DB_VERSION = 1;
         public static final String DATABASE_NAME = "cache_database";
@@ -32,17 +34,27 @@ public class Constants {
 //        public static final String PHONE = "phone";
 //        public static final String IMG_URL = "img_url";
 
-        public static final String USER_DATA_TABLE = "USER_DATA_TABLE";
-        public static final String USER_DATA_TABLE_COLUMNS = "NAME TEXT  NOT NULL, PHONE_NUMBER TEXT  NOT NULL, RATE INTEGER, BG_IMG_URL TEXT, AVATAR_URL TEXT, " +
-                                                             "DESCRIPTION TEXT, SITE_URL TEXT, LATITUDE TEXT, LONGITUDE TEXT, RADIUS TEXT, REGION_NAME TEXT, STREET_NAME TEXT";
+        public static final String USER_TABLE = "USER_DATA";
+        public static final String USER_TABLE_COLUMNS = "NAME TEXT  NOT NULL, PHONE_NUMBER TEXT  NOT NULL, RATE INTEGER, BG_IMG_URL TEXT, AVATAR_URL TEXT, " +
+                                                            "DESCRIPTION TEXT, SITE_URL TEXT, LATITUDE TEXT, LONGITUDE TEXT, RADIUS TEXT, REGION_NAME TEXT, " +
+                                                            "STREET_NAME TEXT";
 
-        public static final String BADGE_DATA_TABLE = "BADGE_DATA_TABLE";
-        public static final String BADGE_DATA_TABLE_COLUMNS = "NAME TEXT  NOT NULL, IS_ENABLED INTEGER DEFAULT 1";
+        public static final String BADGE_TABLE = "BADGE_DATA";
+        public static final String BADGE_TABLE_COLUMNS = "NAME TEXT  NOT NULL, IS_ENABLED INTEGER DEFAULT 1";
 
-//        public static final String USER_AUTH_DATA_TABLE = "USER_AUTH_DATA_TABLE";
-//        public static final String USER_AUTH_DATA_TABLE_COLUMNS = "USER_ID INTEGER NOT NULL, ENTER_DATE TEXT NOT NULL, ENTER_CODE INTEGER NOT NULL";
+        public static final String PUBLICATION_TABLE = "PUBLICATION_DATA";
+        public static final String PUBLICATION_TABLE_COLUMNS = "TEXT TEXT NOT NULL, AUTHOR_ID INTEGER NOT NULL, BADGE_ID INTEGER NOT NULL, CREATED_AT TEXT NOT NULL, " +
+                                                                "LATITUDE TEXT, LONGITUDE TEXT, REGION_NAME TEXT, STREET_NAME TEXT, HAS_QUIZ INTEGER DEFAULT 0, " +
+                                                                "HAS_IMAGES INTEGER DEFAULT 0, IS_ANONYMOUS INTEGER DEFAULT 0";
 
+        public static final String QUIZ_ANSWER_TABLE = "QUIZ_ANSWER_DATA";
+        public static final String QUIZ_ANSWER_TABLE_COLUMNS = "TEXT TEXT NOT NULL, PUBLICATION_ID INTEGER NOT NULL";
 
+        public static final String IMAGES_TABLE = "IMAGES_DATA";
+        public static final String IMAGES_TABLE_COLUMNS = "IMAGE BLOB NOT NULL, PUBLICATION_ID INTEGER NOT NULL";
+
+        public static final String USER_QUIZ_ANSWER_TABLE = "USER_QUIZ_ANSWER_DATA";
+        public static final String USER_QUIZ_ANSWER_TABLE_COLUMNS = "QUIZ_ANSWER_ID INTEGER NOT NULL, USER_ID INTEGER NOT NULL";
 
 //        public static final String CREATE_USER_DATA_TABLE = "CREATE TABLE IF NOT EXISTS " +  USER_DATA_TABLE +
 //                                                            " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

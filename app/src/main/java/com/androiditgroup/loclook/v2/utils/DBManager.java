@@ -4,12 +4,19 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.location.Location;
 import android.util.Log;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
+import com.androiditgroup.loclook.v2.models.Badge;
+import com.androiditgroup.loclook.v2.models.Publication;
+import com.androiditgroup.loclook.v2.models.QuizAnswer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.androiditgroup.loclook.v2.LocLookApp.context;
@@ -32,9 +39,12 @@ public class DBManager {
 
                     Log.e("ABC", "DBManager: onCreate()");
 
-                    createTable(sqLiteDatabase, Constants.DataBase.USER_DATA_TABLE, Constants.DataBase.USER_DATA_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.BADGE_DATA_TABLE, Constants.DataBase.BADGE_DATA_TABLE_COLUMNS);
-                    // createTable(sqLiteDatabase, Constants.DataBase.USER_AUTH_DATA_TABLE, Constants.DataBase.USER_AUTH_DATA_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.USER_TABLE, Constants.DataBase.USER_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.BADGE_TABLE, Constants.DataBase.BADGE_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.PUBLICATION_TABLE, Constants.DataBase.PUBLICATION_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.QUIZ_ANSWER_TABLE, Constants.DataBase.QUIZ_ANSWER_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.IMAGES_TABLE, Constants.DataBase.IMAGES_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.USER_QUIZ_ANSWER_TABLE, Constants.DataBase.USER_QUIZ_ANSWER_TABLE_COLUMNS);
 
                     populateTables(sqLiteDatabase);
                 } catch (Exception e) {
@@ -90,6 +100,256 @@ public class DBManager {
     }
 
     /**
+     * Populate db tables by persistent data
+     */
+    private void populateTables(SQLiteDatabase db) {
+        Log.e("ABC", "DBManager: populateTables()");
+
+        String[] badgesArr = context.getResources().getStringArray(R.array.badges);
+        // String[] columnsArr = {"NAME", "IS_ENABLED"};
+        String[] columnsArr = {"NAME"};
+
+        // Log.e("ABC", "DBManager: populateTables(): badgesArr length = " +badgesArr.length);
+
+        for(int i=0; i<badgesArr.length; i++)
+            // insertData(db, Constants.DataBase.BADGE_DATA_TABLE, columnsArr, new String[] {badgesArr[i], "0"});
+            insertData(db, Constants.DataBase.BADGE_TABLE, columnsArr, new String[] {badgesArr[i]});
+
+        showAllTableData(db, Constants.DataBase.BADGE_TABLE);
+    }
+
+    /**
+     * Запрос на возвращение столбцов с нужными строками из таблицы
+     *
+     * @param table   Имя таблицы
+     * @param columns Масив строк с именами нужных столбцов
+     * @return Возвращает Cursor
+     */
+    public Cursor queryColumns(String table, String... columns) {
+        return getDataBase().query(table, columns, null, null, null, null, null);
+    }
+
+    public Cursor queryColumns(String table, String[] column, String requestColumn, String where) {
+        return getDataBase().query(table, column, requestColumn + "='" + where + "'", null, null, null, null);
+    }
+
+    /**
+     * Запрос на возвращение строк из таблицы
+     *
+     * @param sql           SQL запрос. Щн не должен заканчиваться с ;
+     * @param selectionArgs Можете включить ?s в WHERE и он будет заменятся на selectionArgs.
+     * @return Возвращает строки из таблицы
+     */
+//    public Cursor queryRows(SQLiteDatabase database, String sql, String[] selectionArgs) {
+//        return database.rawQuery(sql, selectionArgs);
+//    }
+
+    /**
+     * Запрос на создание пользователя
+     * @param userName      Введенное пользователем имя
+     * @param phoneNumber   Введенный пользователем номер телефона
+     * @return Возвращаем идентификатор пользователя
+     */
+    public Cursor createUser(String userName, String phoneNumber) {
+        // Log.e("ABC", "DBManager: createUser()");
+
+        String[] columnsArr = {"NAME", "PHONE_NUMBER", "RATE"};
+        String[] dataArr    = {userName, phoneNumber, "0"};
+
+        // int userId = insertData(Constants.DataBase.USER_DATA_TABLE, columnsArr, dataArr);
+        // int userId = insertData(getDataBase(), Constants.DataBase.USER_TABLE, columnsArr, dataArr);
+        return insertData(getDataBase(), Constants.DataBase.USER_TABLE, columnsArr, dataArr);
+
+        // Log.e("ABC", "DBManager: createUser(): userId= " +userId);
+
+        // если идентификатор созданного пользователя получен
+//        if(userId > 0)
+//            // получаем курсор с данными пользователя
+//            return queryColumns(Constants.DataBase.USER_TABLE, null, "_ID", String.valueOf(userId));
+
+        // return null;
+    }
+
+    public Publication createPublication(String text, Badge badge, ArrayList<String> answersList, ArrayList<Bitmap> imagesList, boolean isAnonymous) {
+
+        Publication.Builder mPublicationBuilder = null;
+
+        getDataBase().beginTransaction();
+        try {
+            double latitude = 0.0;
+            double longitude = 0.0;
+
+            if(LocLookApp.user.getLocation() != null) {
+                latitude  = LocLookApp.user.getLocation().getLatitude();
+                longitude = LocLookApp.user.getLocation().getLongitude();
+            }
+
+            String[] pColumnsArr = {"TEXT", "AUTHOR_ID", "BADGE_ID", "CREATED_AT", "LATITUDE", "LONGITUDE", "REGION_NAME", "STREET_NAME",
+                                    "HAS_QUIZ", "HAS_IMAGES", "IS_ANONYMOUS"};
+            String[] pDataArr    = {text, LocLookApp.user.getId(), "" +badge.getId(), "" +System.currentTimeMillis(), "" +latitude, "" +longitude,
+                                    LocLookApp.user.getRegionName(),LocLookApp.user.getStreetName(),
+                                    (answersList.size() == 0)  ? "0" : "1", (imagesList.size() == 0)  ? "0" : "1", (!isAnonymous) ? "0" : "1"};
+
+            Cursor pCursor = insertData(getDataBase(), Constants.DataBase.PUBLICATION_TABLE, pColumnsArr, pDataArr);
+
+            if(pCursor != null) {
+                pCursor.moveToFirst();
+
+                String pId          = pCursor.getString(pCursor.getColumnIndex("_ID"));
+                String pText        = pCursor.getString(pCursor.getColumnIndex("TEXT"));
+                String pAuthorId    = pCursor.getString(pCursor.getColumnIndex("AUTHOR_ID"));
+                String pCreatedAt   = pCursor.getString(pCursor.getColumnIndex("CREATED_AT"));
+                String pLatitude    = pCursor.getString(pCursor.getColumnIndex("LATITUDE"));
+                String pLongitude   = pCursor.getString(pCursor.getColumnIndex("LONGITUDE"));
+                String pRegionName  = pCursor.getString(pCursor.getColumnIndex("REGION_NAME"));
+                String pStreetName  = pCursor.getString(pCursor.getColumnIndex("STREET_NAME"));
+
+                int pBadgeId        = pCursor.getInt(pCursor.getColumnIndex("BADGE_ID"));
+
+                boolean pHasQuiz    = (pCursor.getInt(pCursor.getColumnIndex("HAS_QUIZ")) == 1);
+                boolean pHasImages  = (pCursor.getInt(pCursor.getColumnIndex("HAS_IMAGES")) == 1);
+                boolean pIsAnonymous = (pCursor.getInt(pCursor.getColumnIndex("IS_ANONYMOUS")) == 1);
+
+                pCursor.close();
+
+                Location pLocation = new Location("");
+                pLocation.setLatitude(Double.parseDouble(pLatitude));
+                pLocation.setLongitude(Double.parseDouble(pLongitude));
+
+                ///////////////////////////////////////////////////////////////////////////////////
+
+                ArrayList<QuizAnswer> pQuizAnswerList = new ArrayList<>();
+
+                String[] qaColumnsArr = {"TEXT", "PUBLICATION_ID"};
+
+                for(int i=0; i<answersList.size(); i++) {
+
+                    String[] qaDataArr = {answersList.get(i), pId};
+
+                    Cursor qaCursor = insertData(getDataBase(), Constants.DataBase.QUIZ_ANSWER_TABLE, qaColumnsArr, qaDataArr);
+
+                    if(qaCursor != null) {
+                        qaCursor.moveToFirst();
+
+                        String qaId     = qaCursor.getString(qaCursor.getColumnIndex("_ID"));
+                        String qaText   = qaCursor.getString(qaCursor.getColumnIndex("TEXT"));
+
+                        Log.e("ABC", "DBManager: createPublication(): new qaId: " +qaId);
+                        Log.e("ABC", "DBManager: createPublication(): new qaText: " +qaText);
+
+                        QuizAnswer.Builder mQuizAnswerBuilder = new QuizAnswer.Builder()
+                                .id(qaId)
+                                .text(qaText);
+
+                        pQuizAnswerList.add(mQuizAnswerBuilder.build());
+                    }
+
+                    qaCursor.close();
+                }
+
+                Log.e("ABC", "DBManager: createPublication(): pQuizAnswerList size= " +pQuizAnswerList.size());
+
+                ///////////////////////////////////////////////////////////////////////////////////
+
+                mPublicationBuilder = new Publication.Builder()
+                        .id(pId)
+                        .text(pText)
+                        .authorId(pAuthorId)
+                        .badge(LocLookApp.badgesList.get(pBadgeId))
+                        .createdAt(pCreatedAt)
+                        .location(pLocation)
+                        .regionName(pRegionName)
+                        .streetName(pStreetName)
+                        .hasQuiz(pHasQuiz)
+                        .hasImages(pHasImages)
+                        .isAnonymous(pIsAnonymous)
+                        .quizAnswerList(pQuizAnswerList);
+            }
+
+
+
+            getDataBase().setTransactionSuccessful();
+        } catch(SQLiteException sqliteExc) {
+            Log.e("ABC", "DBManager: createPublication(): sqliteExc: " +sqliteExc.toString());
+        } catch(Exception exc) {
+            //Error in between database transaction
+            Log.e("ABC", "DBManager: createPublication(): error: " +exc.toString());
+        } finally {
+            getDataBase().endTransaction();
+        }
+
+        if(mPublicationBuilder != null) {
+            Log.e("ABC", "DBManager: createPublication(): publication is saved");
+
+            // Publication.Builder mPublicationBuilder = new Publication.Builder();
+            return mPublicationBuilder.build();
+        }
+        else {
+            Log.e("ABC", "DBManager: createPublication(): publication is not saved");
+            return null;
+        }
+    }
+
+    // public int addRow(String tableName, String[] columnsArr, String[] dataArr) {
+    // public int insertData(SQLiteDatabase db, String tableName, String[] columnsArr, String[] dataArr) {
+    public Cursor insertData(SQLiteDatabase db, String tableName, String[] columnsArr, String[] dataArr) {
+        Log.e("ABC", "DBManager: insertData(): tableName= " +tableName);
+
+        ContentValues cv = new ContentValues();
+        long rowID;
+
+        for(int i=0; i<columnsArr.length; i++)
+            cv.put(columnsArr[i], dataArr[i]);
+
+        // вставляем запись и получаем ее ID
+        rowID = db.insert(tableName, null, cv);
+        Log.e("ABC", "row inserted, ID = " + rowID + " in table " +tableName);
+
+        if(rowID > 0)
+            // получаем курсор с данными пользователя
+            return queryColumns(Constants.DataBase.USER_TABLE, null, "_ID", String.valueOf(rowID));
+        else
+            return null;
+
+        // return (int) rowID;
+    }
+
+    public void showAllTableData(SQLiteDatabase db,String table) {
+        Cursor cursor = db.query(table, null, null, null, null, null, null);
+
+        String[] cursorArr = cursor.getColumnNames();
+
+         if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            Log.e("ABC", "----- Table: " + table + " -----");
+
+            StringBuilder sb1 = new StringBuilder();
+
+            for(int i=0; i<cursorArr.length; i++) {
+                sb1.append("" + cursorArr[i] + " \t\t");
+            }
+
+            Log.e("ABC", sb1.toString());
+
+            do {
+                StringBuilder sb2 = new StringBuilder();
+
+                for(int i=0; i<cursorArr.length; i++) {
+                    sb2.append("" +cursor.getString(cursor.getColumnIndex(cursorArr[i])) + "\t\t");
+                }
+
+                Log.e("ABC", sb2.toString());
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        Log.e("ABC", "--------------------------------------------------");
+    }
+
+    /**
      * Записывает данные в таблицу
      *
      * @param table   Имя таблицы
@@ -137,135 +397,22 @@ public class DBManager {
 //        }
 //    }
 
-
     /**
-     * Запрос на возвращение столбцов с нужными строками из таблицы
-     *
-     * @param table   Имя таблицы
-     * @param columns Масив строк с именами нужных столбцов
-     * @return Возвращает Cursor
+     * Delete all the data from the table except users login data (password and id)
+     * @param table table you want to delete from
      */
-    public Cursor queryColumns(String table, String... columns) {
-        return getDataBase().query(table, columns, null, null, null, null, null);
-    }
-
-    public Cursor queryColumns(String table, String[] column, String requestColumn, String where) {
-        return getDataBase().query(table, column, requestColumn + "='" + where + "'", null, null, null, null);
-    }
-
-
-    /**
-     * Запрос на возвращение строк из таблицы
-     *
-     * @param sql           SQL запрос. Щн не должен заканчиваться с ;
-     * @param selectionArgs Можете включить ?s в WHERE и он будет заменятся на selectionArgs.
-     * @return Возвращает строки из таблицы
-     */
-    public Cursor queryRows(SQLiteDatabase database, String sql, String[] selectionArgs) {
-        return database.rawQuery(sql, selectionArgs);
-    }
-
-    /**
-     * Запрос на создание пользователя
-     * @param userName      Введенное пользователем имя
-     * @param phoneNumber   Введенный пользователем номер телефона
-     * @return Возвращаем идентификатор пользователя
-     */
-    public Cursor createUser(String userName, String phoneNumber) {
-        // Log.e("ABC", "DBManager: createUser()");
-
-        String[] columnsArr = {"NAME", "PHONE_NUMBER", "RATE"};
-        String[] dataArr    = {userName, phoneNumber, "0"};
-
-        // int userId = insertData(Constants.DataBase.USER_DATA_TABLE, columnsArr, dataArr);
-        int userId = insertData(getDataBase(), Constants.DataBase.USER_DATA_TABLE, columnsArr, dataArr);
-
-        // Log.e("ABC", "DBManager: createUser(): userId= " +userId);
-
-        // если идентификатор созданного пользователя получен
-        if(userId > 0)
-            // получаем курсор с данными пользователя
-            return queryColumns(Constants.DataBase.USER_DATA_TABLE, null, "_ID", String.valueOf(userId));
-
-        return null;
-    }
-
-    private void populateTables(SQLiteDatabase db) {
-        Log.e("ABC", "DBManager: populateTables()");
-
-        String[] badgesArr = context.getResources().getStringArray(R.array.badges);
-        // String[] columnsArr = {"NAME", "IS_ENABLED"};
-        String[] columnsArr = {"NAME"};
-
-        // Log.e("ABC", "DBManager: populateTables(): badgesArr length = " +badgesArr.length);
-
-        for(int i=0; i<badgesArr.length; i++)
-            // insertData(db, Constants.DataBase.BADGE_DATA_TABLE, columnsArr, new String[] {badgesArr[i], "0"});
-            insertData(db, Constants.DataBase.BADGE_DATA_TABLE, columnsArr, new String[] {badgesArr[i]});
-
-        showAllTableData(db, Constants.DataBase.BADGE_DATA_TABLE);
-    }
-
-    // public int addRow(String tableName, String[] columnsArr, String[] dataArr) {
-    public int insertData(SQLiteDatabase db, String tableName, String[] columnsArr, String[] dataArr) {
-        Log.e("ABC", "DBManager: insertData(): badge name= " +dataArr[0]);
-
-        ContentValues cv = new ContentValues();
-        long rowID;
-
-        for(int i=0; i<columnsArr.length; i++)
-            cv.put(columnsArr[i], dataArr[i]);
-
-        // вставляем запись и получаем ее ID
-        rowID = db.insert(tableName, null, cv);
-        Log.e("ABC", "badge(" +dataArr[0]+ ")row inserted, ID = " + rowID + " in table " +tableName);
-
-        return (int) rowID;
-    }
-
-    public void showAllTableData(SQLiteDatabase db,String table) {
-        Cursor cursor = db.query(table, null, null, null, null, null, null);
-
-        String[] cursorArr = cursor.getColumnNames();
-
-         if(cursor.getCount() > 0) {
-            cursor.moveToFirst();
-
-            Log.e("ABC", "----- Table: " + table + " -----");
-
-            StringBuilder sb1 = new StringBuilder();
-
-            for(int i=0; i<cursorArr.length; i++) {
-                sb1.append("" + cursorArr[i] + " \t\t");
-            }
-
-            Log.e("ABC", sb1.toString());
-
-            do {
-                StringBuilder sb2 = new StringBuilder();
-
-                for(int i=0; i<cursorArr.length; i++) {
-                    sb2.append("" +cursor.getString(cursor.getColumnIndex(cursorArr[i])) + "\t\t");
-                }
-
-                Log.e("ABC", sb2.toString());
-
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-
-        Log.e("ABC", "--------------------------------------------------");
-    }
+//    public void deleteDB(String table) {
+//        deleteAllData(table);
+//    }
 
     /**
      * Used to delete all data from one table
      * @param table table you want to delete data from
      */
-    public void deleteAllData(String table) {
-        String delete = "DELETE FROM " + table;
-        getDataBase().execSQL(delete);
-    }
+//    public void deleteAllData(String table) {
+//        String delete = "DELETE FROM " + table;
+//        getDataBase().execSQL(delete);
+//    }
 
 
     /**
@@ -274,10 +421,10 @@ public class DBManager {
      * @param column column from where to search the requested row
      * @param where data within the row that you want to delete
      */
-    public void deleteRow(String table, String column, String... where) {
-        String delete = "DELETE FROM " + table + " WHERE " + column + " = \"" + Arrays.toString(where).replace("[", "").replace("]", "") + "\"";
-        getDataBase().execSQL(delete);
-    }
+//    public void deleteRow(String table, String column, String... where) {
+//        String delete = "DELETE FROM " + table + " WHERE " + column + " = \"" + Arrays.toString(where).replace("[", "").replace("]", "") + "\"";
+//        getDataBase().execSQL(delete);
+//    }
 
 
     /**
@@ -302,10 +449,10 @@ public class DBManager {
 //    }
 
 
-//    /**
-//     * Return the last inserted user token
-//     * @return String that contains the last inserted user token
-//     */
+    /**
+     * Return the last inserted user token
+     * @return String that contains the last inserted user token
+     */
 //    public static String getToken() {
 //        String[] columns = {Constants.DataBase.RESPONSE};
 //        String response = null;
@@ -384,13 +531,4 @@ public class DBManager {
 //            return "---";
 //        }
 //    }
-
-
-    /**
-     * Delete all the data from the table except users login data (password and id)
-     * @param table table you want to delete from
-     */
-    public void deleteDB(String table) {
-        deleteAllData(table);
-    }
 }

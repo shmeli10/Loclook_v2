@@ -5,14 +5,21 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -109,7 +116,7 @@ public class LocLookApp extends Application {
 
     public static void setBadgesList() {
         // Cursor badgesDataCursor = DBManager.getInstance().getDataBase().queryColumns(Constants.DataBase.BADGE_DATA_TABLE, null, null, null);
-        Cursor cursor = DBManager.getInstance().getDataBase().query(Constants.DataBase.BADGE_DATA_TABLE, null, null, null, null, null, null);
+        Cursor cursor = DBManager.getInstance().getDataBase().query(Constants.DataBase.BADGE_TABLE, null, null, null, null, null, null);
 
         if(cursor != null) {
             // Log.e("ABC", "LocLookApp: setBadgesList: badgesSum = " + cursor.getCount());
@@ -141,4 +148,13 @@ public class LocLookApp extends Application {
     public static int getDpFromPixels(int px) {
         return (int) (context.getResources().getDisplayMetrics().density * px);
     }
+
+    // public static void showSimpleSnakeBar(View view, String text) {
+    public static void showSimpleSnakeBar(View view, String resName) {
+        int resId = context.getResources().getIdentifier("@string/" +resName, null, context.getPackageName());
+        String text = context.getResources().getString(resId);
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
+    }
+
+
 }
