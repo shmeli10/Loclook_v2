@@ -125,12 +125,14 @@ public class DBManager {
      * @param columns Масив строк с именами нужных столбцов
      * @return Возвращает Cursor
      */
-    public Cursor queryColumns(String table, String... columns) {
-        return getDataBase().query(table, columns, null, null, null, null, null);
+    // public Cursor queryColumns(String table, String... columns) {
+    public Cursor queryColumns(SQLiteDatabase db, String table, String... columns) {
+        return db.query(table, columns, null, null, null, null, null);
     }
 
-    public Cursor queryColumns(String table, String[] column, String requestColumn, String where) {
-        return getDataBase().query(table, column, requestColumn + "='" + where + "'", null, null, null, null);
+    // public Cursor queryColumns(String table, String[] column, String requestColumn, String where) {
+    public Cursor queryColumns(SQLiteDatabase db, String table, String[] column, String requestColumn, String where) {
+        return db.query(table, column, requestColumn + "='" + where + "'", null, null, null, null);
     }
 
     /**
@@ -173,8 +175,8 @@ public class DBManager {
     public Publication createPublication(String text, Badge badge, ArrayList<String> answersList, ArrayList<Bitmap> imagesList, boolean isAnonymous) {
 
         Publication.Builder mPublicationBuilder = null;
-
         getDataBase().beginTransaction();
+
         try {
             double latitude = 0.0;
             double longitude = 0.0;
@@ -192,29 +194,55 @@ public class DBManager {
 
             Cursor pCursor = insertData(getDataBase(), Constants.DataBase.PUBLICATION_TABLE, pColumnsArr, pDataArr);
 
-            if(pCursor != null) {
+//            Log.e("ABC", "DBManager: createPublication(): pCursor is null:" +(pCursor == null));
+
+            if((pCursor != null) && (pCursor.getCount() > 0)) {
+//                Log.e("ABC", "DBManager: createPublication(): pCursor.getCount()= " +pCursor.getCount());
                 pCursor.moveToFirst();
 
-                String pId          = pCursor.getString(pCursor.getColumnIndex("_ID"));
-                String pText        = pCursor.getString(pCursor.getColumnIndex("TEXT"));
-                String pAuthorId    = pCursor.getString(pCursor.getColumnIndex("AUTHOR_ID"));
-                String pCreatedAt   = pCursor.getString(pCursor.getColumnIndex("CREATED_AT"));
-                String pLatitude    = pCursor.getString(pCursor.getColumnIndex("LATITUDE"));
-                String pLongitude   = pCursor.getString(pCursor.getColumnIndex("LONGITUDE"));
-                String pRegionName  = pCursor.getString(pCursor.getColumnIndex("REGION_NAME"));
-                String pStreetName  = pCursor.getString(pCursor.getColumnIndex("STREET_NAME"));
+//                String pId = null;
+//                String pText = null;
+//                String pAuthorId = null;
+//                String pCreatedAt = null;
+//                String pLatitude = null;
+//                String pLongitude = null;
+//                String pRegionName = null;
+//                String pStreetName = null;
 
-                int pBadgeId        = pCursor.getInt(pCursor.getColumnIndex("BADGE_ID"));
+//                int pBadgeId = 1;
 
-                boolean pHasQuiz    = (pCursor.getInt(pCursor.getColumnIndex("HAS_QUIZ")) == 1);
-                boolean pHasImages  = (pCursor.getInt(pCursor.getColumnIndex("HAS_IMAGES")) == 1);
+//                boolean pHasQuiz = false;
+//                boolean pHasImages = false;
+//                boolean pIsAnonymous = false;
+
+                String pId = pCursor.getString(pCursor.getColumnIndex("_ID"));
+                String pText = pCursor.getString(pCursor.getColumnIndex("TEXT"));
+                String pAuthorId = pCursor.getString(pCursor.getColumnIndex("AUTHOR_ID"));
+                String pCreatedAt = pCursor.getString(pCursor.getColumnIndex("CREATED_AT"));
+                String pLatitude = pCursor.getString(pCursor.getColumnIndex("LATITUDE"));
+                String pLongitude = pCursor.getString(pCursor.getColumnIndex("LONGITUDE"));
+                String pRegionName = pCursor.getString(pCursor.getColumnIndex("REGION_NAME"));
+                String pStreetName = pCursor.getString(pCursor.getColumnIndex("STREET_NAME"));
+
+                int pBadgeId = pCursor.getInt(pCursor.getColumnIndex("BADGE_ID"));
+
+                boolean pHasQuiz = (pCursor.getInt(pCursor.getColumnIndex("HAS_QUIZ")) == 1);
+                boolean pHasImages = (pCursor.getInt(pCursor.getColumnIndex("HAS_IMAGES")) == 1);
                 boolean pIsAnonymous = (pCursor.getInt(pCursor.getColumnIndex("IS_ANONYMOUS")) == 1);
 
                 pCursor.close();
 
+//                Log.e("ABC", "DBManager: createPublication(): pId= " +pId);
+//                Log.e("ABC", "DBManager: createPublication(): pLatitude= " +pLatitude);
+//                Log.e("ABC", "DBManager: createPublication(): pLongitude= " +pLongitude);
+
                 Location pLocation = new Location("");
-                pLocation.setLatitude(Double.parseDouble(pLatitude));
-                pLocation.setLongitude(Double.parseDouble(pLongitude));
+
+                if(pLatitude != null)
+                    pLocation.setLatitude(Double.parseDouble(pLatitude));
+
+                if(pLongitude != null)
+                    pLocation.setLongitude(Double.parseDouble(pLongitude));
 
                 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -228,14 +256,16 @@ public class DBManager {
 
                     Cursor qaCursor = insertData(getDataBase(), Constants.DataBase.QUIZ_ANSWER_TABLE, qaColumnsArr, qaDataArr);
 
-                    if(qaCursor != null) {
+                    // if(qaCursor != null) {
+                    if((qaCursor != null) && (qaCursor.getCount() > 0)) {
                         qaCursor.moveToFirst();
 
                         String qaId     = qaCursor.getString(qaCursor.getColumnIndex("_ID"));
                         String qaText   = qaCursor.getString(qaCursor.getColumnIndex("TEXT"));
+//                        Log.e("ABC", "DBManager: createPublication(): new qaId: " +qaId);
+//                        Log.e("ABC", "DBManager: createPublication(): new qaText: " +qaText);
 
-                        Log.e("ABC", "DBManager: createPublication(): new qaId: " +qaId);
-                        Log.e("ABC", "DBManager: createPublication(): new qaText: " +qaText);
+                        qaCursor.close();
 
                         QuizAnswer.Builder mQuizAnswerBuilder = new QuizAnswer.Builder()
                                 .id(qaId)
@@ -243,11 +273,7 @@ public class DBManager {
 
                         pQuizAnswerList.add(mQuizAnswerBuilder.build());
                     }
-
-                    qaCursor.close();
                 }
-
-                Log.e("ABC", "DBManager: createPublication(): pQuizAnswerList size= " +pQuizAnswerList.size());
 
                 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -266,8 +292,6 @@ public class DBManager {
                         .quizAnswerList(pQuizAnswerList);
             }
 
-
-
             getDataBase().setTransactionSuccessful();
         } catch(SQLiteException sqliteExc) {
             Log.e("ABC", "DBManager: createPublication(): sqliteExc: " +sqliteExc.toString());
@@ -276,42 +300,44 @@ public class DBManager {
             Log.e("ABC", "DBManager: createPublication(): error: " +exc.toString());
         } finally {
             getDataBase().endTransaction();
-        }
 
-        if(mPublicationBuilder != null) {
-            Log.e("ABC", "DBManager: createPublication(): publication is saved");
+            if(mPublicationBuilder != null) {
+                Log.e("ABC", "DBManager: createPublication(): publication is saved");
 
-            // Publication.Builder mPublicationBuilder = new Publication.Builder();
-            return mPublicationBuilder.build();
-        }
-        else {
-            Log.e("ABC", "DBManager: createPublication(): publication is not saved");
-            return null;
+                // Publication.Builder mPublicationBuilder = new Publication.Builder();
+                return mPublicationBuilder.build();
+            }
+            else {
+                Log.e("ABC", "DBManager: createPublication(): publication is not saved");
+                return null;
+            }
         }
     }
 
-    // public int addRow(String tableName, String[] columnsArr, String[] dataArr) {
-    // public int insertData(SQLiteDatabase db, String tableName, String[] columnsArr, String[] dataArr) {
     public Cursor insertData(SQLiteDatabase db, String tableName, String[] columnsArr, String[] dataArr) {
         Log.e("ABC", "DBManager: insertData(): tableName= " +tableName);
 
+        Cursor result = null;
+
         ContentValues cv = new ContentValues();
-        long rowID;
 
         for(int i=0; i<columnsArr.length; i++)
             cv.put(columnsArr[i], dataArr[i]);
 
-        // вставляем запись и получаем ее ID
-        rowID = db.insert(tableName, null, cv);
-        Log.e("ABC", "row inserted, ID = " + rowID + " in table " +tableName);
+        if(cv.size() > 0) {
+            // вставляем запись и получаем ее ID
+            long rowID = db.insert(tableName, null, cv);
 
-        if(rowID > 0)
-            // получаем курсор с данными пользователя
-            return queryColumns(Constants.DataBase.USER_TABLE, null, "_ID", String.valueOf(rowID));
-        else
-            return null;
+            // если идентификатор записи получен
+            if (rowID > 0) {
+                Log.e("ABC", "row inserted, ID = " + rowID + " in table " + tableName);
 
-        // return (int) rowID;
+                // получаем курсор с данными
+                result = queryColumns(db, tableName, null, "_ID", String.valueOf(rowID));
+            }
+        }
+
+        return result;
     }
 
     public void showAllTableData(SQLiteDatabase db,String table) {

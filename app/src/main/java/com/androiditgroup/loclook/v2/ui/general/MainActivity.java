@@ -140,7 +140,8 @@ public class MainActivity   extends     ParentActivity
 
             if (phoneNumber != null) {
 
-                Cursor data = DBManager.getInstance().queryColumns(Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
+                // Cursor data = DBManager.getInstance().queryColumns(Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
+                Cursor data = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
 
                 // если данные получены
                 if (data.getCount() > 0) {

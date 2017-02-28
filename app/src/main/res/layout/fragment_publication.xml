@@ -8,7 +8,9 @@
     <ScrollView
         android:id="@+id/Publication_ScrollView"
         style="@style/MM"
-        android:layout_marginTop="45dp">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             style="@style/MW"
@@ -176,13 +178,14 @@
                     android:textColor="@color/deep_blue"
                     android:textSize="16sp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="0dp"
                     android:text="@string/publication_badge_text"/>
                 <ImageView
                     android:id="@+id/Publication_BadgeImageIV"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_toRightOf="@+id/Publication_BadgeTV"
+                    android:layout_marginLeft="3dp"
                     android:src="@drawable/badge_1"/>
                 <TextView
                     android:id="@+id/Publication_BadgeNameTV"
@@ -222,6 +225,184 @@
                 android:id="@+id/Publication_BadgeBlockBottomLine"
                 style="@style/HLine_Grey"
                 android:layout_below="@+id/Publication_ChooseBadgeBlockGV"/>
+            <RelativeLayout
+                android:id="@+id/Publication_ShowPhotoBlock"
+                style="@style/MW"
+                android:layout_below="@+id/Publication_BadgeBlockBottomLine"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    android:id="@+id/Publication_PhotoTV"
+                    style="@style/WW"
+                    android:textColor="@color/deep_blue"
+                    android:textSize="16sp"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/photo_text"/>
+                <TextView
+                    android:id="@+id/Publication_PhotoSumHeadTV"
+                    style="@style/WW"
+                    android:layout_toRightOf="@+id/Publication_PhotoTV"
+                    android:layout_marginLeft="3dp"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    android:text="("/>
+                <TextView
+                    android:id="@+id/Publication_PhotosAddedSumTV"
+                    style="@style/WW"
+                    android:layout_toRightOf="@+id/Publication_PhotoSumHeadTV"
+                    android:layout_marginLeft="0dp"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    android:text="0"/>
+                <TextView
+                    android:id="@+id/Publication_PhotosSeparatorTV"
+                    style="@style/WW"
+                    android:layout_toRightOf="@+id/Publication_PhotosAddedSumTV"
+                    android:layout_marginLeft="3dp"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    android:text="/"/>
+                <TextView
+                    android:id="@+id/Publication_PhotosMaxSumTV"
+                    style="@style/WW"
+                    android:layout_toRightOf="@+id/Publication_PhotosSeparatorTV"
+                    android:layout_marginLeft="3dp"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    android:text="@integer/max_photos_sum"/>
+                <TextView
+                    android:id="@+id/Publication_PhotoSumTailTV"
+                    style="@style/WW"
+                    android:layout_toRightOf="@+id/Publication_PhotosMaxSumTV"
+                    android:layout_marginLeft="0dp"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    android:text=")"/>
+                <ImageView
+                    android:id="@+id/Publication_ShowPhotos"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:tint="@color/dark_grey"
+                    android:src="@drawable/show_data"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="12dp"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/Publication_PhotoBlock"
+                style="@style/MW"
+                android:layout_below="@+id/Publication_ShowPhotoBlock"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/Publication_FramesContainer"
+                    style="@style/MW"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <FrameLayout
+                        android:id="@+id/Publication_FramePhoto1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_rect_quiz_answer">
+
+                        <ImageView
+                            android:id="@+id/Publication_Photo1"
+                            android:layout_width="100dp"
+                            android:layout_height="75dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/no_photo_icon"/>
+
+                    </FrameLayout>
+                    <FrameLayout
+                        android:id="@+id/Publication_FramePhoto2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3dp"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_rect_quiz_answer">
+
+                        <ImageView
+                            android:id="@+id/Publication_Photo2"
+                            android:layout_width="100dp"
+                            android:layout_height="75dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/no_photo_icon"
+                            android:layout_centerInParent="true"/>
+
+                    </FrameLayout>
+                    <FrameLayout
+                        android:id="@+id/Publication_FramePhoto3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3dp"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_rect_quiz_answer">
+
+                        <ImageView
+                            android:id="@+id/Publication_Photo3"
+                            android:layout_width="100dp"
+                            android:layout_height="75dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/no_photo_icon"
+                            android:layout_centerInParent="true"/>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/Publication_AddPhotoButtons"
+                    style="@style/MW"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/Publication_FramesContainer"
+                    android:weightSum="2"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/Publication_OpenGallery"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryDark"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:text="@string/add_from_gallery_text"/>
+                    <TextView
+                        android:id="@+id/Publication_CreatePhoto"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryDark"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:text="@string/create_photo_text"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+            <View
+                android:id="@+id/Publication_PhotoBlockBottomLine"
+                style="@style/HLine_Grey"
+                android:layout_below="@+id/Publication_PhotoBlock"/>
 
         </RelativeLayout>
 

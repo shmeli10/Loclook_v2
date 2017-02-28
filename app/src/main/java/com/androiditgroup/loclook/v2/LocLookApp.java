@@ -3,6 +3,7 @@ package com.androiditgroup.loclook.v2;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.location.Address;
@@ -10,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.androiditgroup.loclook.v2.models.Badge;
@@ -147,6 +149,17 @@ public class LocLookApp extends Application {
 
     public static int getDpFromPixels(int px) {
         return (int) (context.getResources().getDisplayMetrics().density * px);
+    }
+
+    /**
+     * Convert dp to pixels
+     * @param dp to convert
+     * @return value of passed dp in pixels
+     */
+    public static int getPixelsFromDp(int dp) {
+        // Resources r = context.getResources();
+        // return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 
     // public static void showSimpleSnakeBar(View view, String text) {

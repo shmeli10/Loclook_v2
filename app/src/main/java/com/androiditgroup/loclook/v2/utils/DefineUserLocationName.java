@@ -66,7 +66,8 @@ public class DefineUserLocationName {
         }
     }
 
-    private static ArrayList<String> getLocationData(Location location) {
+    // private static ArrayList<String> getLocationData(Location location) {
+    private ArrayList<String> getLocationData(Location location) {
         // создаем список для частей данных местоположения определенных по точке на карте
         ArrayList<String> list = new ArrayList<>();
 

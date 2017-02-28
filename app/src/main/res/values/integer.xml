@@ -2,4 +2,5 @@
 <resources>
     <item type="integer" name="custom_length">100</item>
     <item type="integer" name="publication_length">400</item>
+    <item type="integer" name="max_photos_sum">3</item>
 </resources>

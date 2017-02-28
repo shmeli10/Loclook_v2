@@ -65,7 +65,7 @@ public class PhoneNumberFragment extends Fragment {
     };
 
     private void moveForward() {
-        Cursor data = DBManager.getInstance().queryColumns(Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneBodyET.getText().toString());
+        Cursor data = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneBodyET.getText().toString());
 
         // если это существующий в БД пользователь
         if(data.getCount() > 0) {

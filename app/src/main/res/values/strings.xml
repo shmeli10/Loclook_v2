@@ -43,6 +43,13 @@
     <string name="answers_sum_text">Ответов: </string>
     <string name="add_answer_text">Добавить вариант ответа</string>
 
+    <string name="photo_text">Фото</string>
+    <string name="add_from_gallery_text">Добавить из галереи</string>
+    <string name="create_photo_text">Сделать фото</string>
+
+    <string name="get_photo_error_text">Не удалось получить фото</string>
+
+
     <string-array name="badges">
         <item>LocLook</item>
         <item>Интересные места</item>

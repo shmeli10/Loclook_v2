@@ -23,6 +23,10 @@ public class Constants {
 
     public static final int LOCATION_REQUEST_INTERVAL = 1000 * 60;
 
+    public static final int TAKE_PHOTO_RC = 18;
+    public static final int PICK_FILE_RC = 19;
+    public static final int CAMERA_PERMISSION_CODE = 20;
+
     public static class DataBase {
         public static final int DB_VERSION = 1;
         public static final String DATABASE_NAME = "cache_database";
