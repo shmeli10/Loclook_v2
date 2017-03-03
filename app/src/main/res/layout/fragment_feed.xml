@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MM"
-    android:gravity="center">
+    android:paddingTop="40dp"
+    android:gravity="center"
+    android:background="@color/white">
 
-    <TextView
-        style="@style/MW"
-        android:gravity="center"
-        android:text="@string/feed_text"/>
+    <com.androiditgroup.loclook.v2.utils.EmptyRecyclerView
+        android:id="@+id/Feed_PublicationsRecyclerView"
+        style="@style/MM"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Added an empty view which will be shown when the EmptyRecyclerView is empty -->
+    <LinearLayout
+        android:id="@+id/Feed_EmptyView"
+        style='@style/MM'
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center">
+
+        <TextView
+            style='@style/WW'
+            android:padding="16dp"
+            android:text="Empty"/>
+
+        <Button
+            style='@style/MW'
+            android:padding="16dp"
+            android:text="Press here"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

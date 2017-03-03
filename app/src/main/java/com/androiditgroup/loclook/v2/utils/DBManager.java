@@ -15,6 +15,7 @@ import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.QuizAnswer;
+import com.androiditgroup.loclook.v2.models.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +44,7 @@ public class DBManager {
                     createTable(sqLiteDatabase, Constants.DataBase.BADGE_TABLE, Constants.DataBase.BADGE_TABLE_COLUMNS);
                     createTable(sqLiteDatabase, Constants.DataBase.PUBLICATION_TABLE, Constants.DataBase.PUBLICATION_TABLE_COLUMNS);
                     createTable(sqLiteDatabase, Constants.DataBase.QUIZ_ANSWER_TABLE, Constants.DataBase.QUIZ_ANSWER_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.IMAGES_TABLE, Constants.DataBase.IMAGES_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.PHOTOS_TABLE, Constants.DataBase.PHOTOS_TABLE_COLUMNS);
                     createTable(sqLiteDatabase, Constants.DataBase.USER_QUIZ_ANSWER_TABLE, Constants.DataBase.USER_QUIZ_ANSWER_TABLE_COLUMNS);
 
                     populateTables(sqLiteDatabase);
@@ -158,21 +159,10 @@ public class DBManager {
         String[] columnsArr = {"NAME", "PHONE_NUMBER", "RATE"};
         String[] dataArr    = {userName, phoneNumber, "0"};
 
-        // int userId = insertData(Constants.DataBase.USER_DATA_TABLE, columnsArr, dataArr);
-        // int userId = insertData(getDataBase(), Constants.DataBase.USER_TABLE, columnsArr, dataArr);
         return insertData(getDataBase(), Constants.DataBase.USER_TABLE, columnsArr, dataArr);
-
-        // Log.e("ABC", "DBManager: createUser(): userId= " +userId);
-
-        // если идентификатор созданного пользователя получен
-//        if(userId > 0)
-//            // получаем курсор с данными пользователя
-//            return queryColumns(Constants.DataBase.USER_TABLE, null, "_ID", String.valueOf(userId));
-
-        // return null;
     }
 
-    public Publication createPublication(String text, Badge badge, ArrayList<String> answersList, ArrayList<Bitmap> imagesList, boolean isAnonymous) {
+    public Publication createPublication(String text, Badge badge, ArrayList<String> answersList, ArrayList<Bitmap> photosList, boolean isAnonymous) {
 
         Publication.Builder mPublicationBuilder = null;
         getDataBase().beginTransaction();
@@ -181,16 +171,18 @@ public class DBManager {
             double latitude = 0.0;
             double longitude = 0.0;
 
-            if(LocLookApp.user.getLocation() != null) {
-                latitude  = LocLookApp.user.getLocation().getLatitude();
-                longitude = LocLookApp.user.getLocation().getLongitude();
+            User user = LocLookApp.usersMap.get(LocLookApp.appUserId);
+
+            if(user.getLocation() != null) {
+                latitude  = user.getLocation().getLatitude();
+                longitude = user.getLocation().getLongitude();
             }
 
             String[] pColumnsArr = {"TEXT", "AUTHOR_ID", "BADGE_ID", "CREATED_AT", "LATITUDE", "LONGITUDE", "REGION_NAME", "STREET_NAME",
                                     "HAS_QUIZ", "HAS_IMAGES", "IS_ANONYMOUS"};
-            String[] pDataArr    = {text, LocLookApp.user.getId(), "" +badge.getId(), "" +System.currentTimeMillis(), "" +latitude, "" +longitude,
-                                    LocLookApp.user.getRegionName(),LocLookApp.user.getStreetName(),
-                                    (answersList.size() == 0)  ? "0" : "1", (imagesList.size() == 0)  ? "0" : "1", (!isAnonymous) ? "0" : "1"};
+            String[] pDataArr    = {text, user.getId(), "" +badge.getId(), "" +System.currentTimeMillis(), "" +latitude, "" +longitude,
+                                    user.getRegionName(), user.getStreetName(),
+                                    (answersList.size() == 0)  ? "0" : "1", (photosList.size() == 0)  ? "0" : "1", (!isAnonymous) ? "0" : "1"};
 
             Cursor pCursor = insertData(getDataBase(), Constants.DataBase.PUBLICATION_TABLE, pColumnsArr, pDataArr);
 
@@ -199,21 +191,6 @@ public class DBManager {
             if((pCursor != null) && (pCursor.getCount() > 0)) {
 //                Log.e("ABC", "DBManager: createPublication(): pCursor.getCount()= " +pCursor.getCount());
                 pCursor.moveToFirst();
-
-//                String pId = null;
-//                String pText = null;
-//                String pAuthorId = null;
-//                String pCreatedAt = null;
-//                String pLatitude = null;
-//                String pLongitude = null;
-//                String pRegionName = null;
-//                String pStreetName = null;
-
-//                int pBadgeId = 1;
-
-//                boolean pHasQuiz = false;
-//                boolean pHasImages = false;
-//                boolean pIsAnonymous = false;
 
                 String pId = pCursor.getString(pCursor.getColumnIndex("_ID"));
                 String pText = pCursor.getString(pCursor.getColumnIndex("TEXT"));
@@ -277,19 +254,41 @@ public class DBManager {
 
                 ///////////////////////////////////////////////////////////////////////////////////
 
-                mPublicationBuilder = new Publication.Builder()
-                        .id(pId)
-                        .text(pText)
-                        .authorId(pAuthorId)
-                        .badge(LocLookApp.badgesList.get(pBadgeId))
-                        .createdAt(pCreatedAt)
-                        .location(pLocation)
-                        .regionName(pRegionName)
-                        .streetName(pStreetName)
-                        .hasQuiz(pHasQuiz)
-                        .hasImages(pHasImages)
-                        .isAnonymous(pIsAnonymous)
-                        .quizAnswerList(pQuizAnswerList);
+                for(int i=0; i<photosList.size(); i++) {
+
+                    ContentValues cv = new  ContentValues();
+                    cv.put("PHOTO",             DbBitmapUtility.getBytes(photosList.get(i)));
+                    cv.put("PUBLICATION_ID",    pId);
+
+                    // вставляем запись и получаем ее ID
+                    long rowID = getDataBase().insert(Constants.DataBase.PHOTOS_TABLE, null, cv);
+
+                    // если идентификатор записи получен
+                    if (rowID > 0) {
+                        Log.e("ABC", "image inserted, ID = " + rowID + " in table " + Constants.DataBase.PHOTOS_TABLE);
+                    }
+                    else {
+                        Log.e("ABC", "ERROR: image(" +i+ ") not inserted");
+                        throw new SQLiteException();
+                    }
+                }
+
+                ///////////////////////////////////////////////////////////////////////////////////
+
+//                mPublicationBuilder = new Publication.Builder()
+//                        .id(pId)
+//                        .text(pText)
+//                        .authorId(pAuthorId)
+//                        .badge(LocLookApp.badgesList.get(pBadgeId))
+//                        .createdAt(pCreatedAt)
+//                        .location(pLocation)
+//                        .regionName(pRegionName)
+//                        .streetName(pStreetName)
+//                        .hasQuiz(pHasQuiz)
+//                        .hasImages(pHasImages)
+//                        .isAnonymous(pIsAnonymous)
+//                        .quizAnswerList(pQuizAnswerList)
+//                        .photosList(photosList);
             }
 
             getDataBase().setTransactionSuccessful();
@@ -440,7 +439,6 @@ public class DBManager {
 //        getDataBase().execSQL(delete);
 //    }
 
-
     /**
      * Used to delete one row from table
      * @param table table you want to delete from
@@ -451,7 +449,6 @@ public class DBManager {
 //        String delete = "DELETE FROM " + table + " WHERE " + column + " = \"" + Arrays.toString(where).replace("[", "").replace("]", "") + "\"";
 //        getDataBase().execSQL(delete);
 //    }
-
 
     /**
      * Check if in the database already exist data with the given key

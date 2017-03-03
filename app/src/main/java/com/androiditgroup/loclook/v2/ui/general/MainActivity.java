@@ -78,6 +78,8 @@ public class MainActivity   extends     ParentActivity
 
     private LayoutInflater mInflater;
 
+    public static boolean refreshFeed;
+
     public enum SelectedFragment {
         show_feed, send_publication
     }
@@ -293,14 +295,19 @@ public class MainActivity   extends     ParentActivity
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(LocLookApp.user != null) {
-                    mNavigationUserName.setText(LocLookApp.user.getName());
+                User user = LocLookApp.usersMap.get(LocLookApp.appUserId);
+                if(user != null) {
+                    mNavigationUserName.setText(user.getName());
+                }
+
+                // if(LocLookApp.user != null) {
+                //     mNavigationUserName.setText(LocLookApp.user.getName());
 //                    if (LocLookApp.user.getImage() != null) {
 //                        userImage.setImageBitmap(user.getImage());
 //                    } else {
 //                        userImage.setImageResource(R.drawable.userpic_holder);
 //                    }
-                }
+                // }
             }
         });
     }
@@ -348,22 +355,4 @@ public class MainActivity   extends     ParentActivity
             mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);
         }
     }
-
-//    private LocationListener locationListener = new LocationListener() {
-//        @Override
-//        public void onLocationChanged(Location location) {
-//            LocLookApp.setLocation(location);
-//        }
-//
-//        @Override
-//        public void onStatusChanged(String provider, int status, Bundle extras) { }
-//
-//        @Override
-//        public void onProviderEnabled(String provider) {
-//            LocLookApp.setLocation(locationManager.getLastKnownLocation(provider));
-//        }
-//
-//        @Override
-//        public void onProviderDisabled(String provider) { }
-//    };
 }

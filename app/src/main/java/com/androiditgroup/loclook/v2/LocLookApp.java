@@ -15,14 +15,17 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.androiditgroup.loclook.v2.models.Badge;
+import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by sostrovschi on 09.01.2017.
@@ -30,13 +33,17 @@ import java.util.Locale;
 
 public class LocLookApp extends Application {
 
-    public static       User        user;
+    // public static       User        user;
+    public static       String      appUserId;
     public static       Context     context;
     protected static    LocLookApp  instance;
 
     private static      SharedPreferences preferences;
 
 //    public static String authCode;
+
+    public static Map<String, User> usersMap = new HashMap<>();
+    public static Map<String, Publication> publicationsMap = new HashMap<>();
 
     public static Typeface bold, boldItalic, extraBold, extraBoldItalic, italic,
             light, lightItalic, regular, semiBold, semiBoldItalic;
@@ -111,7 +118,10 @@ public class LocLookApp extends Application {
     }
 
     public void logOut() {
-        user = null;
+        // user = null;
+        appUserId = null;
+        usersMap.clear();
+        publicationsMap.clear();
         setLoginStatus(false);
         preferences.edit().clear().commit();
     }

@@ -39,7 +39,11 @@ public class Constants {
 //        public static final String IMG_URL = "img_url";
 
         public static final String USER_TABLE = "USER_DATA";
-        public static final String USER_TABLE_COLUMNS = "NAME TEXT  NOT NULL, PHONE_NUMBER TEXT  NOT NULL, RATE INTEGER, BG_IMG_URL TEXT, AVATAR_URL TEXT, " +
+//        public static final String USER_TABLE_COLUMNS = "NAME TEXT  NOT NULL, PHONE_NUMBER TEXT NOT NULL, RATE INTEGER, BG_IMG_URL TEXT, AVATAR_URL TEXT, " +
+//                                                            "DESCRIPTION TEXT, SITE_URL TEXT, LATITUDE TEXT, LONGITUDE TEXT, RADIUS TEXT, REGION_NAME TEXT, " +
+//                                                            "STREET_NAME TEXT";
+
+        public static final String USER_TABLE_COLUMNS = "NAME TEXT  NOT NULL, PHONE_NUMBER TEXT NOT NULL, RATE INTEGER, BACKGROUND BLOB, AVATAR BLOB, " +
                                                             "DESCRIPTION TEXT, SITE_URL TEXT, LATITUDE TEXT, LONGITUDE TEXT, RADIUS TEXT, REGION_NAME TEXT, " +
                                                             "STREET_NAME TEXT";
 
@@ -54,8 +58,8 @@ public class Constants {
         public static final String QUIZ_ANSWER_TABLE = "QUIZ_ANSWER_DATA";
         public static final String QUIZ_ANSWER_TABLE_COLUMNS = "TEXT TEXT NOT NULL, PUBLICATION_ID INTEGER NOT NULL";
 
-        public static final String IMAGES_TABLE = "IMAGES_DATA";
-        public static final String IMAGES_TABLE_COLUMNS = "IMAGE BLOB NOT NULL, PUBLICATION_ID INTEGER NOT NULL";
+        public static final String PHOTOS_TABLE = "PHOTOS_DATA";
+        public static final String PHOTOS_TABLE_COLUMNS = "PHOTO BLOB NOT NULL, PUBLICATION_ID INTEGER NOT NULL";
 
         public static final String USER_QUIZ_ANSWER_TABLE = "USER_QUIZ_ANSWER_DATA";
         public static final String USER_QUIZ_ANSWER_TABLE_COLUMNS = "QUIZ_ANSWER_ID INTEGER NOT NULL, USER_ID INTEGER NOT NULL";

@@ -13,30 +13,40 @@ public class Publication {
     private String mId;
     private String mText;
     private String mAuthorId;
-    private Badge mBadge;
+//    private Badge mBadge;
+    private String mBadgeId;
     private String mCreatedAt;
     private Location mLocation;
     private String mRegionName;
     private String mStreetName;
     private boolean mHasQuiz;
-    private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
+//    private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
+    private ArrayList<String> mQuizAnswersIdsList = new ArrayList<>();
     private boolean mHasImages;
-    private ArrayList<Bitmap> mImagesList = new ArrayList<>();
+//    private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
+    private ArrayList<String> mPhotosIdsList = new ArrayList<>();
     private boolean mIsAnonymous;
+
+    public String getText() {
+        return (mText != null) ? mText : "";
+    }
 
     public static class Builder {
         private String mId;
         private String mText;
         private String mAuthorId;
-        private Badge mBadge;
+//        private Badge mBadge;
+        private String mBadgeId;
         private String mCreatedAt;
         private Location mLocation;
         private String mRegionName;
         private String mStreetName;
         private boolean mHasQuiz;
-        private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
+//        private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
+        private ArrayList<String> mQuizAnswersIdsList = new ArrayList<>();
         private boolean mHasImages;
-        private ArrayList<Bitmap> mImagesList = new ArrayList<>();
+//        private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
+        private ArrayList<String> mPhotosIdsList = new ArrayList<>();
         private boolean mIsAnonymous;
 
         public Builder id(String value) {
@@ -45,7 +55,8 @@ public class Publication {
         }
 
         public Builder text(String value) {
-            mText = value;
+            // mText = value;
+            mText = (value != null) ? value : "";
             return this;
         }
 
@@ -54,13 +65,18 @@ public class Publication {
             return this;
         }
 
-        public Builder badge(Badge value) {
-            mBadge = value;
+//        public Builder badge(Badge value) {
+//            mBadge = value;
+//            return this;
+//        }
+
+        public Builder badge(String value) {
+            mBadgeId = value;
             return this;
         }
 
         public Builder createdAt(String value) {
-            mCreatedAt = value;
+            mCreatedAt = (value != null) ? value : "";
             return this;
         }
 
@@ -70,12 +86,12 @@ public class Publication {
         }
 
         public Builder regionName(String value) {
-            mRegionName = value;
+            mRegionName = (value != null) ? value : "";
             return this;
         }
 
         public Builder streetName(String value) {
-            mStreetName = value;
+            mStreetName = (value != null) ? value : "";
             return this;
         }
 
@@ -84,8 +100,13 @@ public class Publication {
             return this;
         }
 
-        public Builder quizAnswerList(ArrayList<QuizAnswer> list) {
-            mQuizAnswersList = list;
+//        public Builder quizAnswerList(ArrayList<QuizAnswer> list) {
+//            mQuizAnswersList = list;
+//            return this;
+//        }
+
+        public Builder quizAnswerList(ArrayList<String> list) {
+            mQuizAnswersIdsList = list;
             return this;
         }
 
@@ -94,8 +115,13 @@ public class Publication {
             return this;
         }
 
-        public Builder imagesList(ArrayList<Bitmap> list) {
-            mImagesList = list;
+//        public Builder photosList(ArrayList<Bitmap> list) {
+//            mPhotosList = list;
+//            return this;
+//        }
+
+        public Builder photosList(ArrayList<String> list) {
+            mPhotosIdsList = list;
             return this;
         }
 
@@ -109,15 +135,15 @@ public class Publication {
             publication.mId = this.mId;
             publication.mText = this.mText;
             publication.mAuthorId = this.mAuthorId;
-            publication.mBadge = this.mBadge;
+            publication.mBadgeId = this.mBadgeId;
             publication.mCreatedAt = this.mCreatedAt;
             publication.mLocation = this.mLocation;
             publication.mRegionName = this.mRegionName;
             publication.mStreetName = this.mStreetName;
             publication.mHasQuiz = this.mHasQuiz;
-            publication.mQuizAnswersList = this.mQuizAnswersList;
+            publication.mQuizAnswersIdsList = this.mQuizAnswersIdsList;
             publication.mHasImages = this.mHasImages;
-            publication.mImagesList = this.mImagesList;
+            publication.mPhotosIdsList = this.mPhotosIdsList;
             publication.mIsAnonymous = this.mIsAnonymous;
 
             return publication;

@@ -7,6 +7,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import com.androiditgroup.loclook.v2.LocLookApp;
+import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 
 import java.io.IOException;
@@ -45,8 +46,10 @@ public class DefineUserLocationName {
     };
 
     private void setUserLocation(Location location) {
-        if((LocLookApp.user != null) && (location != null)) {
-            LocLookApp.user.setLocation(location);
+        User user = LocLookApp.usersMap.get(LocLookApp.appUserId);
+
+        if((user != null) && (location != null)) {
+            user.setLocation(location);
 
             // получаем данные местности
             ArrayList<String> locationDataList = getLocationData(location);
@@ -54,10 +57,10 @@ public class DefineUserLocationName {
 
             for (int i = 0; i < locationDataList.size(); i++) {
                 if (i == 0) {
-                    LocLookApp.user.setRegionName(locationDataList.get(i));
+                    user.setRegionName(locationDataList.get(i));
                     sb.append(locationDataList.get(i));
                 } else if (i == 1) {
-                    LocLookApp.user.setStreetName(locationDataList.get(i));
+                    user.setStreetName(locationDataList.get(i));
                     sb.append(", ");
                     sb.append(locationDataList.get(i));
                 }

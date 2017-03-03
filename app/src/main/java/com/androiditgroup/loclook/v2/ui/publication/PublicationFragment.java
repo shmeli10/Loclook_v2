@@ -3,7 +3,6 @@ package com.androiditgroup.loclook.v2.ui.publication;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -13,6 +12,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,7 +28,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -37,30 +36,28 @@ import android.widget.TextView;
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.adapters.BadgesAdapter;
+import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter;
 import com.androiditgroup.loclook.v2.adapters.QuizAnswersAdapter;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
+import com.androiditgroup.loclook.v2.ui.auth.AuthActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightGridView;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
-import com.androiditgroup.loclook.v2.utils.TakePhotoFromCamera;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.VISIBLE;
 
 /**
  * Created by sostrovschi on 1/25/17.
@@ -74,11 +71,12 @@ public class PublicationFragment extends    ParentFragment
 
     private static LayoutInflater mInflater;
 
+    private MainActivity mMainActivity;
+
     private RelativeLayout mPublicationContainer;
     private RelativeLayout mBadgeBlock;
     private RelativeLayout mQuizAnswersBlock;
     private RelativeLayout mShowPhotoBlockRL;
-
     private RelativeLayout mPhotoBlockRL;
 
     private ScrollView mScroll;
@@ -101,30 +99,38 @@ public class PublicationFragment extends    ParentFragment
     private ImageView mShowBadgesIV;
     private ImageView mSelectedBadgeIV;
     private ImageView mShowPhotoBlockIV;
-
-    private ImageView mPhoto1;
-    private ImageView mPhoto2;
-    private ImageView mPhoto3;
+    private ImageView mGalleryLeftScrollIV;
+    private ImageView mGalleryRightScrollIV;
 
     private ExpandableHeightListView mQuizAnswersList;
     private ExpandableHeightGridView mChooseBadgeBlockGV;
+    private RecyclerView mGalleryPhotosRV;
 
     private QuizAnswersAdapter mQuizAnswersAdapter;
     private BadgesAdapter mBadgesAdapter;
+    private GalleryListAdapter mGalleryPhotosAdapter;
 
-    private final int anonymousSwitchResId  = R.id.Publication_AnonymousSwitchBTN;
-    private final int quizSwitchResId       = R.id.Publication_QuizSwitchBTN;
-    private final int addAnswerResId        = R.id.Publication_QuizAnswersBlockAddAnswer;
-    private final int openGalleryResId      = R.id.Publication_OpenGallery;
-    private final int createPhotoResId      = R.id.Publication_CreatePhoto;
+    private final int anonymousSwitchResId      = R.id.Publication_AnonymousSwitchBTN;
+    private final int quizSwitchResId           = R.id.Publication_QuizSwitchBTN;
+    private final int addAnswerResId            = R.id.Publication_QuizAnswersBlockAddAnswer;
+    private final int openGalleryResId          = R.id.Publication_OpenGallery;
+    private final int createPhotoResId          = R.id.Publication_CreatePhoto;
+    private final int showPhotoBlockResId       = R.id.Publication_ShowPhotoBlock;
+    private final int badgeBlockResId           = R.id.Publication_BadgeBlock;
+    private final int galleryLeftScrollResId    = R.id.Publication_GalleryLeftScrollIV;
+    private final int galleryRightScrollResId   = R.id.Publication_GalleryRightScrollBtn;
 
-    private int mPublicationTextLimit;
+    private final int PUBLICATION_TEXT_LIMIT    = LocLookApp.getInstance().getResources().getInteger(R.integer.publication_length);
+    private final int PHOTOS_LIMIT              = LocLookApp.getInstance().getResources().getInteger(R.integer.max_photos_sum);
+    private final int VISIBLE_PHOTOS_LIMIT      = LocLookApp.getInstance().getResources().getInteger(R.integer.visible_photos_sum);
+    private final int SMALL_PHOTO_WIDTH_LIMIT   = (int) LocLookApp.getInstance().getResources().getDimension(R.dimen.small_photo_max_width);
+    private final int SMOOTH_ON                 = 2 * SMALL_PHOTO_WIDTH_LIMIT;
 
     private boolean isAvailableToDelete;
     private boolean isBadgesBlockHidden;
     private boolean isPhotoBlockHidden;
 
-    private Badge selectedBadge;
+    private Badge selectedBadge = LocLookApp.badgesList.get(0);
     private String mCreatedPhotoPath;
 
     public PublicationFragment() {
@@ -141,28 +147,34 @@ public class PublicationFragment extends    ParentFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mMainActivity = (MainActivity) getActivity();
+
         View view = inflater.inflate(R.layout.fragment_publication, container, false);
 
-        mPublicationContainer   = (RelativeLayout) view.findViewById(R.id.Publication_Container);
-        mQuizAnswersBlock       = (RelativeLayout) view.findViewById(R.id.Publication_QuizAnswersBlock);
-        mBadgeBlock             = (RelativeLayout) view.findViewById(R.id.Publication_BadgeBlock);
-        mShowPhotoBlockRL       = (RelativeLayout) view.findViewById(R.id.Publication_ShowPhotoBlock);
-        mPhotoBlockRL           = (RelativeLayout) view.findViewById(R.id.Publication_PhotoBlock);
+        MainActivity.mSlidingPaneLayout.setEnableTouchEvents(false);
 
+        // selectedBadge = LocLookApp.badgesList.get(0);
         mScroll = (ScrollView) view.findViewById(R.id.Publication_ScrollView);
-
-        mPublicationTextLimit = getActivity().getResources().getInteger(R.integer.publication_length);
-        selectedBadge = LocLookApp.badgesList.get(0);
 
         mPublicationText = (EditText) view.findViewById(R.id.Publication_PublicationTextET);
         mPublicationText.addTextChangedListener(this);
+
+        mPublicationContainer   = (RelativeLayout) view.findViewById(R.id.Publication_Container);
+        mQuizAnswersBlock       = (RelativeLayout) view.findViewById(R.id.Publication_QuizAnswersBlock);
+        mPhotoBlockRL           = (RelativeLayout) view.findViewById(R.id.Publication_PhotoBlock);
+
+        mBadgeBlock = (RelativeLayout) view.findViewById(badgeBlockResId);
+        mBadgeBlock.setOnClickListener(this);
+
+        mShowPhotoBlockRL = (RelativeLayout) view.findViewById(showPhotoBlockResId);
+        mShowPhotoBlockRL.setOnClickListener(this);
 
         mAnonymousStateTV = (TextView) view.findViewById(R.id.Publication_AnonymousStateTV);
         mQuizStateTV = (TextView) view.findViewById(R.id.Publication_QuizStateTV);
         mPhotosAddedSumTV = (TextView) view.findViewById(R.id.Publication_PhotosAddedSumTV);
 
         mLeftCharactersBody = (TextView) view.findViewById(R.id.Publication_LeftCharactersBodyTV);
-        mLeftCharactersBody.setText("" +mPublicationTextLimit);
+        mLeftCharactersBody.setText("" +PUBLICATION_TEXT_LIMIT);
 
         mOpenGalleryTV = (TextView) view.findViewById(openGalleryResId);
         mOpenGalleryTV.setOnClickListener(this);
@@ -195,9 +207,6 @@ public class PublicationFragment extends    ParentFragment
         mShowBadgesIV       = (ImageView) view.findViewById(R.id.Publication_ShowBadges);
         mShowPhotoBlockIV   = (ImageView) view.findViewById(R.id.Publication_ShowPhotos);
         mSelectedBadgeTV    = (TextView) view.findViewById(R.id.Publication_BadgeNameTV);
-        mPhoto1             = (ImageView) view.findViewById(R.id.Publication_Photo1);
-        mPhoto2             = (ImageView) view.findViewById(R.id.Publication_Photo2);
-        mPhoto3             = (ImageView) view.findViewById(R.id.Publication_Photo3);
 
         mChooseBadgeBlockGV = (ExpandableHeightGridView) view.findViewById(R.id.Publication_ChooseBadgeBlockGV);
 
@@ -205,41 +214,15 @@ public class PublicationFragment extends    ParentFragment
         mChooseBadgeBlockGV.setAdapter(mBadgesAdapter);
         mChooseBadgeBlockGV.setOnItemClickListener(onBadgeClickListener);
 
-        mBadgeBlock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mGalleryPhotosAdapter = new GalleryListAdapter(mPhotosList);
+        mGalleryPhotosRV = (RecyclerView) view.findViewById(R.id.Publication_GalleryRecyclerView);
+        mGalleryPhotosRV.setAdapter(mGalleryPhotosAdapter);
 
-                if(isBadgesBlockHidden) {
-                    mShowBadgesIV.setImageResource(R.drawable.hide_data);
-                    mChooseBadgeBlockGV.setVisibility(View.VISIBLE);
-                    isBadgesBlockHidden = false;
-                    autoScrollDown();
-                }
-                else {
-                    mShowBadgesIV.setImageResource(R.drawable.show_data);
-                    mChooseBadgeBlockGV.setVisibility(View.GONE);
-                    isBadgesBlockHidden = true;
-                }
-            }
-        });
+        mGalleryLeftScrollIV = (ImageView) view.findViewById(galleryLeftScrollResId);
+        mGalleryLeftScrollIV.setOnClickListener(this);
 
-        mShowPhotoBlockRL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(isPhotoBlockHidden) {
-                    mShowPhotoBlockIV.setImageResource(R.drawable.hide_data);
-                    mPhotoBlockRL.setVisibility(View.VISIBLE);
-                    isPhotoBlockHidden = false;
-                    autoScrollDown();
-                }
-                else {
-                    mShowPhotoBlockIV.setImageResource(R.drawable.show_data);
-                    mPhotoBlockRL.setVisibility(View.GONE);
-                    isPhotoBlockHidden = true;
-                }
-            }
-        });
+        mGalleryRightScrollIV = (ImageView) view.findViewById(galleryRightScrollResId);
+        mGalleryRightScrollIV.setOnClickListener(this);
 
         setHasOptionsMenu(true);
 
@@ -276,7 +259,7 @@ public class PublicationFragment extends    ParentFragment
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         // вычисляем и отображаем кол-во символов, которые еще можно внести в поле
-        mLeftCharactersBody.setText("" + (mPublicationTextLimit - mPublicationText.length()));
+        mLeftCharactersBody.setText("" + (PUBLICATION_TEXT_LIMIT - mPublicationText.length()));
     }
 
     @Override
@@ -295,7 +278,7 @@ public class PublicationFragment extends    ParentFragment
 
                 if(checked){
                     mQuizStateTV.setText(R.string.state_on_text);
-                    mQuizAnswersBlock.setVisibility(View.VISIBLE);
+                    mQuizAnswersBlock.setVisibility(VISIBLE);
                     autoScrollDown();
                 }
                 else {
@@ -326,6 +309,32 @@ public class PublicationFragment extends    ParentFragment
                 }
 
                 break;
+            case badgeBlockResId:
+                if(isBadgesBlockHidden) {
+                    mShowBadgesIV.setImageResource(R.drawable.hide_data);
+                    mChooseBadgeBlockGV.setVisibility(VISIBLE);
+                    isBadgesBlockHidden = false;
+                    autoScrollDown();
+                }
+                else {
+                    mShowBadgesIV.setImageResource(R.drawable.show_data);
+                    mChooseBadgeBlockGV.setVisibility(View.GONE);
+                    isBadgesBlockHidden = true;
+                }
+                break;
+            case showPhotoBlockResId:
+                if(isPhotoBlockHidden) {
+                    mShowPhotoBlockIV.setImageResource(R.drawable.hide_data);
+                    mPhotoBlockRL.setVisibility(VISIBLE);
+                    isPhotoBlockHidden = false;
+                    autoScrollDown();
+                }
+                else {
+                    mShowPhotoBlockIV.setImageResource(R.drawable.show_data);
+                    mPhotoBlockRL.setVisibility(View.GONE);
+                    isPhotoBlockHidden = true;
+                }
+                break;
             case openGalleryResId:
                 Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 photoPickerIntent.setType("image/*");
@@ -338,6 +347,12 @@ public class PublicationFragment extends    ParentFragment
                     String[] permissions = new String[]{Manifest.permission.CAMERA};
                     ActivityCompat.requestPermissions(getActivity(), permissions, Constants.CAMERA_PERMISSION_CODE);
                 }
+                break;
+            case galleryLeftScrollResId:
+                mGalleryPhotosRV.smoothScrollBy(-SMOOTH_ON, 0);
+                break;
+            case galleryRightScrollResId:
+                mGalleryPhotosRV.smoothScrollBy(SMOOTH_ON, 0);
                 break;
         }
     }
@@ -399,31 +414,25 @@ public class PublicationFragment extends    ParentFragment
         }
 
         ArrayList<String> realQuizAnswersList = new ArrayList<>();
-
         // если надо включить опрос в публикацию
         if(mQuizSwitch.isChecked()) {
-            // List<Integer> notEmptyQuizAnswerIdsList = new ArrayList<>();
             for(int i=0; i<mAnswersList.size(); i++) {
-//                if((mAnswersList.get(i) == null) || (mAnswersList.get(i).equals("")))
-//                    mAnswersList.remove(i);
                 if(!TextUtils.isEmpty(mAnswersList.get(i)))
-                    // notEmptyQuizAnswerIdsList.add(i);
                     realQuizAnswersList.add(mAnswersList.get(i));
             }
 
-            // if(notEmptyQuizAnswerIdsList.size() >= Constants.QUIZ_MIN_ANSWERS) {
             if(realQuizAnswersList.size() < Constants.QUIZ_MIN_ANSWERS) {
                 LocLookApp.showSimpleSnakeBar(mPublicationContainer, "need_more_answers_text");
                 return;
             }
         }
 
-        ArrayList<Bitmap> imagesList = new ArrayList<>();
-
-        Publication publication = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, imagesList, mAnonymousSwitch.isSelected());
+        Publication publication = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isSelected());
 
         if(publication != null) {
             Log.e("ABC", "PublicationFragment: sendPublication(): publication is saved");
+            mMainActivity.refreshFeed = true;
+            mMainActivity.onBackPressed();
         }
         else {
             LocLookApp.showSimpleSnakeBar(mPublicationContainer, "publication_send_error_text");
@@ -443,102 +452,60 @@ public class PublicationFragment extends    ParentFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        Log.e("ABC", "PublicationFragment: onActivityResult(): resultCode= " + resultCode + ",requestCode= " + requestCode);
 
         if (resultCode == RESULT_OK) {
-            // File photoFile = new File(LocLookApp.context.getCacheDir().getPath(), "user_avatar.jpg");
-            // File photoFile = new File(LocLookApp.context.getCacheDir().getPath(), "pImage_" +mPhotosList.size()+ ".jpg");
             Bitmap photoBitmap = null;
+
             if (requestCode == Constants.PICK_FILE_RC) {
                 try {
-//                    Log.e("ABC", "PublicationFragment: onActivityResult(): PICK_FILE_RC: image uri:" +data.getData());
-
                     // get image from intent
                     InputStream inputStream = LocLookApp.context.getContentResolver().openInputStream(data.getData());
+
                     byte[] buffer = new byte[inputStream.available()];
                     inputStream.read(buffer);
                     inputStream.close();
+
                     // create a cropped bitmap
-                    // Bitmap cropped = cropBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length));
                     photoBitmap = cropBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length));
-
-//                    Log.e("ABC", "PublicationFragment: onActivityResult(): PICK_FILE_RC: photoBitmap is null:" +(photoBitmap == null));
-
-                    // write it to a file
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                    byte[] compressedImage = stream.toByteArray();
-//                    OutputStream outputStream = new FileOutputStream(photoFile);
-//                    outputStream.write(compressedImage);
-//                    outputStream.flush();
-//                    outputStream.close();
-//                    stream.close();
-
-//                    Log.e("ABC", "PublicationFragment: onActivityResult(): PICK_FILE_RC");
                 } catch (Exception exc) {
-                    // e.printStackTrace();
-                    // new ApiClient().sendErrorMessage(null, e.toString(), "SettingsFragment: onActivityResult(): requestCode == PICK_FILE_RC");
+                    exc.printStackTrace();
                     LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
                 }
             } else if (requestCode == Constants.TAKE_PHOTO_RC) {
                 try {
-                    // Bitmap cropped = cropBitmap(BitmapFactory.decodeFile(mPhotoPath));
-                    // Bitmap cropped = cropBitmap(BitmapFactory.decodeFile(data.getStringExtra(MediaStore.EXTRA_OUTPUT)));
-                    // String filePath = data.getStringExtra(MediaStore.EXTRA_OUTPUT);
-
-//                    Log.e("ABC", "PublicationFragment: onActivityResult(): TAKE_PHOTO_RC: mCreatedPhotoUri= " +mCreatedPhotoUri);
-//                    Log.e("ABC", "PublicationFragment: onActivityResult(): TAKE_PHOTO_RC: mCreatedPhotoPath= " +mCreatedPhotoPath);
-
-                    photoBitmap = cropBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath));
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                    byte[] compressedImage = stream.toByteArray();
-//                    OutputStream outputStream = new FileOutputStream(photoFile);
-//                    outputStream.write(compressedImage);
-//                    outputStream.flush();
-//                    outputStream.close();
-//                    stream.close();
-
-//                    Log.e("ABC", "PublicationFragment: onActivityResult(): TAKE_PHOTO_RC");
+                    // create a cropped bitmap
+                    if(mCreatedPhotoPath != null)
+                        photoBitmap = cropBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath));
                 } catch (Exception exc) {
-                    // e.printStackTrace();
-                    // new ApiClient().sendErrorMessage(null, e.toString(), "SettingsFragment: onActivityResult(): requestCode == TAKE_PHOTO_RC");
+                    exc.printStackTrace();
                     LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
                 }
             }
 
-//            Log.e("ABC", "PublicationFragment: onActivityResult(): photoBitmap is null: " +(photoBitmap == null));
-
             if(photoBitmap != null) {
-                switch (mPhotosList.size()) {
-
-                    case 0:
-                        mPhoto1.setImageBitmap(photoBitmap);
-//                        Log.e("ABC", "PublicationFragment: onActivityResult(): mPhoto1.setImageBitmap");
-                        break;
-                    case 1:
-                        mPhoto2.setImageBitmap(photoBitmap);
-//                        Log.e("ABC", "PublicationFragment: onActivityResult(): mPhoto2.setImageBitmap");
-                        break;
-                    case 2:
-                        mPhoto3.setImageBitmap(photoBitmap);
-//                        Log.e("ABC", "PublicationFragment: onActivityResult(): mPhoto3.setImageBitmap");
-                        break;
-                }
                 mPhotosList.add(photoBitmap);
+                mGalleryPhotosAdapter.notifyDataSetChanged();
 
                 int photosSum = mPhotosList.size();
+
+                mGalleryPhotosRV.smoothScrollToPosition(photosSum);
                 mPhotosAddedSumTV.setText(String.valueOf(photosSum));
 
-                if(photosSum == LocLookApp.getInstance().getResources().getInteger(R.integer.max_photos_sum)) {
+                if(photosSum == (VISIBLE_PHOTOS_LIMIT + 1)) {
+                    mGalleryLeftScrollIV.setColorFilter(LocLookApp.getInstance().getResources().getColor(R.color.dark_grey));
+                    mGalleryLeftScrollIV.setClickable(true);
+
+                    mGalleryRightScrollIV.setColorFilter(LocLookApp.getInstance().getResources().getColor(R.color.dark_grey));
+                    mGalleryRightScrollIV.setClickable(true);
+                }
+
+                if(photosSum == PHOTOS_LIMIT) {
                     mOpenGalleryTV.setBackgroundResource(R.color.light_grey);
                     mOpenGalleryTV.setClickable(false);
 
                     mCreatePhotoTV.setBackgroundResource(R.color.light_grey);
                     mCreatePhotoTV.setClickable(false);
                 }
-
-//                Log.e("ABC", "PublicationFragment: onActivityResult(): mPhotosList.add image");
             }
         }
     }
@@ -559,21 +526,16 @@ public class PublicationFragment extends    ParentFragment
                         storageDir      /* directory */
                 );
 
-//                Log.e("ABC", "PublicationFragment: getFile(): image is null:" +(image == null));
-
                 // Continue only if the File was successfully created
                 if (image != null) {
                     Uri outputFileUri = Uri.fromFile(image);
-//                    Log.e("ABC", "PublicationFragment: getFile(): outputFileUri= " +mCreatedPhotoUri.toString());
                     captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                     startActivityForResult(captureIntent, Constants.TAKE_PHOTO_RC);
 
                     mCreatedPhotoPath = image.getAbsolutePath();
                 }
-
             } catch (IOException e) {
-                // Error occurred while creating the File
-                // e.printStackTrace();
+                e.printStackTrace();
                 LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
             }
         }

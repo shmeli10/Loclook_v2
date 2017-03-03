@@ -1,5 +1,6 @@
 package com.androiditgroup.loclook.v2.models;
 
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.text.TextUtils;
 
@@ -13,8 +14,10 @@ public class User {
     private String mName;
     private String mPhoneNumber;
     private String mRate;
-    private String mBgImgUrl;
-    private String mAvatarUrl;
+    // private String mBgImgUrl;
+    // private String mAvatarUrl;
+    private Bitmap mBackground;
+    private Bitmap mAvatar;
     private String mDescription;
     private String mSiteUrl;
     private String mLatitude;
@@ -60,8 +63,10 @@ public class User {
         private String mName;
         private String mPhoneNumber;
         private String mRate;
-        private String mBgImgUrl;
-        private String mAvatarUrl;
+//        private String mBgImgUrl;
+//        private String mAvatarUrl;
+        private Bitmap mBackground;
+        private Bitmap mAvatar;
         private String mDescription;
         private String mSiteUrl;
         private String mLatitude;
@@ -90,13 +95,23 @@ public class User {
             return this;
         }
 
-        public Builder bgImgUrl(String bgImgUrl) {
-            mBgImgUrl = bgImgUrl;
+//        public Builder bgImgUrl(String bgImgUrl) {
+//            mBgImgUrl = bgImgUrl;
+//            return this;
+//        }
+//
+//        public Builder avatarUrl(String avatarUrl) {
+//            mAvatarUrl = avatarUrl;
+//            return this;
+//        }
+
+        public Builder background(Bitmap background) {
+            mBackground = background;
             return this;
         }
 
-        public Builder avatarUrl(String avatarUrl) {
-            mAvatarUrl = avatarUrl;
+        public Builder avatar(Bitmap avatar) {
+            mAvatar = avatar;
             return this;
         }
 
@@ -141,8 +156,10 @@ public class User {
             user.mName = this.mName;
             user.mPhoneNumber = this.mPhoneNumber;
             user.mRate = this.mRate;
-            user.mBgImgUrl = this.mBgImgUrl;
-            user.mAvatarUrl = this.mAvatarUrl;
+//            user.mBgImgUrl = this.mBgImgUrl;
+//            user.mAvatarUrl = this.mAvatarUrl;
+            user.mBackground = this.mBackground;
+            user.mAvatar = this.mAvatar;
             user.mDescription = this.mDescription;
             user.mSiteUrl = this.mSiteUrl;
             user.mLatitude = this.mLatitude;

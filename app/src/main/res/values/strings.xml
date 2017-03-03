@@ -49,6 +49,9 @@
 
     <string name="get_photo_error_text">Не удалось получить фото</string>
 
+    <string name="default_date">00.00.0000</string>
+
+    <string name="default_publication_text">Текст публикации..</string>
 
     <string-array name="badges">
         <item>LocLook</item>

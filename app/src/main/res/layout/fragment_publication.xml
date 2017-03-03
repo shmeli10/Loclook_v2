@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/Publication_Container"
     style="@style/MM"
     android:gravity="center"
@@ -10,7 +12,8 @@
         style="@style/MM"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp">
 
         <RelativeLayout
             style="@style/MW"
@@ -307,60 +310,32 @@
                     android:id="@+id/Publication_FramesContainer"
                     style="@style/MW"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:gravity="center_vertical">
 
-                    <FrameLayout
-                        android:id="@+id/Publication_FramePhoto1"
+                    <ImageButton
+                        android:id="@+id/Publication_GalleryLeftScrollIV"
+                        style="@style/Base.Widget.AppCompat.ActionButton"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:tint="@color/light_grey"
+                        android:src="@mipmap/ic_keyboard_arrow_left_white_24dp"
+                        android:clickable="false"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/Publication_GalleryRecyclerView"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:padding="10dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:layout_weight="1"
-                        android:background="@drawable/rounded_rect_quiz_answer">
-
-                        <ImageView
-                            android:id="@+id/Publication_Photo1"
-                            android:layout_width="100dp"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/no_photo_icon"/>
-
-                    </FrameLayout>
-                    <FrameLayout
-                        android:id="@+id/Publication_FramePhoto2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="3dp"
-                        android:padding="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/rounded_rect_quiz_answer">
-
-                        <ImageView
-                            android:id="@+id/Publication_Photo2"
-                            android:layout_width="100dp"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/no_photo_icon"
-                            android:layout_centerInParent="true"/>
-
-                    </FrameLayout>
-                    <FrameLayout
-                        android:id="@+id/Publication_FramePhoto3"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="3dp"
-                        android:padding="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/rounded_rect_quiz_answer">
-
-                        <ImageView
-                            android:id="@+id/Publication_Photo3"
-                            android:layout_width="100dp"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/no_photo_icon"
-                            android:layout_centerInParent="true"/>
-
-                    </FrameLayout>
+                        android:clipToPadding="false"
+                        app:layoutManager="android.support.v7.widget.GridLayoutManager"/>
+                    <ImageButton
+                        android:id="@+id/Publication_GalleryRightScrollBtn"
+                        style="@style/Base.Widget.AppCompat.ActionButton"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:tint="@color/light_grey"
+                        android:src="@mipmap/ic_keyboard_arrow_right_white_24dp"
+                        android:clickable="false"/>
 
                 </LinearLayout>
                 <LinearLayout

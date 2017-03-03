@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/WW"
+    android:gravity="center"
+    android:layout_margin="5dp">
+
+    <ImageView
+        android:id="@+id/Gallery_ImageView"
+        style="@style/WW"
+        android:adjustViewBounds="true"
+        android:maxWidth="@dimen/small_photo_max_width"
+        android:maxHeight="@dimen/small_photo_max_height"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_photo_icon"/>
+
+</LinearLayout>
