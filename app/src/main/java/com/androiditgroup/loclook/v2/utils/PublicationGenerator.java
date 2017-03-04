@@ -18,26 +18,28 @@ import java.util.ArrayList;
 
 public class PublicationGenerator {
 
-    public static Publication getPublicationFromCursor(Cursor cursor) {
+    // public static Publication getPublicationFromCursor(Cursor cursor) {
+    public static Publication getPublicationFromCursor(Cursor pCursor, ArrayList<QuizAnswer> quizAnswerList, ArrayList<Bitmap> photosList) {
+
+        ArrayList<QuizAnswer> mQuizAnswerList = new ArrayList<>();
 
         try {
+            pCursor.moveToFirst();
 
-            cursor.moveToFirst();
+            String pId = pCursor.getString(pCursor.getColumnIndex("_ID"));
+            String pText = pCursor.getString(pCursor.getColumnIndex("TEXT"));
+            String pAuthorId = pCursor.getString(pCursor.getColumnIndex("AUTHOR_ID"));
+            String pCreatedAt = pCursor.getString(pCursor.getColumnIndex("CREATED_AT"));
+            String pLatitude = pCursor.getString(pCursor.getColumnIndex("LATITUDE"));
+            String pLongitude = pCursor.getString(pCursor.getColumnIndex("LONGITUDE"));
+            String pRegionName = pCursor.getString(pCursor.getColumnIndex("REGION_NAME"));
+            String pStreetName = pCursor.getString(pCursor.getColumnIndex("STREET_NAME"));
 
-            String pId = cursor.getString(cursor.getColumnIndex("_ID"));
-            String pText = cursor.getString(cursor.getColumnIndex("TEXT"));
-            String pAuthorId = cursor.getString(cursor.getColumnIndex("AUTHOR_ID"));
-            String pCreatedAt = cursor.getString(cursor.getColumnIndex("CREATED_AT"));
-            String pLatitude = cursor.getString(cursor.getColumnIndex("LATITUDE"));
-            String pLongitude = cursor.getString(cursor.getColumnIndex("LONGITUDE"));
-            String pRegionName = cursor.getString(cursor.getColumnIndex("REGION_NAME"));
-            String pStreetName = cursor.getString(cursor.getColumnIndex("STREET_NAME"));
+            int pBadgeId = pCursor.getInt(pCursor.getColumnIndex("BADGE_ID"));
 
-            int pBadgeId = cursor.getInt(cursor.getColumnIndex("BADGE_ID"));
-
-            boolean pHasQuiz = (cursor.getInt(cursor.getColumnIndex("HAS_QUIZ")) == 1);
-            boolean pHasImages = (cursor.getInt(cursor.getColumnIndex("HAS_IMAGES")) == 1);
-            boolean pIsAnonymous = (cursor.getInt(cursor.getColumnIndex("IS_ANONYMOUS")) == 1);
+            boolean pHasQuiz = (pCursor.getInt(pCursor.getColumnIndex("HAS_QUIZ")) == 1);
+            boolean pHasImages = (pCursor.getInt(pCursor.getColumnIndex("HAS_IMAGES")) == 1);
+            boolean pIsAnonymous = (pCursor.getInt(pCursor.getColumnIndex("IS_ANONYMOUS")) == 1);
 
             Location pLocation = new Location("");
 
@@ -56,8 +58,15 @@ public class PublicationGenerator {
             else
                 return null;
 
-            if((pAuthorId != null) && (!pAuthorId.equals("")))
+            if((pAuthorId != null) && (!pAuthorId.equals(""))) {
                 mPublicationBuilder.authorId(pAuthorId);
+
+                User author = UserGenerator.getUserById(pAuthorId);
+
+                if((author != null) && (!LocLookApp.usersMap.containsKey(author.getId()))) {
+                    LocLookApp.usersMap.put(author.getId(), author);
+                }
+            }
             else
                 return null;
 
@@ -65,8 +74,39 @@ public class PublicationGenerator {
 
             ArrayList<String> pQuizAnswersIdsList = new ArrayList<>();
 
+            // если публикация содержит опрос
             if(pHasQuiz){
 
+                // если список с вариантами ответа задан
+                if(quizAnswerList != null) {
+                    // получаем список из заданных значений
+                    mQuizAnswerList.addAll(quizAnswerList);
+                }
+                // если список с вариантами ответа не задан
+                else {
+                    // получаем курсор с вариантами ответа опраса из БД
+                    Cursor cursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.QUIZ_ANSWER_TABLE, null, "PUBLICATION_ID", pId);
+
+                    // если данные получены
+                    if(cursor != null)
+                        // получаем список с вариантами ответа опроса из БД
+                        mQuizAnswerList.addAll(QuizAnswerGenerator.getQuizAnswersList(cursor));
+                }
+
+                // проходим циклом по списку
+                for(int i=0; i<mQuizAnswerList.size(); i++) {
+                    // получаем очередной вариант ответа
+                    QuizAnswer quizAnswer = mQuizAnswerList.get(i);
+
+                    // если вариант получен
+                    if(quizAnswer != null) {
+                        // добавляем его идентификатор в "список с идентификаторами вариантов ответов опроса в публикации"
+                        pQuizAnswersIdsList.add(quizAnswer.getId());
+
+                        // кладем вариант ответа в "коллецию всех вариантов ответов всех опросов в публикациях"
+                        LocLookApp.quizAnswersMap.put(quizAnswer.getId(), quizAnswer);
+                    }
+                }
             }
 
             //////////////////////////////////////////////////////////////////////////////////////////
@@ -75,10 +115,15 @@ public class PublicationGenerator {
 
             if(pHasImages) {
 
+                if((photosList != null) && (photosList.size() > 0)) {
+
+                }
+                else {
+
+                }
             }
 
             //////////////////////////////////////////////////////////////////////////////////////////
-
 
             mPublicationBuilder.text(pText);
             mPublicationBuilder.createdAt(pCreatedAt);
@@ -98,13 +143,12 @@ public class PublicationGenerator {
         } catch(Exception exc) {
             Log.e("ABC", "PublicationGenerator: getPublicationFromCursor(): error: " +exc.toString());
         } finally {
-            cursor.close();
+            pCursor.close();
         }
 
         return null;
     }
 
-    /*
     public static ArrayList<Publication> getPublicationsList(Cursor pCursor) {
 
         ArrayList<Publication> result = new ArrayList<>();
@@ -112,6 +156,8 @@ public class PublicationGenerator {
         if((pCursor != null) && (pCursor.getCount() > 0)) {
             Log.e("ABC", "PublicationGenerator: getPublicationsList(): pCursor.getCount()= " + pCursor.getCount());
             pCursor.moveToFirst();
+
+            ArrayList<QuizAnswer> mQuizAnswerList = new ArrayList<>();
 
             try {
 
@@ -140,51 +186,154 @@ public class PublicationGenerator {
                     if (pLongitude != null)
                         pLocation.setLongitude(Double.parseDouble(pLongitude));
 
+                    //////////////////////////////////////////////////////////////////////////////////////
+
+                    Publication.Builder mPublicationBuilder = new Publication.Builder();
+
+                    if((pId != null) && (!pId.equals("")))
+                        mPublicationBuilder.id(pId);
+                    else
+                        return null;
+
+                    if((pAuthorId != null) && (!pAuthorId.equals(""))) {
+                        mPublicationBuilder.authorId(pAuthorId);
+
+                        User author = UserGenerator.getUserById(pAuthorId);
+
+                        if((author != null) && (!LocLookApp.usersMap.containsKey(author.getId()))) {
+                            LocLookApp.usersMap.put(author.getId(), author);
+                        }
+                    }
+                    else
+                        return null;
+
                     //////////////////////////////////////////////////////////////////////////////////////////
 
-                    if(!pIsAnonymous) {
+                    ArrayList<String> pQuizAnswersIdsList = new ArrayList<>();
 
-                        Cursor authorNameCursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(),
-                                                                                        Constants.DataBase.USER_TABLE,
-                                                                                        null,
-                                                                                        "_ID",
-                                                                                        pAuthorId);
+                    // если публикация содержит опрос
+                    if(pHasQuiz){
 
+                        // получаем курсор с вариантами ответа опраса из БД
+                        Cursor cursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.QUIZ_ANSWER_TABLE, null, "PUBLICATION_ID", pId);
+
+                        // если данные получены
+                        if(cursor != null)
+                            // получаем список с вариантами ответа опроса из БД
+                            mQuizAnswerList.addAll(QuizAnswerGenerator.getQuizAnswersList(cursor));
+
+                        // проходим циклом по списку
+                        for(int i=0; i<mQuizAnswerList.size(); i++) {
+                            // получаем очередной вариант ответа
+                            QuizAnswer quizAnswer = mQuizAnswerList.get(i);
+
+                            // если вариант получен
+                            if(quizAnswer != null) {
+                                // добавляем его идентификатор в "список с идентификаторами вариантов ответов опроса в публикации"
+                                pQuizAnswersIdsList.add(quizAnswer.getId());
+
+                                // кладем вариант ответа в "коллецию всех вариантов ответов всех опросов в публикациях"
+                                LocLookApp.quizAnswersMap.put(quizAnswer.getId(), quizAnswer);
+                            }
+                        }
                     }
 
                     //////////////////////////////////////////////////////////////////////////////////////////
 
-                    ArrayList<QuizAnswer> pQuizAnswerList = new ArrayList<>();
+                    ArrayList<String> photosIdsList = new ArrayList<>();
 
-//                if(pHasQuiz){
+//                    if(pHasImages) {
 //
-//                }
+//                        if((photosList != null) && (photosList.size() > 0)) {
+//
+//                        }
+//                        else {
+//
+//                        }
+//                    }
 
                     //////////////////////////////////////////////////////////////////////////////////////////
 
-                    ArrayList<Bitmap> photosList = new ArrayList<>();
+                    mPublicationBuilder.text(pText);
+                    mPublicationBuilder.createdAt(pCreatedAt);
+                    mPublicationBuilder.location(pLocation);
+                    mPublicationBuilder.regionName(pRegionName);
+                    mPublicationBuilder.streetName(pStreetName);
+                    mPublicationBuilder.badge(String.valueOf(pBadgeId));
+                    mPublicationBuilder.hasQuiz(pHasQuiz);
+                    mPublicationBuilder.hasImages(pHasImages);
+                    mPublicationBuilder.isAnonymous(pIsAnonymous);
+                    mPublicationBuilder.quizAnswerList(pQuizAnswersIdsList);
+                    mPublicationBuilder.photosList(photosIdsList);
 
-//                if(pHasImages) {
+//                    String pId = pCursor.getString(pCursor.getColumnIndex("_ID"));
+//                    String pText = pCursor.getString(pCursor.getColumnIndex("TEXT"));
+//                    String pAuthorId = pCursor.getString(pCursor.getColumnIndex("AUTHOR_ID"));
+//                    String pCreatedAt = pCursor.getString(pCursor.getColumnIndex("CREATED_AT"));
+//                    String pLatitude = pCursor.getString(pCursor.getColumnIndex("LATITUDE"));
+//                    String pLongitude = pCursor.getString(pCursor.getColumnIndex("LONGITUDE"));
+//                    String pRegionName = pCursor.getString(pCursor.getColumnIndex("REGION_NAME"));
+//                    String pStreetName = pCursor.getString(pCursor.getColumnIndex("STREET_NAME"));
 //
-//                }
-
-                    //////////////////////////////////////////////////////////////////////////////////////////
-
-
-                    Publication.Builder mPublicationBuilder = new Publication.Builder()
-                            .id(pId)
-                            .text(pText)
-                            .authorId(pAuthorId)
-                            .badge(LocLookApp.badgesList.get(pBadgeId))
-                            .createdAt(pCreatedAt)
-                            .location(pLocation)
-                            .regionName(pRegionName)
-                            .streetName(pStreetName)
-                            .hasQuiz(pHasQuiz)
-                            .hasImages(pHasImages)
-                            .isAnonymous(pIsAnonymous)
-                            .quizAnswerList(pQuizAnswerList)
-                            .photosList(photosList);
+//                    int pBadgeId = pCursor.getInt(pCursor.getColumnIndex("BADGE_ID"));
+//
+//                    boolean pHasQuiz = (pCursor.getInt(pCursor.getColumnIndex("HAS_QUIZ")) == 1);
+//                    boolean pHasImages = (pCursor.getInt(pCursor.getColumnIndex("HAS_IMAGES")) == 1);
+//                    boolean pIsAnonymous = (pCursor.getInt(pCursor.getColumnIndex("IS_ANONYMOUS")) == 1);
+//
+//                    Location pLocation = new Location("");
+//
+//                    if (pLatitude != null)
+//                        pLocation.setLatitude(Double.parseDouble(pLatitude));
+//
+//                    if (pLongitude != null)
+//                        pLocation.setLongitude(Double.parseDouble(pLongitude));
+//
+//                    //////////////////////////////////////////////////////////////////////////////////////////
+//
+//                    if(!pIsAnonymous) {
+//
+//                        Cursor authorNameCursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(),
+//                                                                                        Constants.DataBase.USER_TABLE,
+//                                                                                        null,
+//                                                                                        "_ID",
+//                                                                                        pAuthorId);
+//
+//                    }
+//
+//                    //////////////////////////////////////////////////////////////////////////////////////////
+//
+//                    ArrayList<QuizAnswer> pQuizAnswerList = new ArrayList<>();
+//
+////                if(pHasQuiz){
+////
+////                }
+//
+//                    //////////////////////////////////////////////////////////////////////////////////////////
+//
+//                    ArrayList<Bitmap> photosList = new ArrayList<>();
+//
+////                if(pHasImages) {
+////
+////                }
+//
+//                    //////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//                    Publication.Builder mPublicationBuilder = new Publication.Builder()
+//                            .id(pId)
+//                            .text(pText)
+//                            .authorId(pAuthorId)
+//                            .badge(LocLookApp.badgesList.get(pBadgeId))
+//                            .createdAt(pCreatedAt)
+//                            .location(pLocation)
+//                            .regionName(pRegionName)
+//                            .streetName(pStreetName)
+//                            .hasQuiz(pHasQuiz)
+//                            .hasImages(pHasImages)
+//                            .isAnonymous(pIsAnonymous)
+//                            .quizAnswerList(pQuizAnswerList)
+//                            .photosList(photosList);
 
                     result.add(mPublicationBuilder.build());
 
@@ -202,5 +351,4 @@ public class PublicationGenerator {
 
         return result;
     }
-    */
 }

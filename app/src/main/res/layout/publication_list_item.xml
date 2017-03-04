@@ -87,22 +87,22 @@
             android:id="@+id/Publication_AnswersBlock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/Publication_AnswersSumTV"
                 style="@style/WW"
-                android:layout_gravity="center"
-                android:paddingTop="2dp"
                 android:paddingRight="3dp"
+                android:layout_toLeftOf="@+id/Publication_AnswersSumIV"
+                android:layout_centerInParent="true"
                 android:textSize="10sp"
                 android:textColor="@color/deep_blue"
                 tools:text="0"/>
             <ImageView
+                android:id="@+id/Publication_AnswersSumIV"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_toRightOf="@+id/Publication_AnswersSumTV"
+                android:layout_centerInParent="true"
                 android:src="@drawable/comments_icon"/>
 
         </RelativeLayout>
@@ -116,16 +116,17 @@
             <TextView
                 android:id="@+id/Publication_LikesSumTV"
                 style="@style/WW"
-                android:layout_gravity="center"
-                android:paddingTop="2dp"
                 android:paddingRight="3dp"
+                android:layout_toLeftOf="@+id/Publication_LikesSumIV"
+                android:layout_centerInParent="true"
                 android:textSize="10sp"
                 android:textColor="@color/deep_blue"
                 tools:text="0"/>
             <ImageView
+                android:id="@+id/Publication_LikesSumIV"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_toRightOf="@+id/Publication_LikesSumTV"
+                android:layout_centerInParent="true"
                 android:src="@drawable/like_icon"/>
 
         </RelativeLayout>

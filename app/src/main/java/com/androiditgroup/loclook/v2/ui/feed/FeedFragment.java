@@ -18,6 +18,7 @@ import com.androiditgroup.loclook.v2.utils.PublicationGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * Created by sostrovschi on 1/25/17.
@@ -30,6 +31,8 @@ public class FeedFragment extends ParentFragment {
     private ArrayList<Publication> mPublicationsList = new ArrayList<>();
     private PublicationsListAdapter mFeedAdapter;
     private DBManager db = DBManager.getInstance();
+
+    private boolean getFromMap;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -70,7 +73,19 @@ public class FeedFragment extends ParentFragment {
 
     private void refreshFeedData() {
         mPublicationsList.clear();
-        // mPublicationsList.addAll(PublicationGenerator.getPublicationsList(db.queryColumns(db.getDataBase(), Constants.DataBase.PUBLICATION_TABLE, null)));
+
+        if(LocLookApp.publicationsMap.isEmpty()) {
+            ArrayList<Publication> list = PublicationGenerator.getPublicationsList(db.queryColumns(db.getDataBase(), Constants.DataBase.PUBLICATION_TABLE, null));
+            for(Publication publication: list)
+                LocLookApp.publicationsMap.put(publication.getId(), publication);
+
+            mPublicationsList.addAll(list);
+        }
+        else {
+            for (Map.Entry<String, Publication> entry : LocLookApp.publicationsMap.entrySet()) {
+                mPublicationsList.add(entry.getValue());
+            }
+        }
 
         if(mPublicationsList.size() > 0) {
             Collections.reverse(mPublicationsList);

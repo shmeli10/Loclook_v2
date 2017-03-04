@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
+import com.androiditgroup.loclook.v2.models.QuizAnswer;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
@@ -23,6 +24,7 @@ import com.androiditgroup.loclook.v2.utils.DBManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -43,7 +45,8 @@ public class LocLookApp extends Application {
 //    public static String authCode;
 
     public static Map<String, User> usersMap = new HashMap<>();
-    public static Map<String, Publication> publicationsMap = new HashMap<>();
+    public static Map<String, Publication> publicationsMap = new LinkedHashMap<>();
+    public static Map<String, QuizAnswer> quizAnswersMap = new LinkedHashMap<>();
 
     public static Typeface bold, boldItalic, extraBold, extraBoldItalic, italic,
             light, lightItalic, regular, semiBold, semiBoldItalic;

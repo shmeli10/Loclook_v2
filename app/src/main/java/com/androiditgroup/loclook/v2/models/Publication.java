@@ -27,9 +27,15 @@ public class Publication {
     private ArrayList<String> mPhotosIdsList = new ArrayList<>();
     private boolean mIsAnonymous;
 
+    public String getId() { return mId; }
+
     public String getText() {
         return (mText != null) ? mText : "";
     }
+
+    public String getAuthorId() { return mAuthorId; }
+
+    public boolean isAnonymous() { return mIsAnonymous; }
 
     public static class Builder {
         private String mId;

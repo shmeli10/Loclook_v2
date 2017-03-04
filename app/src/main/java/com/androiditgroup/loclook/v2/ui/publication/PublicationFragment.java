@@ -427,26 +427,17 @@ public class PublicationFragment extends    ParentFragment
             }
         }
 
-        Publication publication = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isSelected());
+        Publication publication = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
 
         if(publication != null) {
             Log.e("ABC", "PublicationFragment: sendPublication(): publication is saved");
+            LocLookApp.publicationsMap.put(publication.getId(), publication);
             mMainActivity.refreshFeed = true;
             mMainActivity.onBackPressed();
         }
         else {
             LocLookApp.showSimpleSnakeBar(mPublicationContainer, "publication_send_error_text");
         }
-//        // если запись публикации в БД совершена
-//        if(sendPublication()) {
-//
-//            // отключаем кликабельность "кнопки отправки публикации"
-//            sendPublicationLL.setClickable(false);
-//
-//            // переходим на Ленту
-//            Intent intent = new Intent(Publication_Activity.this, Tape_Activity.class);
-//            startActivity(intent);
-//        }
     }
 
     @Override

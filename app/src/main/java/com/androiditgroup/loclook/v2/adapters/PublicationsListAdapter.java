@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.Publication;
+import com.androiditgroup.loclook.v2.models.User;
 
 import java.util.ArrayList;
 
@@ -32,8 +34,21 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
 
     @Override
     public void onBindViewHolder(PublicationsListAdapter.ViewHolder holder, int position) {
+        // Log.e("ABC", "PublicationsListAdapter: onBindViewHolder(): publication(" +position+ ")");
         Publication publication = mPublications.get(position);
-        holder.mPublicationText.setText(publication.getText());
+        holder.mText.setText(publication.getText());
+
+        if(!publication.isAnonymous()){
+            if(LocLookApp.usersMap.containsKey(publication.getAuthorId())) {
+                User author = LocLookApp.usersMap.get(publication.getAuthorId());
+
+                if(author != null)
+                    holder.mAuthorNameTV.setText(author.getName());
+            }
+        }
+        else {
+            holder.mAuthorNameTV.setText(R.string.publication_anonymous_text);
+        }
     }
 
     @Override
@@ -48,12 +63,14 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mPublicationText;
+        TextView mText;
+        TextView mAuthorNameTV;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mPublicationText = (TextView) itemView.findViewById(R.id.Publication_TextTV);
+            mText           = (TextView) itemView.findViewById(R.id.Publication_TextTV);
+            mAuthorNameTV   = (TextView) itemView.findViewById(R.id.Publication_UserNameTV);
         }
 
         @Override

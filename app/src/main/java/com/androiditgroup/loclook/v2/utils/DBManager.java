@@ -164,7 +164,10 @@ public class DBManager {
 
     public Publication createPublication(String text, Badge badge, ArrayList<String> answersList, ArrayList<Bitmap> photosList, boolean isAnonymous) {
 
-        Publication.Builder mPublicationBuilder = null;
+        Cursor pCursor = null;
+        ArrayList<QuizAnswer> pQuizAnswersList = new ArrayList<>();
+
+//        Publication.Builder mPublicationBuilder = null;
         getDataBase().beginTransaction();
 
         try {
@@ -184,46 +187,14 @@ public class DBManager {
                                     user.getRegionName(), user.getStreetName(),
                                     (answersList.size() == 0)  ? "0" : "1", (photosList.size() == 0)  ? "0" : "1", (!isAnonymous) ? "0" : "1"};
 
-            Cursor pCursor = insertData(getDataBase(), Constants.DataBase.PUBLICATION_TABLE, pColumnsArr, pDataArr);
-
-//            Log.e("ABC", "DBManager: createPublication(): pCursor is null:" +(pCursor == null));
+            pCursor = insertData(getDataBase(), Constants.DataBase.PUBLICATION_TABLE, pColumnsArr, pDataArr);
 
             if((pCursor != null) && (pCursor.getCount() > 0)) {
-//                Log.e("ABC", "DBManager: createPublication(): pCursor.getCount()= " +pCursor.getCount());
                 pCursor.moveToFirst();
 
                 String pId = pCursor.getString(pCursor.getColumnIndex("_ID"));
-                String pText = pCursor.getString(pCursor.getColumnIndex("TEXT"));
-                String pAuthorId = pCursor.getString(pCursor.getColumnIndex("AUTHOR_ID"));
-                String pCreatedAt = pCursor.getString(pCursor.getColumnIndex("CREATED_AT"));
-                String pLatitude = pCursor.getString(pCursor.getColumnIndex("LATITUDE"));
-                String pLongitude = pCursor.getString(pCursor.getColumnIndex("LONGITUDE"));
-                String pRegionName = pCursor.getString(pCursor.getColumnIndex("REGION_NAME"));
-                String pStreetName = pCursor.getString(pCursor.getColumnIndex("STREET_NAME"));
-
-                int pBadgeId = pCursor.getInt(pCursor.getColumnIndex("BADGE_ID"));
-
-                boolean pHasQuiz = (pCursor.getInt(pCursor.getColumnIndex("HAS_QUIZ")) == 1);
-                boolean pHasImages = (pCursor.getInt(pCursor.getColumnIndex("HAS_IMAGES")) == 1);
-                boolean pIsAnonymous = (pCursor.getInt(pCursor.getColumnIndex("IS_ANONYMOUS")) == 1);
-
-                pCursor.close();
-
-//                Log.e("ABC", "DBManager: createPublication(): pId= " +pId);
-//                Log.e("ABC", "DBManager: createPublication(): pLatitude= " +pLatitude);
-//                Log.e("ABC", "DBManager: createPublication(): pLongitude= " +pLongitude);
-
-                Location pLocation = new Location("");
-
-                if(pLatitude != null)
-                    pLocation.setLatitude(Double.parseDouble(pLatitude));
-
-                if(pLongitude != null)
-                    pLocation.setLongitude(Double.parseDouble(pLongitude));
 
                 ///////////////////////////////////////////////////////////////////////////////////
-
-                ArrayList<QuizAnswer> pQuizAnswerList = new ArrayList<>();
 
                 String[] qaColumnsArr = {"TEXT", "PUBLICATION_ID"};
 
@@ -233,14 +204,11 @@ public class DBManager {
 
                     Cursor qaCursor = insertData(getDataBase(), Constants.DataBase.QUIZ_ANSWER_TABLE, qaColumnsArr, qaDataArr);
 
-                    // if(qaCursor != null) {
                     if((qaCursor != null) && (qaCursor.getCount() > 0)) {
                         qaCursor.moveToFirst();
 
                         String qaId     = qaCursor.getString(qaCursor.getColumnIndex("_ID"));
                         String qaText   = qaCursor.getString(qaCursor.getColumnIndex("TEXT"));
-//                        Log.e("ABC", "DBManager: createPublication(): new qaId: " +qaId);
-//                        Log.e("ABC", "DBManager: createPublication(): new qaText: " +qaText);
 
                         qaCursor.close();
 
@@ -248,7 +216,7 @@ public class DBManager {
                                 .id(qaId)
                                 .text(qaText);
 
-                        pQuizAnswerList.add(mQuizAnswerBuilder.build());
+                        pQuizAnswersList.add(mQuizAnswerBuilder.build());
                     }
                 }
 
@@ -272,23 +240,6 @@ public class DBManager {
                         throw new SQLiteException();
                     }
                 }
-
-                ///////////////////////////////////////////////////////////////////////////////////
-
-//                mPublicationBuilder = new Publication.Builder()
-//                        .id(pId)
-//                        .text(pText)
-//                        .authorId(pAuthorId)
-//                        .badge(LocLookApp.badgesList.get(pBadgeId))
-//                        .createdAt(pCreatedAt)
-//                        .location(pLocation)
-//                        .regionName(pRegionName)
-//                        .streetName(pStreetName)
-//                        .hasQuiz(pHasQuiz)
-//                        .hasImages(pHasImages)
-//                        .isAnonymous(pIsAnonymous)
-//                        .quizAnswerList(pQuizAnswerList)
-//                        .photosList(photosList);
             }
 
             getDataBase().setTransactionSuccessful();
@@ -299,17 +250,7 @@ public class DBManager {
             Log.e("ABC", "DBManager: createPublication(): error: " +exc.toString());
         } finally {
             getDataBase().endTransaction();
-
-            if(mPublicationBuilder != null) {
-                Log.e("ABC", "DBManager: createPublication(): publication is saved");
-
-                // Publication.Builder mPublicationBuilder = new Publication.Builder();
-                return mPublicationBuilder.build();
-            }
-            else {
-                Log.e("ABC", "DBManager: createPublication(): publication is not saved");
-                return null;
-            }
+            return PublicationGenerator.getPublicationFromCursor(pCursor, pQuizAnswersList, photosList);
         }
     }
 
