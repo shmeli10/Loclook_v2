@@ -12,6 +12,7 @@ import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.Badge;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by sostrovschi on 2/24/17.
@@ -20,7 +21,8 @@ import java.util.ArrayList;
 public class BadgesAdapter  extends BaseAdapter {
     // private Context mContext;
 
-    private ArrayList<Badge> badgesList = new ArrayList<>();
+    // private ArrayList<Badge> badgesList = new ArrayList<>();
+//    private Map<String, Badge> badgesMap = new ArrayList<>();
     private LayoutInflater mInflater;
 //    private BadgesAdapter.BadgeCallback mBadgeCallback;
 
@@ -28,19 +30,21 @@ public class BadgesAdapter  extends BaseAdapter {
 //        void onSelected(int badgeId);
 //    }
 
-//    public BadgesAdapter(LayoutInflater inflater, BadgeCallback callback) {
+    //    public BadgesAdapter(LayoutInflater inflater, BadgeCallback callback) {
     public BadgesAdapter(LayoutInflater inflater) {
         mInflater = inflater;
 //        mBadgeCallback = callback;
-        badgesList.addAll(LocLookApp.badgesList);
+//        badgesList.addAll(LocLookApp.badgesList);
     }
 
     public int getCount() {
-        return badgesList.size();
+        // return badgesList.size();
+        return LocLookApp.badgesMap.size();
     }
 
     public Object getItem(int position) {
-        return badgesList.get(position);
+        // return badgesList.get(position);
+        return LocLookApp.badgesMap.get(String.valueOf(position+1));
     }
 
     public long getItemId(int position) {
@@ -64,7 +68,8 @@ public class BadgesAdapter  extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(badgesList.get(position).getIconResId());
+        // imageView.setImageResource(badgesList.get(position).getIconResId());
+        imageView.setImageResource(LocLookApp.badgesMap.get(String.valueOf(position+1)).getIconResId());
         return imageView;
     }
 }

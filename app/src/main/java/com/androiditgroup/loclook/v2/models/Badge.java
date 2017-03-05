@@ -10,9 +10,9 @@ public class Badge {
 
     private String mId;
     private String mName;
-//    private String mIconPath;
+    //    private String mIconPath;
 //    private Bitmap mIcon;
-    private boolean mIsEnabled;
+//    private boolean mIsEnabled;
     private int mIconResId;
 
     private Badge() { }
@@ -32,9 +32,9 @@ public class Badge {
     public static class Builder {
         private String mId;
         private String mName;
-//        private String mIconPath;
+        //        private String mIconPath;
 //        private Bitmap mIcon;
-        private boolean mIsEnabled;
+//        private boolean mIsEnabled;
         private int mIconResId;
 
         public Badge.Builder id(String value) {
@@ -62,10 +62,10 @@ public class Badge {
             return this;
         }
 
-        public Builder isEnabled(boolean value) {
-            mIsEnabled = value;
-            return this;
-        }
+//        public Builder isEnabled(boolean value) {
+//            mIsEnabled = value;
+//            return this;
+//        }
 
         public Badge build() {
             Badge badge = new Badge();
@@ -73,7 +73,7 @@ public class Badge {
             badge.mName = this.mName;
 //            badge.mIconPath = this.mIconPath;
 //            badge.mIcon = this.mIcon;
-            badge.mIsEnabled = this.mIsEnabled;
+//            badge.mIsEnabled = this.mIsEnabled;
             badge.mIconResId = this.mIconResId;
             return badge;
         }

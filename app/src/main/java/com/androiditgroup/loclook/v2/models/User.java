@@ -13,7 +13,8 @@ public class User {
     private String mUserId;
     private String mName;
     private String mPhoneNumber;
-    private String mRate;
+    // private String mRate;
+    private int mRate;
     // private String mBgImgUrl;
     // private String mAvatarUrl;
     private Bitmap mBackground;
@@ -22,7 +23,8 @@ public class User {
     private String mSiteUrl;
     private String mLatitude;
     private String mLongitude;
-    private String mRadius;
+    // private String mRadius;
+    private int mRadius;
     private String mRegionName;
     private String mStreetName;
     private Location mLocation;
@@ -62,8 +64,9 @@ public class User {
         private String mUserId;
         private String mName;
         private String mPhoneNumber;
-        private String mRate;
-//        private String mBgImgUrl;
+        // private String mRate;
+        private int mRate;
+        //        private String mBgImgUrl;
 //        private String mAvatarUrl;
         private Bitmap mBackground;
         private Bitmap mAvatar;
@@ -71,27 +74,28 @@ public class User {
         private String mSiteUrl;
         private String mLatitude;
         private String mLongitude;
-        private String mRadius;
+        // private String mRadius;
+        private int mRadius;
         private String mRegionName;
         private String mStreetName;
 
-        public Builder userId(String userId) {
-            mUserId = userId;
+        public Builder userId(String value) {
+            mUserId = value;
             return this;
         }
 
-        public Builder name(String name) {
-            mName = name;
+        public Builder name(String value) {
+            mName = value;
             return this;
         }
 
-        public Builder phone(String phone) {
-            mPhoneNumber = phone;
+        public Builder phone(String value) {
+            mPhoneNumber = value;
             return this;
         }
 
-        public Builder rate(String rate) {
-            mRate = rate;
+        public Builder rate(int value) {
+            mRate = value;
             return this;
         }
 
@@ -105,48 +109,48 @@ public class User {
 //            return this;
 //        }
 
-        public Builder background(Bitmap background) {
-            mBackground = background;
+        public Builder background(Bitmap value) {
+            mBackground = value;
             return this;
         }
 
-        public Builder avatar(Bitmap avatar) {
-            mAvatar = avatar;
+        public Builder avatar(Bitmap value) {
+            mAvatar = value;
             return this;
         }
 
-        public Builder description(String description) {
-            mDescription = description;
+        public Builder description(String value) {
+            mDescription = value;
             return this;
         }
 
-        public Builder siteUrl(String siteUrl) {
-            mSiteUrl = siteUrl;
+        public Builder siteUrl(String value) {
+            mSiteUrl = value;
             return this;
         }
 
-        public Builder latitude(String latitude) {
-            mLatitude = latitude;
+        public Builder latitude(String value) {
+            mLatitude = value;
             return this;
         }
 
-        public Builder longitude(String longitude) {
-            mLongitude = longitude;
+        public Builder longitude(String value) {
+            mLongitude = value;
             return this;
         }
 
-        public Builder radius(String radius) {
-            mRadius = radius;
+        public Builder radius(int value) {
+            mRadius = value;
             return this;
         }
 
-        public Builder regionName(String regionName) {
-            mRegionName = regionName;
+        public Builder regionName(String value) {
+            mRegionName = value;
             return this;
         }
 
-        public Builder streetName(String streetName) {
-            mStreetName = streetName;
+        public Builder streetName(String value) {
+            mStreetName = value;
             return this;
         }
 

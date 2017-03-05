@@ -13,17 +13,17 @@ public class Publication {
     private String mId;
     private String mText;
     private String mAuthorId;
-//    private Badge mBadge;
+    //    private Badge mBadge;
     private String mBadgeId;
-    private String mCreatedAt;
+    private String mDateAndTime;
     private Location mLocation;
     private String mRegionName;
     private String mStreetName;
     private boolean mHasQuiz;
-//    private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
+    //    private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
     private ArrayList<String> mQuizAnswersIdsList = new ArrayList<>();
     private boolean mHasImages;
-//    private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
+    //    private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
     private ArrayList<String> mPhotosIdsList = new ArrayList<>();
     private boolean mIsAnonymous;
 
@@ -35,23 +35,27 @@ public class Publication {
 
     public String getAuthorId() { return mAuthorId; }
 
+    public String getBadgeId() { return mBadgeId; }
+
+    public String getDateAndTime() { return mDateAndTime; }
+
     public boolean isAnonymous() { return mIsAnonymous; }
 
     public static class Builder {
         private String mId;
         private String mText;
         private String mAuthorId;
-//        private Badge mBadge;
+        //        private Badge mBadge;
         private String mBadgeId;
-        private String mCreatedAt;
+        private String mDateAndTime;
         private Location mLocation;
         private String mRegionName;
         private String mStreetName;
         private boolean mHasQuiz;
-//        private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
+        //        private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
         private ArrayList<String> mQuizAnswersIdsList = new ArrayList<>();
         private boolean mHasImages;
-//        private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
+        //        private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
         private ArrayList<String> mPhotosIdsList = new ArrayList<>();
         private boolean mIsAnonymous;
 
@@ -81,8 +85,8 @@ public class Publication {
             return this;
         }
 
-        public Builder createdAt(String value) {
-            mCreatedAt = (value != null) ? value : "";
+        public Builder dateAndTime(String value) {
+            mDateAndTime = (value != null) ? value : "";
             return this;
         }
 
@@ -142,7 +146,7 @@ public class Publication {
             publication.mText = this.mText;
             publication.mAuthorId = this.mAuthorId;
             publication.mBadgeId = this.mBadgeId;
-            publication.mCreatedAt = this.mCreatedAt;
+            publication.mDateAndTime = this.mDateAndTime;
             publication.mLocation = this.mLocation;
             publication.mRegionName = this.mRegionName;
             publication.mStreetName = this.mStreetName;

@@ -64,10 +64,10 @@ import static android.view.View.VISIBLE;
  */
 
 public class PublicationFragment extends    ParentFragment
-                                 implements View.OnClickListener,
-                                            TextWatcher,
-                                            CompoundButton.OnCheckedChangeListener,
-                                            QuizAnswersAdapter.QuizAnswerCallback {
+        implements View.OnClickListener,
+        TextWatcher,
+        CompoundButton.OnCheckedChangeListener,
+        QuizAnswersAdapter.QuizAnswerCallback {
 
     private static LayoutInflater mInflater;
 
@@ -130,7 +130,9 @@ public class PublicationFragment extends    ParentFragment
     private boolean isBadgesBlockHidden;
     private boolean isPhotoBlockHidden;
 
-    private Badge selectedBadge = LocLookApp.badgesList.get(0);
+    // private Badge selectedBadge = LocLookApp.badgesList.get(0);
+    // private Badge selectedBadge = LocLookApp.badgesMap.get(LocLookApp.badgesMap.keySet().iterator().next()); // получаем первый элемент в колллекции
+    private Badge selectedBadge;
     private String mCreatedPhotoPath;
 
     public PublicationFragment() {
@@ -152,6 +154,18 @@ public class PublicationFragment extends    ParentFragment
         View view = inflater.inflate(R.layout.fragment_publication, container, false);
 
         MainActivity.mSlidingPaneLayout.setEnableTouchEvents(false);
+
+        if(!LocLookApp.badgesMap.isEmpty()) {
+
+            String key = LocLookApp.badgesMap.keySet().iterator().next();
+            Log.e("ABC", "PublicationFragment: onCreateView(): key= " +key);
+
+            selectedBadge = LocLookApp.badgesMap.get(key);
+        }
+        else
+            Log.e("ABC", "PublicationFragment: onCreateView(): badgesMap is empty");
+
+
 
         // selectedBadge = LocLookApp.badgesList.get(0);
         mScroll = (ScrollView) view.findViewById(R.id.Publication_ScrollView);
@@ -386,7 +400,9 @@ public class PublicationFragment extends    ParentFragment
         @Override
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             // Badge selectedBadge = LocLookApp.badgesList.get(position);
-            selectedBadge = LocLookApp.badgesList.get(position);
+            // selectedBadge = LocLookApp.badgesList.get(position);
+            // selectedBadge = LocLookApp.badgesMap.get(position);
+            selectedBadge = LocLookApp.badgesMap.get(String.valueOf(position+1));
 
             if(selectedBadge != null) {
                 mSelectedBadgeIV.setImageResource(selectedBadge.getIconResId());
@@ -427,12 +443,16 @@ public class PublicationFragment extends    ParentFragment
             }
         }
 
-        Publication publication = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
+        // Publication publication = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
 
-        if(publication != null) {
-            Log.e("ABC", "PublicationFragment: sendPublication(): publication is saved");
-            LocLookApp.publicationsMap.put(publication.getId(), publication);
+        boolean publicationCreated = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
+
+        // if(publication != null) {
+        if(publicationCreated) {
+            // Log.e("ABC", "PublicationFragment: sendPublication(): publication is saved");
+            // LocLookApp.publicationsMap.put(publication.getId(), publication);
             mMainActivity.refreshFeed = true;
+            MainActivity.mSlidingPaneLayout.setEnableTouchEvents(true);
             mMainActivity.onBackPressed();
         }
         else {

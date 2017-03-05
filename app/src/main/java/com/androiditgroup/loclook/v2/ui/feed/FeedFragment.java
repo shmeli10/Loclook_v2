@@ -1,5 +1,6 @@
 package com.androiditgroup.loclook.v2.ui.feed;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -74,18 +75,30 @@ public class FeedFragment extends ParentFragment {
     private void refreshFeedData() {
         mPublicationsList.clear();
 
-        if(LocLookApp.publicationsMap.isEmpty()) {
-            ArrayList<Publication> list = PublicationGenerator.getPublicationsList(db.queryColumns(db.getDataBase(), Constants.DataBase.PUBLICATION_TABLE, null));
-            for(Publication publication: list)
-                LocLookApp.publicationsMap.put(publication.getId(), publication);
+        Cursor pCursor = db.queryColumns(db.getDataBase(), Constants.DataBase.PUBLICATION_TABLE, null);
 
-            mPublicationsList.addAll(list);
+        if((pCursor != null) && (pCursor.getCount() > 0)) {
+            mPublicationsList.addAll(PublicationGenerator.getPublicationsList(pCursor));
         }
-        else {
-            for (Map.Entry<String, Publication> entry : LocLookApp.publicationsMap.entrySet()) {
-                mPublicationsList.add(entry.getValue());
-            }
-        }
+
+//        if(LocLookApp.publicationsMap.isEmpty()) {
+//            // ArrayList<Publication> list = PublicationGenerator.getPublicationsList(db.queryColumns(db.getDataBase(), Constants.DataBase.PUBLICATION_TABLE, null));
+//
+//            Cursor pCursor = db.queryColumns(db.getDataBase(), Constants.DataBase.PUBLICATION_TABLE, null);
+//
+//            if((pCursor != null) && (pCursor.getCount() > 0)) {
+//                ArrayList<Publication> list = PublicationGenerator.getPublicationsList(pCursor);
+//                for (Publication publication : list)
+//                    LocLookApp.publicationsMap.put(publication.getId(), publication);
+//
+//                mPublicationsList.addAll(list);
+//            }
+//        }
+//        else {
+//            for (Map.Entry<String, Publication> entry : LocLookApp.publicationsMap.entrySet()) {
+//                mPublicationsList.add(entry.getValue());
+//            }
+//        }
 
         if(mPublicationsList.size() > 0) {
             Collections.reverse(mPublicationsList);

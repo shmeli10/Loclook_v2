@@ -18,6 +18,7 @@ import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.QuizAnswer;
 import com.androiditgroup.loclook.v2.models.User;
+import com.androiditgroup.loclook.v2.utils.BadgeGenerator;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 
@@ -45,8 +46,9 @@ public class LocLookApp extends Application {
 //    public static String authCode;
 
     public static Map<String, User> usersMap = new HashMap<>();
-    public static Map<String, Publication> publicationsMap = new LinkedHashMap<>();
-    public static Map<String, QuizAnswer> quizAnswersMap = new LinkedHashMap<>();
+    public static Map<String, Badge> badgesMap = new LinkedHashMap<>();
+//    public static Map<String, Publication> publicationsMap = new LinkedHashMap<>();
+//    public static Map<String, QuizAnswer> quizAnswersMap = new LinkedHashMap<>();
 
     public static Typeface bold, boldItalic, extraBold, extraBoldItalic, italic,
             light, lightItalic, regular, semiBold, semiBoldItalic;
@@ -57,7 +59,7 @@ public class LocLookApp extends Application {
         return instance;
     }
 
-    public static ArrayList<Badge> badgesList = new ArrayList<>();
+//    public static ArrayList<Badge> badgesList = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -124,7 +126,7 @@ public class LocLookApp extends Application {
         // user = null;
         appUserId = null;
         usersMap.clear();
-        publicationsMap.clear();
+//        publicationsMap.clear();
         setLoginStatus(false);
         preferences.edit().clear().commit();
     }
@@ -133,27 +135,36 @@ public class LocLookApp extends Application {
         // Cursor badgesDataCursor = DBManager.getInstance().getDataBase().queryColumns(Constants.DataBase.BADGE_DATA_TABLE, null, null, null);
         Cursor cursor = DBManager.getInstance().getDataBase().query(Constants.DataBase.BADGE_TABLE, null, null, null, null, null, null);
 
-        if(cursor != null) {
-            // Log.e("ABC", "LocLookApp: setBadgesList: badgesSum = " + cursor.getCount());
+        ArrayList<Badge> badgesList = BadgeGenerator.getBadgesList(cursor);
 
-            String[] cursorArr = cursor.getColumnNames();
+        Log.e("ABC", "LocLookApp: setBadgesList(): badgesList size = " +badgesList.size());
 
-            if(cursor.getCount() > 0) {
-                cursor.moveToFirst();
-
-                do {
-                    Badge badge = new Badge.Builder()
-                            .id(cursor.getString(cursor.getColumnIndex(cursorArr[0])))
-                            .name(cursor.getString(cursor.getColumnIndex(cursorArr[1])))
-                            .isEnabled(cursor.getInt(cursor.getColumnIndex(cursorArr[2])) == 1)
-                            .iconResId(getDrawableResId("badge_" +cursor.getString(cursor.getColumnIndex(cursorArr[0]))))
-                            .build();
-                    badgesList.add(badge);
-                } while (cursor.moveToNext());
-            }
+        for(int i=0; i<badgesList.size(); i++) {
+            Badge badge = badgesList.get(i);
+            badgesMap.put(badge.getId(), badge);
         }
-        else
-            Log.e("ABC", "LocLookApp: setBadgesList: badgesDataCursor is null");
+
+//        if(cursor != null) {
+//            // Log.e("ABC", "LocLookApp: setBadgesList: badgesSum = " + cursor.getCount());
+//
+//            String[] cursorArr = cursor.getColumnNames();
+//
+//            if(cursor.getCount() > 0) {
+//                cursor.moveToFirst();
+//
+//                do {
+//                    Badge badge = new Badge.Builder()
+//                            .id(cursor.getString(cursor.getColumnIndex(cursorArr[0])))
+//                            .name(cursor.getString(cursor.getColumnIndex(cursorArr[1])))
+//                            .isEnabled(cursor.getInt(cursor.getColumnIndex(cursorArr[2])) == 1)
+//                            .iconResId(getDrawableResId("badge_" +cursor.getString(cursor.getColumnIndex(cursorArr[0]))))
+//                            .build();
+//                    badgesList.add(badge);
+//                } while (cursor.moveToNext());
+//            }
+//        }
+//        else
+//            Log.e("ABC", "LocLookApp: setBadgesList: badgesDataCursor is null");
     }
 
     public static int getDrawableResId(String resource) {
@@ -181,6 +192,4 @@ public class LocLookApp extends Application {
         String text = context.getResources().getString(resId);
         Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
     }
-
-
 }

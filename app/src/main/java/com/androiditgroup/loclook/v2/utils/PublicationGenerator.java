@@ -10,7 +10,9 @@ import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.QuizAnswer;
 import com.androiditgroup.loclook.v2.models.User;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by sostrovschi on 3/2/17.
@@ -104,7 +106,7 @@ public class PublicationGenerator {
                         pQuizAnswersIdsList.add(quizAnswer.getId());
 
                         // кладем вариант ответа в "коллецию всех вариантов ответов всех опросов в публикациях"
-                        LocLookApp.quizAnswersMap.put(quizAnswer.getId(), quizAnswer);
+                        // LocLookApp.quizAnswersMap.put(quizAnswer.getId(), quizAnswer);
                     }
                 }
             }
@@ -126,7 +128,7 @@ public class PublicationGenerator {
             //////////////////////////////////////////////////////////////////////////////////////////
 
             mPublicationBuilder.text(pText);
-            mPublicationBuilder.createdAt(pCreatedAt);
+            mPublicationBuilder.dateAndTime(getFormattedDate(pCreatedAt));
             mPublicationBuilder.location(pLocation);
             mPublicationBuilder.regionName(pRegionName);
             mPublicationBuilder.streetName(pStreetName);
@@ -233,7 +235,7 @@ public class PublicationGenerator {
                                 pQuizAnswersIdsList.add(quizAnswer.getId());
 
                                 // кладем вариант ответа в "коллецию всех вариантов ответов всех опросов в публикациях"
-                                LocLookApp.quizAnswersMap.put(quizAnswer.getId(), quizAnswer);
+                                // LocLookApp.quizAnswersMap.put(quizAnswer.getId(), quizAnswer);
                             }
                         }
                     }
@@ -255,7 +257,7 @@ public class PublicationGenerator {
                     //////////////////////////////////////////////////////////////////////////////////////////
 
                     mPublicationBuilder.text(pText);
-                    mPublicationBuilder.createdAt(pCreatedAt);
+                    mPublicationBuilder.dateAndTime(getFormattedDate(pCreatedAt));
                     mPublicationBuilder.location(pLocation);
                     mPublicationBuilder.regionName(pRegionName);
                     mPublicationBuilder.streetName(pStreetName);
@@ -350,5 +352,12 @@ public class PublicationGenerator {
         }
 
         return result;
+    }
+
+    private static String getFormattedDate(String dateInMillis) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy HH:mm");
+        long dateLong = Long.parseLong(dateInMillis);
+        Date now = new Date(dateLong);
+        return sdf.format(now);
     }
 }

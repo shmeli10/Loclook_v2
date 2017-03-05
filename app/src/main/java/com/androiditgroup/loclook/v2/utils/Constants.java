@@ -43,17 +43,17 @@ public class Constants {
 //                                                            "DESCRIPTION TEXT, SITE_URL TEXT, LATITUDE TEXT, LONGITUDE TEXT, RADIUS TEXT, REGION_NAME TEXT, " +
 //                                                            "STREET_NAME TEXT";
 
-        public static final String USER_TABLE_COLUMNS = "NAME TEXT  NOT NULL, PHONE_NUMBER TEXT NOT NULL, RATE INTEGER, BACKGROUND BLOB, AVATAR BLOB, " +
-                                                            "DESCRIPTION TEXT, SITE_URL TEXT, LATITUDE TEXT, LONGITUDE TEXT, RADIUS TEXT, REGION_NAME TEXT, " +
-                                                            "STREET_NAME TEXT";
+        public static final String USER_TABLE_COLUMNS = "NAME TEXT NOT NULL, PHONE_NUMBER TEXT NOT NULL, RATE INTEGER DEFAULT 0, BACKGROUND BLOB, AVATAR BLOB, " +
+                "DESCRIPTION TEXT, SITE_URL TEXT, LATITUDE TEXT, LONGITUDE TEXT, RADIUS INTEGER DEFAULT 0, REGION_NAME TEXT, " +
+                "STREET_NAME TEXT";
 
         public static final String BADGE_TABLE = "BADGE_DATA";
-        public static final String BADGE_TABLE_COLUMNS = "NAME TEXT  NOT NULL, IS_ENABLED INTEGER DEFAULT 1";
+        public static final String BADGE_TABLE_COLUMNS = "NAME TEXT NOT NULL";
 
         public static final String PUBLICATION_TABLE = "PUBLICATION_DATA";
         public static final String PUBLICATION_TABLE_COLUMNS = "TEXT TEXT NOT NULL, AUTHOR_ID INTEGER NOT NULL, BADGE_ID INTEGER NOT NULL, CREATED_AT TEXT NOT NULL, " +
-                                                                "LATITUDE TEXT, LONGITUDE TEXT, REGION_NAME TEXT, STREET_NAME TEXT, HAS_QUIZ INTEGER DEFAULT 0, " +
-                                                                "HAS_IMAGES INTEGER DEFAULT 0, IS_ANONYMOUS INTEGER DEFAULT 0";
+                "LATITUDE TEXT, LONGITUDE TEXT, REGION_NAME TEXT, STREET_NAME TEXT, HAS_QUIZ INTEGER DEFAULT 0, " +
+                "HAS_IMAGES INTEGER DEFAULT 0, IS_ANONYMOUS INTEGER DEFAULT 0";
 
         public static final String QUIZ_ANSWER_TABLE = "QUIZ_ANSWER_DATA";
         public static final String QUIZ_ANSWER_TABLE_COLUMNS = "TEXT TEXT NOT NULL, PUBLICATION_ID INTEGER NOT NULL";

@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
+import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.User;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,13 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         else {
             holder.mAuthorNameTV.setText(R.string.publication_anonymous_text);
         }
+
+        Badge badge = LocLookApp.badgesMap.get(publication.getBadgeId());
+
+        if(badge != null)
+            holder.mBadgeImageIV.setImageResource(badge.getIconResId());
+
+        holder.mDateAndTimeTV.setText(publication.getDateAndTime());
     }
 
     @Override
@@ -65,12 +74,17 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mText;
         TextView mAuthorNameTV;
+        TextView mDateAndTimeTV;
+        CircularImageView mBadgeImageIV;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             mText           = (TextView) itemView.findViewById(R.id.Publication_TextTV);
             mAuthorNameTV   = (TextView) itemView.findViewById(R.id.Publication_UserNameTV);
+            mDateAndTimeTV  = (TextView) itemView.findViewById(R.id.Publication_DateAndTimeTV);
+            mBadgeImageIV   = (CircularImageView) itemView.findViewById(R.id.Publication_BadgeImageIV);
         }
 
         @Override

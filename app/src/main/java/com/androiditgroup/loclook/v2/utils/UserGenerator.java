@@ -28,14 +28,16 @@ public class UserGenerator {
             String userId       = cursor.getString(cursor.getColumnIndex("_ID"));
             String name         = cursor.getString(cursor.getColumnIndex("NAME"));
             String phoneNumber  = cursor.getString(cursor.getColumnIndex("PHONE_NUMBER"));
-            String rate         = cursor.getString(cursor.getColumnIndex("RATE"));
+            // String rate         = cursor.getString(cursor.getColumnIndex("RATE"));
+            int rate            = cursor.getInt(cursor.getColumnIndex("RATE"));
             // String bgImgUrl     = data.getString(data.getColumnIndex("BG_IMG_URL"));
             // String avatarUrl    = data.getString(data.getColumnIndex("AVATAR_URL"));
             String description  = cursor.getString(cursor.getColumnIndex("DESCRIPTION"));
             String siteUrl      = cursor.getString(cursor.getColumnIndex("SITE_URL"));
             String latitude     = cursor.getString(cursor.getColumnIndex("LATITUDE"));
             String longitude    = cursor.getString(cursor.getColumnIndex("LONGITUDE"));
-            String radius       = cursor.getString(cursor.getColumnIndex("RADIUS"));
+            // String radius       = cursor.getString(cursor.getColumnIndex("RADIUS"));
+            int radius          = cursor.getInt(cursor.getColumnIndex("RADIUS"));
             String regionName   = cursor.getString(cursor.getColumnIndex("REGION_NAME"));
             String streetName   = cursor.getString(cursor.getColumnIndex("STREET_NAME"));
 
@@ -54,14 +56,16 @@ public class UserGenerator {
             if((phoneNumber != null) && (!phoneNumber.equals("")))
                 mUserBuilder.phone(phoneNumber);
 
-            if((rate != null) && (!rate.equals("")))
-                mUserBuilder.rate(rate);
+//            if((rate != null) && (!rate.equals("")))
+//                mUserBuilder.rate(rate);
 
-    //        if((bgImgUrl != null) && (!bgImgUrl.equals("")))
-    //            mUserBuilder.bgImgUrl(bgImgUrl);
-    //
-    //        if((avatarUrl != null) && (!avatarUrl.equals("")))
-    //            mUserBuilder.avatarUrl(avatarUrl);
+            mUserBuilder.rate(rate);
+
+            //        if((bgImgUrl != null) && (!bgImgUrl.equals("")))
+            //            mUserBuilder.bgImgUrl(bgImgUrl);
+            //
+            //        if((avatarUrl != null) && (!avatarUrl.equals("")))
+            //            mUserBuilder.avatarUrl(avatarUrl);
 
             if((description != null) && (!description.equals("")))
                 mUserBuilder.description(description);
@@ -75,8 +79,10 @@ public class UserGenerator {
             if((longitude != null) && (!longitude.equals("")))
                 mUserBuilder.longitude(longitude);
 
-            if((radius != null) && (!radius.equals("")))
-                mUserBuilder.radius(radius);
+//            if((radius != null) && (!radius.equals("")))
+//                mUserBuilder.radius(radius);
+
+            mUserBuilder.radius(radius);
 
             if((regionName != null) && (!regionName.equals("")))
                 mUserBuilder.regionName(regionName);

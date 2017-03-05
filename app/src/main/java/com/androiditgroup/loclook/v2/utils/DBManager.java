@@ -156,13 +156,19 @@ public class DBManager {
     public Cursor createUser(String userName, String phoneNumber) {
         // Log.e("ABC", "DBManager: createUser()");
 
-        String[] columnsArr = {"NAME", "PHONE_NUMBER", "RATE"};
-        String[] dataArr    = {userName, phoneNumber, "0"};
+        // String[] columnsArr = {"NAME", "PHONE_NUMBER", "RATE"};
+        // String[] dataArr    = {userName, phoneNumber, "0"};
+
+        String[] columnsArr = {"NAME", "PHONE_NUMBER"};
+        String[] dataArr    = {userName, phoneNumber};
 
         return insertData(getDataBase(), Constants.DataBase.USER_TABLE, columnsArr, dataArr);
     }
 
-    public Publication createPublication(String text, Badge badge, ArrayList<String> answersList, ArrayList<Bitmap> photosList, boolean isAnonymous) {
+    // public Publication createPublication(String text, Badge badge, ArrayList<String> answersList, ArrayList<Bitmap> photosList, boolean isAnonymous) {
+    public boolean createPublication(String text, Badge badge, ArrayList<String> answersList, ArrayList<Bitmap> photosList, boolean isAnonymous) {
+
+        boolean result = false;
 
         Cursor pCursor = null;
         ArrayList<QuizAnswer> pQuizAnswersList = new ArrayList<>();
@@ -182,10 +188,10 @@ public class DBManager {
             }
 
             String[] pColumnsArr = {"TEXT", "AUTHOR_ID", "BADGE_ID", "CREATED_AT", "LATITUDE", "LONGITUDE", "REGION_NAME", "STREET_NAME",
-                                    "HAS_QUIZ", "HAS_IMAGES", "IS_ANONYMOUS"};
+                    "HAS_QUIZ", "HAS_IMAGES", "IS_ANONYMOUS"};
             String[] pDataArr    = {text, user.getId(), "" +badge.getId(), "" +System.currentTimeMillis(), "" +latitude, "" +longitude,
-                                    user.getRegionName(), user.getStreetName(),
-                                    (answersList.size() == 0)  ? "0" : "1", (photosList.size() == 0)  ? "0" : "1", (!isAnonymous) ? "0" : "1"};
+                    user.getRegionName(), user.getStreetName(),
+                    (answersList.size() == 0)  ? "0" : "1", (photosList.size() == 0)  ? "0" : "1", (!isAnonymous) ? "0" : "1"};
 
             pCursor = insertData(getDataBase(), Constants.DataBase.PUBLICATION_TABLE, pColumnsArr, pDataArr);
 
@@ -243,6 +249,7 @@ public class DBManager {
             }
 
             getDataBase().setTransactionSuccessful();
+            result = true;
         } catch(SQLiteException sqliteExc) {
             Log.e("ABC", "DBManager: createPublication(): sqliteExc: " +sqliteExc.toString());
         } catch(Exception exc) {
@@ -250,7 +257,8 @@ public class DBManager {
             Log.e("ABC", "DBManager: createPublication(): error: " +exc.toString());
         } finally {
             getDataBase().endTransaction();
-            return PublicationGenerator.getPublicationFromCursor(pCursor, pQuizAnswersList, photosList);
+            // return PublicationGenerator.getPublicationFromCursor(pCursor, pQuizAnswersList, photosList);
+            return result;
         }
     }
 
@@ -285,7 +293,7 @@ public class DBManager {
 
         String[] cursorArr = cursor.getColumnNames();
 
-         if(cursor.getCount() > 0) {
+        if(cursor.getCount() > 0) {
             cursor.moveToFirst();
 
             Log.e("ABC", "----- Table: " + table + " -----");
