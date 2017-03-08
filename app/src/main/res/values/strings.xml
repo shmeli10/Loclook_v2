@@ -53,6 +53,9 @@
 
     <string name="default_publication_text">Текст публикации..</string>
 
+    <string name="empty_feed_text">Лента пока пуста..</string>
+    <string name="add_publication_text">Добавить публикацию</string>
+
     <string-array name="badges">
         <item>LocLook</item>
         <item>Интересные места</item>

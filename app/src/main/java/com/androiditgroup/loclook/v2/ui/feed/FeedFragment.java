@@ -6,11 +6,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.adapters.PublicationsListAdapter;
 import com.androiditgroup.loclook.v2.models.Publication;
+import com.androiditgroup.loclook.v2.ui.general.MainActivity;
+import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 import com.androiditgroup.loclook.v2.utils.EmptyRecyclerView;
@@ -19,13 +22,13 @@ import com.androiditgroup.loclook.v2.utils.PublicationGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * Created by sostrovschi on 1/25/17.
  */
 
-public class FeedFragment extends ParentFragment {
+public class FeedFragment   extends ParentFragment
+                            implements View.OnClickListener {
 
     private EmptyRecyclerView mPublicationRV;
 
@@ -33,7 +36,7 @@ public class FeedFragment extends ParentFragment {
     private PublicationsListAdapter mFeedAdapter;
     private DBManager db = DBManager.getInstance();
 
-    private boolean getFromMap;
+    private TextView mAddPublicationTV;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -57,10 +60,13 @@ public class FeedFragment extends ParentFragment {
         mFeedAdapter = new PublicationsListAdapter(mPublicationsList);
 
         // Replaced RecyclerView with EmptyRecyclerView
-        mPublicationRV = (EmptyRecyclerView) view.findViewById(R.id.Feed_PublicationsRecyclerView);
+        mPublicationRV = (EmptyRecyclerView) view.findViewById(R.id.Feed_PublicationsRV);
         mPublicationRV.setLayoutManager(new LinearLayoutManager(LocLookApp.context));
         mPublicationRV.setEmptyView(emptyView);
         mPublicationRV.setAdapter(mFeedAdapter);
+
+        mAddPublicationTV = (TextView) view.findViewById(R.id.Feed_AddPublicationTV);
+        mAddPublicationTV.setOnClickListener(this);
 
         refreshFeedData();
 
@@ -103,6 +109,17 @@ public class FeedFragment extends ParentFragment {
         if(mPublicationsList.size() > 0) {
             Collections.reverse(mPublicationsList);
             mFeedAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch(view.getId()) {
+
+            case R.id.Feed_AddPublicationTV:
+                // .setFragment(PublicationFragment.newInstance(mInflater), false, true);
+                break;
         }
     }
 }
