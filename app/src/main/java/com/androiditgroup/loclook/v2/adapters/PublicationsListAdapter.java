@@ -14,6 +14,7 @@ import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.User;
+import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.utils.ImageDelivery;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -25,9 +26,12 @@ import java.util.ArrayList;
 
 public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsListAdapter.ViewHolder> {
 
+    private MainActivity mMainActivity;
     private ArrayList<Publication> mPublications;
 
-    public PublicationsListAdapter(ArrayList<Publication> publicationsList) {
+    // public PublicationsListAdapter(ArrayList<Publication> publicationsList) {
+    public PublicationsListAdapter(MainActivity mainActivity, ArrayList<Publication> publicationsList) {
+        this.mMainActivity = mainActivity;
         this.mPublications = publicationsList;
     }
 
@@ -76,7 +80,8 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
 
             // наполнить блок изображениями
             ArrayList<Bitmap> photosList = ImageDelivery.getPhotosListById(publication.getPhotosIdsList());
-            GalleryListAdapter galleryAdapter = new GalleryListAdapter(photosList);
+            // GalleryListAdapter galleryAdapter = new GalleryListAdapter(photosList);
+            GalleryListAdapter galleryAdapter = new GalleryListAdapter(mMainActivity, photosList);
             holder.mGalleryPhotosRV.setAdapter(galleryAdapter);
         }
     }

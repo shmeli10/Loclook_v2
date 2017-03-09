@@ -10,6 +10,9 @@ import android.widget.ImageView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
+import com.androiditgroup.loclook.v2.ui.gallery.PhotoGalleryFragment;
+import com.androiditgroup.loclook.v2.ui.general.MainActivity;
+import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
 
 import java.util.ArrayList;
 
@@ -20,10 +23,19 @@ import java.util.ArrayList;
 
 public class GalleryListAdapter  extends RecyclerView.Adapter<GalleryListAdapter.ViewHolder> {
 
+    private MainActivity mMainActivity;
     private ArrayList<Bitmap> mGalleryPhotos;
+//    private OnGalleryItemInteractionListener mGalleryItemInteractionListener;
 
-    public GalleryListAdapter(ArrayList<Bitmap> photosList) {
+    // public GalleryListAdapter(ArrayList<Bitmap> photosList) {
+    public GalleryListAdapter(MainActivity mainActivity, ArrayList<Bitmap> photosList) {
+        mMainActivity = mainActivity;
         mGalleryPhotos = photosList;
+
+//        if(mainActivity instanceof OnGalleryItemInteractionListener)
+//            mGalleryItemInteractionListener = (OnGalleryItemInteractionListener) mainActivity;
+//        else
+//            Log.e("ABC", "GalleryListAdapter: GalleryListAdapter(): mainActivity does not implement OnGalleryItemInteractionListener interface");
     }
 
     @Override
@@ -44,7 +56,11 @@ public class GalleryListAdapter  extends RecyclerView.Adapter<GalleryListAdapter
                 public void onClick(View v) {
                     Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): imageView(" +position+ ") clicked");
 
+//                    if(mGalleryItemInteractionListener != null)
+//                        mGalleryItemInteractionListener.onImageClick(mGalleryPhotos.get(position), position, mGalleryPhotos);
 
+                    MainActivity.selectedFragment = MainActivity.SelectedFragment.show_gallery;
+                    mMainActivity.setFragment(PhotoGalleryFragment.newInstance(position, mGalleryPhotos), false, true);
                 }
             });
     }

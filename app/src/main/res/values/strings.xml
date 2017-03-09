@@ -56,6 +56,8 @@
     <string name="empty_feed_text">Лента пока пуста..</string>
     <string name="add_publication_text">Добавить публикацию</string>
 
+    <string name="photo_gallery_text">Фото Галерея</string>
+
     <string-array name="badges">
         <item>LocLook</item>
         <item>Интересные места</item>

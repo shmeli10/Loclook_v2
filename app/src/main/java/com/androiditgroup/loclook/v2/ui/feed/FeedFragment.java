@@ -62,7 +62,8 @@ public class FeedFragment   extends ParentFragment
         // the new recycler view
         View emptyView = view.findViewById(R.id.Feed_EmptyView);
 
-        mFeedAdapter = new PublicationsListAdapter(mPublicationsList);
+        // mFeedAdapter = new PublicationsListAdapter(mPublicationsList);
+        mFeedAdapter = new PublicationsListAdapter(mMainActivity, mPublicationsList);
 
         // Replaced RecyclerView with EmptyRecyclerView
         mPublicationRV = (EmptyRecyclerView) view.findViewById(R.id.Feed_PublicationsRV);

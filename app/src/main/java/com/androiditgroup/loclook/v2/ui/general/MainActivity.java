@@ -6,33 +6,23 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.SplashActivity;
-import com.androiditgroup.loclook.v2.ui.auth.PhoneNumberFragment;
 import com.androiditgroup.loclook.v2.ui.badges.BadgesFragment;
 import com.androiditgroup.loclook.v2.ui.favorites.FavoritesFragment;
 import com.androiditgroup.loclook.v2.ui.feed.FeedFragment;
@@ -81,7 +71,7 @@ public class MainActivity   extends     ParentActivity
     public static boolean refreshFeed;
 
     public enum SelectedFragment {
-        show_feed, send_publication
+        show_feed, send_publication, show_gallery
     }
 
     @Override
@@ -111,14 +101,11 @@ public class MainActivity   extends     ParentActivity
         mToolbarTitle.setTypeface(LocLookApp.semiBold);
 
         // initialize toolbar button
-        // mNavigationBtn = (ImageButton) findViewById(R.id.toolbar_navButton);
         mNavigationBtn = (ImageButton) findViewById(R.id.MainActivity_Toolbar_NavButton);
         assert mNavigationBtn != null;
         mNavigationBtn.setOnClickListener(mMenuClickListener);
 
         mLocationDefiner = new DefineUserLocationName((LocationManager) getSystemService(LOCATION_SERVICE));
-//        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.LOCATION_REQUEST_INTERVAL, 10, locationListener);
 
         mNavigationView = (NavigationView) findViewById(R.id.MainActivity_NavigationView);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -142,7 +129,6 @@ public class MainActivity   extends     ParentActivity
 
             if (phoneNumber != null) {
 
-                // Cursor data = DBManager.getInstance().queryColumns(Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
                 Cursor data = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
 
                 // если данные получены
@@ -154,14 +140,10 @@ public class MainActivity   extends     ParentActivity
             }
         }
 
-//        mProgressBar = (ProgressBar) findViewById(R.id.mainActivityProgressBar);
-
         setFragment(FeedFragment.newInstance(), false, false);
 
         // формируем список бейджей
         LocLookApp.setBadgesList();
-
-        // Log.e("ABC", "MainActivity: onCreate(): badgesSum = " + LocLookApp.badgesList.size());
     }
 
     @Override
@@ -350,9 +332,20 @@ public class MainActivity   extends     ParentActivity
         ParentFragment fragment = (ParentFragment) fragmentManager.findFragmentByTag(fragmentManager.getBackStackEntryAt(backStackSize - 1).getName());
         setToolbarTitle(fragment.getFragmentTitle());
 
-        if (selectedFragment == SelectedFragment.send_publication) {
-            mNavigationBtn.setOnClickListener(mBackClickListener);
-            mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);
+        switch(selectedFragment) {
+
+            case send_publication:
+            case show_gallery:
+                mNavigationBtn.setOnClickListener(mBackClickListener);
+                mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);
+                break;
+            default:
+                break;
         }
+
+//        if (selectedFragment == SelectedFragment.send_publication) {
+//            mNavigationBtn.setOnClickListener(mBackClickListener);
+//            mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);
+//        }
     }
 }

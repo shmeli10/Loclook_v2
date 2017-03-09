@@ -63,11 +63,11 @@ import static android.view.View.VISIBLE;
  * Created by sostrovschi on 1/25/17.
  */
 
-public class PublicationFragment extends    ParentFragment
-        implements View.OnClickListener,
-        TextWatcher,
-        CompoundButton.OnCheckedChangeListener,
-        QuizAnswersAdapter.QuizAnswerCallback {
+public class PublicationFragment    extends     ParentFragment
+                                    implements  View.OnClickListener,
+                                                TextWatcher,
+                                                CompoundButton.OnCheckedChangeListener,
+                                                QuizAnswersAdapter.QuizAnswerCallback {
 
     private static LayoutInflater mInflater;
 
@@ -228,7 +228,8 @@ public class PublicationFragment extends    ParentFragment
         mChooseBadgeBlockGV.setAdapter(mBadgesAdapter);
         mChooseBadgeBlockGV.setOnItemClickListener(onBadgeClickListener);
 
-        mGalleryPhotosAdapter = new GalleryListAdapter(mPhotosList);
+        // mGalleryPhotosAdapter = new GalleryListAdapter(mPhotosList);
+        mGalleryPhotosAdapter = new GalleryListAdapter(mMainActivity, mPhotosList);
         mGalleryPhotosRV = (RecyclerView) view.findViewById(R.id.Publication_GalleryRecyclerView);
         mGalleryPhotosRV.setAdapter(mGalleryPhotosAdapter);
 
