@@ -6,20 +6,20 @@
     android:padding="10dp">
 
     <RelativeLayout
-        android:id="@+id/Publication_HeaderBlock"
+        android:id="@+id/Publication_LI_HeaderBlock"
         style="@style/MW">
 
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/Publication_UserAvatarIV"
+            android:id="@+id/Publication_LI_UserAvatarIV"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/userpic_holder"
             app:civ_border_color="@android:color/white"
             app:civ_border_width="0dp"/>
         <TextView
-            android:id="@+id/Publication_UserNameTV"
+            android:id="@+id/Publication_LI_UserNameTV"
             style="@style/WW"
-            android:layout_toRightOf="@+id/Publication_UserAvatarIV"
+            android:layout_toRightOf="@+id/Publication_LI_UserAvatarIV"
             android:paddingLeft="10dp"
             android:paddingTop="3dp"
             android:textSize="15sp"
@@ -27,16 +27,16 @@
             android:textColor="@color/deep_blue"
             android:text="@string/user_name_hint"/>
         <TextView
-            android:id="@+id/Publication_DateAndTimeTV"
+            android:id="@+id/Publication_LI_DateAndTimeTV"
             style="@style/WW"
-            android:layout_toRightOf="@+id/Publication_UserAvatarIV"
-            android:layout_below="@+id/Publication_UserNameTV"
+            android:layout_toRightOf="@+id/Publication_LI_UserAvatarIV"
+            android:layout_below="@+id/Publication_LI_UserNameTV"
             android:paddingLeft="10dp"
             android:textSize="12sp"
             android:textColor="@color/dark_grey"
             android:text="@string/default_date"/>
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/Publication_BadgeImageIV"
+            android:id="@+id/Publication_LI_BadgeImageIV"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
@@ -46,13 +46,13 @@
 
     </RelativeLayout>
     <RelativeLayout
-        android:id="@+id/Publication_BodyBlock"
+        android:id="@+id/Publication_LI_BodyBlock"
         style="@style/MW"
-        android:layout_below="@+id/Publication_HeaderBlock"
+        android:layout_below="@+id/Publication_LI_HeaderBlock"
         android:layout_marginTop="20dp">
 
         <TextView
-            android:id="@+id/Publication_TextTV"
+            android:id="@+id/Publication_LI_TextTV"
             style="@style/MW"
             android:paddingRight="12dp"
             android:maxLines="5"
@@ -63,15 +63,35 @@
 
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/Publication_FooterBlock"
+        android:id="@+id/Publication_LI_PhotoBlock"
         style="@style/MW"
         android:orientation="horizontal"
-        android:layout_below="@+id/Publication_BodyBlock"
+        android:layout_below="@+id/Publication_LI_BodyBlock"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/Publication_LI_GalleryRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/Publication_LI_FooterBlock"
+        style="@style/MW"
+        android:orientation="horizontal"
+        android:layout_below="@+id/Publication_LI_PhotoBlock"
         android:layout_marginTop="20dp"
         android:weightSum="4">
 
         <FrameLayout
-            android:id="@+id/Publication_FavoritesBlock"
+            android:id="@+id/Publication_LI_FavoritesBlock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -84,22 +104,22 @@
 
         </FrameLayout>
         <RelativeLayout
-            android:id="@+id/Publication_AnswersBlock"
+            android:id="@+id/Publication_LI_AnswersBlock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/Publication_AnswersSumTV"
+                android:id="@+id/Publication_LI_AnswersSumTV"
                 style="@style/WW"
                 android:paddingRight="3dp"
-                android:layout_toLeftOf="@+id/Publication_AnswersSumIV"
+                android:layout_toLeftOf="@+id/Publication_LI_AnswersSumIV"
                 android:layout_centerInParent="true"
                 android:textSize="10sp"
                 android:textColor="@color/deep_blue"
                 tools:text="0"/>
             <ImageView
-                android:id="@+id/Publication_AnswersSumIV"
+                android:id="@+id/Publication_LI_AnswersSumIV"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_centerInParent="true"
@@ -107,23 +127,23 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/Publication_LikesBlock"
+            android:id="@+id/Publication_LI_LikesBlock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
 
             <TextView
-                android:id="@+id/Publication_LikesSumTV"
+                android:id="@+id/Publication_LI_LikesSumTV"
                 style="@style/WW"
                 android:paddingRight="3dp"
-                android:layout_toLeftOf="@+id/Publication_LikesSumIV"
+                android:layout_toLeftOf="@+id/Publication_LI_LikesSumIV"
                 android:layout_centerInParent="true"
                 android:textSize="10sp"
                 android:textColor="@color/deep_blue"
                 tools:text="0"/>
             <ImageView
-                android:id="@+id/Publication_LikesSumIV"
+                android:id="@+id/Publication_LI_LikesSumIV"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_centerInParent="true"
@@ -131,7 +151,7 @@
 
         </RelativeLayout>
         <FrameLayout
-            android:id="@+id/Publication_InfoBlock"
+            android:id="@+id/Publication_LI_InfoBlock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -147,8 +167,8 @@
 
     </LinearLayout>
     <View
-        android:id="@+id/Publication_BottomLine"
+        android:id="@+id/Publication_LI_BottomLine"
         style="@style/HLine_Grey"
-        android:layout_below="@+id/Publication_FooterBlock"/>
+        android:layout_below="@+id/Publication_LI_FooterBlock"/>
 
 </RelativeLayout>

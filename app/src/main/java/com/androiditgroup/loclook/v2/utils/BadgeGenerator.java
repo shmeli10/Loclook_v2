@@ -17,7 +17,7 @@ public class BadgeGenerator {
         ArrayList<Badge> result = new ArrayList<>();
 
         if((cursor != null) && (cursor.getCount() > 0)) {
-            Log.e("ABC", "BadgeGenerator: getBadgesList(): pCursor.getCount()= " + cursor.getCount());
+            // Log.e("ABC", "BadgeGenerator: getBadgesList(): pCursor.getCount()= " + cursor.getCount());
             cursor.moveToFirst();
 
             try {

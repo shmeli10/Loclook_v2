@@ -244,15 +244,41 @@ public class PublicationGenerator {
 
                     ArrayList<String> photosIdsList = new ArrayList<>();
 
-//                    if(pHasImages) {
-//
-//                        if((photosList != null) && (photosList.size() > 0)) {
-//
-//                        }
-//                        else {
-//
-//                        }
-//                    }
+                    if(pHasImages) {
+
+                        Cursor cursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.PHOTOS_TABLE, null, "PUBLICATION_ID", pId);
+
+                        try {
+
+                            if(cursor.getCount() > 0) {
+                                while (cursor.moveToNext()) {
+
+                                    String photoId  = cursor.getString(cursor.getColumnIndex("_ID"));
+                                    byte[] photoArr = cursor.getBlob(cursor.getColumnIndex("PHOTO"));
+
+                                    //////////////////////////////////////////////////////////////////////////////////////
+
+                                    if(photoArr != null) {
+                                        Log.e("ABC", "PublicationGenerator: getPublicationsList(): publication(" +pId+ ") photoArr size=: " +photoArr.length);
+
+                                        Bitmap bitmap = DbBitmapUtility.getImage(photoArr);
+
+                                        if((photoId != null) && (bitmap != null)) {
+                                            // добавляем изображение в коллекцию
+                                            LocLookApp.imagesMap.put(photoId, bitmap);
+
+                                            // добавляем идентификатор изображения в список
+                                            photosIdsList.add(photoId);
+                                        }
+                                    }
+                                }
+                            }
+                        } catch(Exception exc) {
+                            Log.e("ABC", "PublicationGenerator: getPublicationsList(): error: " +exc.toString());
+                        } finally {
+                            cursor.close();
+                        }
+                    }
 
                     //////////////////////////////////////////////////////////////////////////////////////////
 

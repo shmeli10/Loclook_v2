@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
@@ -47,6 +48,7 @@ public class LocLookApp extends Application {
 
     public static Map<String, User> usersMap = new HashMap<>();
     public static Map<String, Badge> badgesMap = new LinkedHashMap<>();
+    public static Map<String, Bitmap> imagesMap = new LinkedHashMap<>();
 //    public static Map<String, Publication> publicationsMap = new LinkedHashMap<>();
 //    public static Map<String, QuizAnswer> quizAnswersMap = new LinkedHashMap<>();
 
@@ -137,34 +139,12 @@ public class LocLookApp extends Application {
 
         ArrayList<Badge> badgesList = BadgeGenerator.getBadgesList(cursor);
 
-        Log.e("ABC", "LocLookApp: setBadgesList(): badgesList size = " +badgesList.size());
+        // Log.e("ABC", "LocLookApp: setBadgesList(): badgesList size = " +badgesList.size());
 
         for(int i=0; i<badgesList.size(); i++) {
             Badge badge = badgesList.get(i);
             badgesMap.put(badge.getId(), badge);
         }
-
-//        if(cursor != null) {
-//            // Log.e("ABC", "LocLookApp: setBadgesList: badgesSum = " + cursor.getCount());
-//
-//            String[] cursorArr = cursor.getColumnNames();
-//
-//            if(cursor.getCount() > 0) {
-//                cursor.moveToFirst();
-//
-//                do {
-//                    Badge badge = new Badge.Builder()
-//                            .id(cursor.getString(cursor.getColumnIndex(cursorArr[0])))
-//                            .name(cursor.getString(cursor.getColumnIndex(cursorArr[1])))
-//                            .isEnabled(cursor.getInt(cursor.getColumnIndex(cursorArr[2])) == 1)
-//                            .iconResId(getDrawableResId("badge_" +cursor.getString(cursor.getColumnIndex(cursorArr[0]))))
-//                            .build();
-//                    badgesList.add(badge);
-//                } while (cursor.moveToNext());
-//            }
-//        }
-//        else
-//            Log.e("ABC", "LocLookApp: setBadgesList: badgesDataCursor is null");
     }
 
     public static int getDrawableResId(String resource) {
@@ -181,8 +161,6 @@ public class LocLookApp extends Application {
      * @return value of passed dp in pixels
      */
     public static int getPixelsFromDp(int dp) {
-        // Resources r = context.getResources();
-        // return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 

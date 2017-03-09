@@ -3,6 +3,7 @@ package com.androiditgroup.loclook.v2.ui.feed;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
+import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter;
 import com.androiditgroup.loclook.v2.adapters.PublicationsListAdapter;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
@@ -30,6 +32,7 @@ import java.util.Collections;
 public class FeedFragment   extends ParentFragment
                             implements View.OnClickListener {
 
+    private MainActivity mMainActivity;
     private EmptyRecyclerView mPublicationRV;
 
     private ArrayList<Publication> mPublicationsList = new ArrayList<>();
@@ -52,6 +55,8 @@ public class FeedFragment   extends ParentFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
+
+        mMainActivity = (MainActivity) getActivity();
 
         // Fetch the empty view from the layout and set it on
         // the new recycler view
@@ -87,25 +92,6 @@ public class FeedFragment   extends ParentFragment
             mPublicationsList.addAll(PublicationGenerator.getPublicationsList(pCursor));
         }
 
-//        if(LocLookApp.publicationsMap.isEmpty()) {
-//            // ArrayList<Publication> list = PublicationGenerator.getPublicationsList(db.queryColumns(db.getDataBase(), Constants.DataBase.PUBLICATION_TABLE, null));
-//
-//            Cursor pCursor = db.queryColumns(db.getDataBase(), Constants.DataBase.PUBLICATION_TABLE, null);
-//
-//            if((pCursor != null) && (pCursor.getCount() > 0)) {
-//                ArrayList<Publication> list = PublicationGenerator.getPublicationsList(pCursor);
-//                for (Publication publication : list)
-//                    LocLookApp.publicationsMap.put(publication.getId(), publication);
-//
-//                mPublicationsList.addAll(list);
-//            }
-//        }
-//        else {
-//            for (Map.Entry<String, Publication> entry : LocLookApp.publicationsMap.entrySet()) {
-//                mPublicationsList.add(entry.getValue());
-//            }
-//        }
-
         if(mPublicationsList.size() > 0) {
             Collections.reverse(mPublicationsList);
             mFeedAdapter.notifyDataSetChanged();
@@ -118,7 +104,7 @@ public class FeedFragment   extends ParentFragment
         switch(view.getId()) {
 
             case R.id.Feed_AddPublicationTV:
-                // .setFragment(PublicationFragment.newInstance(mInflater), false, true);
+                mMainActivity.setFragment(PublicationFragment.newInstance(MainActivity.mInflater), false, true);
                 break;
         }
     }

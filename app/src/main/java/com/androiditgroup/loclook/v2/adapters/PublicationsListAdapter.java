@@ -1,10 +1,12 @@
 package com.androiditgroup.loclook.v2.adapters;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
@@ -12,6 +14,7 @@ import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.User;
+import com.androiditgroup.loclook.v2.utils.ImageDelivery;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -38,26 +41,44 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
     public void onBindViewHolder(PublicationsListAdapter.ViewHolder holder, int position) {
         // Log.e("ABC", "PublicationsListAdapter: onBindViewHolder(): publication(" +position+ ")");
         Publication publication = mPublications.get(position);
+
+        // текст публикации
         holder.mText.setText(publication.getText());
 
+        // если публикация написана публично
         if(!publication.isAnonymous()){
+            // если в коллекции уже есть нужный пользователь
             if(LocLookApp.usersMap.containsKey(publication.getAuthorId())) {
+                // получить его и показать его имя
                 User author = LocLookApp.usersMap.get(publication.getAuthorId());
 
                 if(author != null)
                     holder.mAuthorNameTV.setText(author.getName());
             }
         }
+        // если публикация написана анонимно
         else {
             holder.mAuthorNameTV.setText(R.string.publication_anonymous_text);
         }
 
+        // установить изображение бейджика
         Badge badge = LocLookApp.badgesMap.get(publication.getBadgeId());
-
         if(badge != null)
             holder.mBadgeImageIV.setImageResource(badge.getIconResId());
 
+        // дата и время публикации
         holder.mDateAndTimeTV.setText(publication.getDateAndTime());
+
+        // если есть изображения
+        if(publication.hasImages()) {
+            // отобразить фото-блок
+            holder.mPhotoBlockLL.setVisibility(View.VISIBLE);
+
+            // наполнить блок изображениями
+            ArrayList<Bitmap> photosList = ImageDelivery.getPhotosListById(publication.getPhotosIdsList());
+            GalleryListAdapter galleryAdapter = new GalleryListAdapter(photosList);
+            holder.mGalleryPhotosRV.setAdapter(galleryAdapter);
+        }
     }
 
     @Override
@@ -77,14 +98,19 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         TextView mDateAndTimeTV;
         CircularImageView mBadgeImageIV;
 
+        LinearLayout mPhotoBlockLL;
+        RecyclerView mGalleryPhotosRV;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mText           = (TextView) itemView.findViewById(R.id.Publication_TextTV);
-            mAuthorNameTV   = (TextView) itemView.findViewById(R.id.Publication_UserNameTV);
-            mDateAndTimeTV  = (TextView) itemView.findViewById(R.id.Publication_DateAndTimeTV);
-            mBadgeImageIV   = (CircularImageView) itemView.findViewById(R.id.Publication_BadgeImageIV);
+            mText               = (TextView) itemView.findViewById(R.id.Publication_LI_TextTV);
+            mAuthorNameTV       = (TextView) itemView.findViewById(R.id.Publication_LI_UserNameTV);
+            mDateAndTimeTV      = (TextView) itemView.findViewById(R.id.Publication_LI_DateAndTimeTV);
+            mBadgeImageIV       = (CircularImageView) itemView.findViewById(R.id.Publication_LI_BadgeImageIV);
+
+            mPhotoBlockLL       = (LinearLayout) itemView.findViewById(R.id.Publication_LI_PhotoBlock);
+            mGalleryPhotosRV    = (RecyclerView) itemView.findViewById(R.id.Publication_LI_GalleryRecyclerView);
         }
 
         @Override

@@ -39,6 +39,10 @@ public class Publication {
 
     public String getDateAndTime() { return mDateAndTime; }
 
+    public boolean hasImages() { return mHasImages; }
+
+    public ArrayList<String> getPhotosIdsList() { return mPhotosIdsList; }
+
     public boolean isAnonymous() { return mIsAnonymous; }
 
     public static class Builder {

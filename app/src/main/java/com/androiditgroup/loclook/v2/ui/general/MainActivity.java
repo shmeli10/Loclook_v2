@@ -76,7 +76,7 @@ public class MainActivity   extends     ParentActivity
     public static LockableSlidingPane   mSlidingPaneLayout;
     public static SelectedFragment      selectedFragment;
 
-    private LayoutInflater mInflater;
+    public static LayoutInflater mInflater;
 
     public static boolean refreshFeed;
 

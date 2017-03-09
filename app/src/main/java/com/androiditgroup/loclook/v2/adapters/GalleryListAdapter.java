@@ -33,15 +33,24 @@ public class GalleryListAdapter  extends RecyclerView.Adapter<GalleryListAdapter
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         if(mGalleryPhotos.size() > position) {
             holder.mImageView.setImageBitmap(mGalleryPhotos.get(position));
         }
+
+        if((position+1) <= mGalleryPhotos.size())
+            holder.mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): imageView(" +position+ ") clicked");
+
+
+                }
+            });
     }
 
     @Override
     public int getItemCount() {
-        // return mGalleryPhotos.size();
         int visiblePhotosSum = LocLookApp.getInstance().getResources().getInteger(R.integer.visible_photos_sum);
 
         if(mGalleryPhotos.size() < visiblePhotosSum)
@@ -55,23 +64,13 @@ public class GalleryListAdapter  extends RecyclerView.Adapter<GalleryListAdapter
         return position;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView mImageView;
-        // Bitmap mGalleryPhoto;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
+
             mImageView = (ImageView) itemView.findViewById(R.id.Gallery_ImageView);
-        }
-
-        @Override
-        public void onClick(View v) {
-//            if (mOnGalleryImageClickListener != null) {
-//                mOnGalleryImageClickListener.onGalleryImageClick(mGalleryImage, getAdapterPosition(), mGalleryImages);
-//            }
-
-            Log.e("ABC", "GalleryListAdapter: onClick(): imageView(" +getPosition()+ ")");
         }
     }
 }
