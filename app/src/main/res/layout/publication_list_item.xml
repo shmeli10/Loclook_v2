@@ -24,7 +24,7 @@
             android:paddingTop="3dp"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:textColor="@color/deep_blue"
+            android:textColor="@color/primary_text"
             android:text="@string/user_name_hint"/>
         <TextView
             android:id="@+id/Publication_LI_DateAndTimeTV"
@@ -33,7 +33,7 @@
             android:layout_below="@+id/Publication_LI_UserNameTV"
             android:paddingLeft="10dp"
             android:textSize="12sp"
-            android:textColor="@color/dark_grey"
+            android:textColor="@color/secondary_text"
             android:text="@string/default_date"/>
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/Publication_LI_BadgeImageIV"
@@ -58,7 +58,7 @@
             android:maxLines="5"
             android:ellipsize="end"
             android:textSize="14sp"
-            android:textColor="@color/black_text"
+            android:textColor="@color/primary_text"
             tools:text="@string/default_publication_text"/>
 
     </RelativeLayout>

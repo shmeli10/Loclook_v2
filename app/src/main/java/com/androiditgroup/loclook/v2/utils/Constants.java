@@ -27,6 +27,9 @@ public class Constants {
     public static final int PICK_FILE_RC = 19;
     public static final int CAMERA_PERMISSION_CODE = 20;
 
+    public static final int TUMBNAIL_WIDTH  = 100;
+    public static final int TUMBNAIL_HEIGHT = 75;
+
     public static class DataBase {
         public static final int DB_VERSION = 1;
         public static final String DATABASE_NAME = "cache_database";

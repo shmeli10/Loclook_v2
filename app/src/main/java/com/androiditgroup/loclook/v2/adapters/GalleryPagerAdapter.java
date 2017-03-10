@@ -43,9 +43,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
         for(int i=0; i<mPhotosList.size(); i++) {
             ImageView positionView = new ImageView(LocLookApp.context);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-
-            lp.setMargins(LocLookApp.getPixelsFromDp(3), 0, LocLookApp.getPixelsFromDp(3), 0);
+            // RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+            lp.setMargins(LocLookApp.getPixelsFromDp(5), 0, LocLookApp.getPixelsFromDp(5), 0);
             positionView.setLayoutParams(lp);
             positionView.setImageResource(R.drawable.circle);
 

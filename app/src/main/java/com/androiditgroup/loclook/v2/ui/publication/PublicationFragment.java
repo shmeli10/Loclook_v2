@@ -478,7 +478,8 @@ public class PublicationFragment    extends     ParentFragment
                     inputStream.close();
 
                     // create a cropped bitmap
-                    photoBitmap = cropBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length));
+                    // photoBitmap = cropBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length));
+                    photoBitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
                 } catch (Exception exc) {
                     exc.printStackTrace();
                     LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
@@ -487,7 +488,8 @@ public class PublicationFragment    extends     ParentFragment
                 try {
                     // create a cropped bitmap
                     if(mCreatedPhotoPath != null)
-                        photoBitmap = cropBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath));
+                        // photoBitmap = cropBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath));
+                        photoBitmap = BitmapFactory.decodeFile(mCreatedPhotoPath);
                 } catch (Exception exc) {
                     exc.printStackTrace();
                     LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
@@ -553,9 +555,9 @@ public class PublicationFragment    extends     ParentFragment
         }
     }
 
-    private Bitmap cropBitmap(Bitmap src) {
-        int width = LocLookApp.getPixelsFromDp(100);
-        int height = LocLookApp.getPixelsFromDp(75);
-        return ThumbnailUtils.extractThumbnail(src, width, height, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-    }
+//    private Bitmap cropBitmap(Bitmap src) {
+//        int width = LocLookApp.getPixelsFromDp(100);
+//        int height = LocLookApp.getPixelsFromDp(75);
+//        return ThumbnailUtils.extractThumbnail(src, width, height, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+//    }
 }

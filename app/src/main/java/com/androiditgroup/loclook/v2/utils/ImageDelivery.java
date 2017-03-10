@@ -2,6 +2,8 @@ package com.androiditgroup.loclook.v2.utils;
 
 import java.util.ArrayList;
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+
 import com.androiditgroup.loclook.v2.LocLookApp;
 
 /**
@@ -34,5 +36,11 @@ public class ImageDelivery {
         }
 
         return result;
+    }
+
+    public static Bitmap getTumnailFromBitmap(Bitmap src) {
+        int width = LocLookApp.getPixelsFromDp(Constants.TUMBNAIL_WIDTH);
+        int height = LocLookApp.getPixelsFromDp(Constants.TUMBNAIL_HEIGHT);
+        return ThumbnailUtils.extractThumbnail(src, width, height, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
     }
 }
