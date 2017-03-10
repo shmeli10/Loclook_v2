@@ -13,7 +13,9 @@ import android.location.Location;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
@@ -49,6 +51,7 @@ public class LocLookApp extends Application {
     public static Map<String, User> usersMap = new HashMap<>();
     public static Map<String, Badge> badgesMap = new LinkedHashMap<>();
     public static Map<String, Bitmap> imagesMap = new LinkedHashMap<>();
+//    public static Map<String, Bitmap> tumbnailsMap = new LinkedHashMap<>();
 //    public static Map<String, Publication> publicationsMap = new LinkedHashMap<>();
 //    public static Map<String, QuizAnswer> quizAnswersMap = new LinkedHashMap<>();
 
@@ -162,6 +165,11 @@ public class LocLookApp extends Application {
      */
     public static int getPixelsFromDp(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+    }
+
+    public static Display getScreenResolution() {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        return wm.getDefaultDisplay();
     }
 
     // public static void showSimpleSnakeBar(View view, String text) {

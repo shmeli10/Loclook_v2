@@ -24,13 +24,26 @@ import java.util.ArrayList;
 public class GalleryListAdapter  extends RecyclerView.Adapter<GalleryListAdapter.ViewHolder> {
 
     private MainActivity mMainActivity;
-    private ArrayList<Bitmap> mGalleryPhotos;
+//    private ArrayList<Bitmap> mGalleryTumbnails = new ArrayList<>();
+    private ArrayList<Bitmap> mGalleryPhotos = new ArrayList<>();
 //    private OnGalleryItemInteractionListener mGalleryItemInteractionListener;
 
     // public GalleryListAdapter(ArrayList<Bitmap> photosList) {
     public GalleryListAdapter(MainActivity mainActivity, ArrayList<Bitmap> photosList) {
-        mMainActivity = mainActivity;
-        mGalleryPhotos = photosList;
+//    public GalleryListAdapter(MainActivity mainActivity, ArrayList<Bitmap> tumbnailsList, ArrayList<Bitmap> photosList) {
+        mMainActivity       = mainActivity;
+//        mGalleryTumbnails   = tumbnailsList;
+        mGalleryPhotos      = photosList;
+
+//        if(tumbnailsList != null)
+//            mGalleryTumbnails.addAll(tumbnailsList);
+//        else
+//            Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): tumbnailsList is null");
+//
+//        if(photosList != null)
+//            mGalleryPhotos.addAll(photosList);
+//        else
+//            Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): photosList is null");
 
 //        if(mainActivity instanceof OnGalleryItemInteractionListener)
 //            mGalleryItemInteractionListener = (OnGalleryItemInteractionListener) mainActivity;
@@ -50,11 +63,17 @@ public class GalleryListAdapter  extends RecyclerView.Adapter<GalleryListAdapter
             holder.mImageView.setImageBitmap(mGalleryPhotos.get(position));
         }
 
+//        if(mGalleryTumbnails.size() > position) {
+//            holder.mImageView.setImageBitmap(mGalleryTumbnails.get(position));
+//        }
+
         if((position+1) <= mGalleryPhotos.size())
+//        if((position+1) <= mGalleryTumbnails.size())
             holder.mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): imageView(" +position+ ") clicked");
+//                    Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): imageView(" +position+ ") clicked, mGalleryPhotos size= " +mGalleryPhotos.size());
 
 //                    if(mGalleryItemInteractionListener != null)
 //                        mGalleryItemInteractionListener.onImageClick(mGalleryPhotos.get(position), position, mGalleryPhotos);

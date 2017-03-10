@@ -79,9 +79,17 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             holder.mPhotoBlockLL.setVisibility(View.VISIBLE);
 
             // наполнить блок изображениями
-            ArrayList<Bitmap> photosList = ImageDelivery.getPhotosListById(publication.getPhotosIdsList());
+//            ArrayList<Bitmap> tumbnailsList = new ArrayList<>();
+//            tumbnailsList.addAll(ImageDelivery.getTumbnailsListById(publication.getPhotosIdsList()));
+
+            ArrayList<Bitmap> photosList = new ArrayList<>();
+            photosList.addAll(ImageDelivery.getPhotosListById(publication.getPhotosIdsList()));
+
+            // Log.e("ABC", "PublicationsListAdapter: onBindViewHolder(): photosList size= " +photosList.size()+ ", tumbnailsList size= " +tumbnailsList.size());
+
             // GalleryListAdapter galleryAdapter = new GalleryListAdapter(photosList);
             GalleryListAdapter galleryAdapter = new GalleryListAdapter(mMainActivity, photosList);
+            // GalleryListAdapter galleryAdapter = new GalleryListAdapter(mMainActivity, tumbnailsList, photosList);
             holder.mGalleryPhotosRV.setAdapter(galleryAdapter);
         }
     }

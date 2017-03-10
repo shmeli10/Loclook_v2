@@ -2,6 +2,7 @@ package com.androiditgroup.loclook.v2.utils;
 
 import java.util.ArrayList;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
@@ -21,6 +22,13 @@ public class ImageDelivery {
         return null;
     }
 
+//    public static Bitmap getTumbnailById(String id) {
+//        if((id != null) && (LocLookApp.tumbnailsMap.containsKey(id)))
+//            return LocLookApp.tumbnailsMap.get(id);
+//
+//        return null;
+//    }
+
     public static ArrayList<Bitmap> getPhotosListById(ArrayList<String> photosIdsList) {
 
         ArrayList<Bitmap> result = new ArrayList<>();
@@ -38,9 +46,26 @@ public class ImageDelivery {
         return result;
     }
 
-    public static Bitmap getTumnailFromBitmap(Bitmap src) {
-        int width = LocLookApp.getPixelsFromDp(Constants.TUMBNAIL_WIDTH);
-        int height = LocLookApp.getPixelsFromDp(Constants.TUMBNAIL_HEIGHT);
+//    public static ArrayList<Bitmap> getTumbnailsListById(ArrayList<String> photosIdsList) {
+//
+//        ArrayList<Bitmap> result = new ArrayList<>();
+//
+//        if(photosIdsList != null){
+//            for(String photoId: photosIdsList) {
+//                Bitmap photo = getTumbnailById(photoId);
+//
+//                if(photo != null) {
+//                    result.add(photo);
+//                }
+//            }
+//        }
+//
+//        return result;
+//    }
+
+    public static Bitmap getResizedBitmap(Bitmap src, int width, int height) {
+        // int width = LocLookApp.getPixelsFromDp(Constants.TUMBNAIL_WIDTH);
+        // int height = LocLookApp.getPixelsFromDp(Constants.TUMBNAIL_HEIGHT);
         return ThumbnailUtils.extractThumbnail(src, width, height, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
     }
 }

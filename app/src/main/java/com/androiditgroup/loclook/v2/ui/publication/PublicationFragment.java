@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,13 +38,12 @@ import com.androiditgroup.loclook.v2.adapters.BadgesAdapter;
 import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter;
 import com.androiditgroup.loclook.v2.adapters.QuizAnswersAdapter;
 import com.androiditgroup.loclook.v2.models.Badge;
-import com.androiditgroup.loclook.v2.models.Publication;
-import com.androiditgroup.loclook.v2.ui.auth.AuthActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightGridView;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
+import com.androiditgroup.loclook.v2.utils.ImageDelivery;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
 
 import java.io.File;
@@ -94,6 +92,7 @@ public class PublicationFragment    extends     ParentFragment
     private Switch mQuizSwitch;
 
     private ArrayList<String> mAnswersList = new ArrayList<>();
+    private ArrayList<Bitmap> mTumbnailsList = new ArrayList<>();
     private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
 
     private ImageView mShowBadgesIV;
@@ -230,6 +229,7 @@ public class PublicationFragment    extends     ParentFragment
 
         // mGalleryPhotosAdapter = new GalleryListAdapter(mPhotosList);
         mGalleryPhotosAdapter = new GalleryListAdapter(mMainActivity, mPhotosList);
+        // mGalleryPhotosAdapter = new GalleryListAdapter(mMainActivity, mTumbnailsList, mPhotosList);
         mGalleryPhotosRV = (RecyclerView) view.findViewById(R.id.Publication_GalleryRecyclerView);
         mGalleryPhotosRV.setAdapter(mGalleryPhotosAdapter);
 
@@ -466,6 +466,7 @@ public class PublicationFragment    extends     ParentFragment
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
+            Bitmap tumbnailBitmap = null;
             Bitmap photoBitmap = null;
 
             if (requestCode == Constants.PICK_FILE_RC) {
@@ -479,7 +480,8 @@ public class PublicationFragment    extends     ParentFragment
 
                     // create a cropped bitmap
                     // photoBitmap = cropBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length));
-                    photoBitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+                    tumbnailBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length), Constants.TUMBNAIL_WIDTH, Constants.TUMBNAIL_HEIGHT);
+                    photoBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length), Constants.PHOTO_WIDTH, Constants.PHOTO_HEIGHT);
                 } catch (Exception exc) {
                     exc.printStackTrace();
                     LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
@@ -489,14 +491,16 @@ public class PublicationFragment    extends     ParentFragment
                     // create a cropped bitmap
                     if(mCreatedPhotoPath != null)
                         // photoBitmap = cropBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath));
-                        photoBitmap = BitmapFactory.decodeFile(mCreatedPhotoPath);
+                        tumbnailBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath), Constants.TUMBNAIL_WIDTH, Constants.TUMBNAIL_HEIGHT);
+                        photoBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath), Constants.PHOTO_WIDTH, Constants.PHOTO_HEIGHT);
                 } catch (Exception exc) {
                     exc.printStackTrace();
                     LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
                 }
             }
 
-            if(photoBitmap != null) {
+            if((tumbnailBitmap != null) && (photoBitmap != null)) {
+                mTumbnailsList.add(tumbnailBitmap);
                 mPhotosList.add(photoBitmap);
                 mGalleryPhotosAdapter.notifyDataSetChanged();
 

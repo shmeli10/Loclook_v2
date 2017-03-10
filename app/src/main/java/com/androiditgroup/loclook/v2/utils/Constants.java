@@ -30,6 +30,9 @@ public class Constants {
     public static final int TUMBNAIL_WIDTH  = 100;
     public static final int TUMBNAIL_HEIGHT = 75;
 
+    public static final int PHOTO_WIDTH  = LocLookApp.getScreenResolution().getWidth();
+    public static final int PHOTO_HEIGHT = LocLookApp.getScreenResolution().getHeight();
+
     public static class DataBase {
         public static final int DB_VERSION = 1;
         public static final String DATABASE_NAME = "cache_database";

@@ -266,6 +266,7 @@ public class PublicationGenerator {
                                         if((photoId != null) && (bitmap != null)) {
                                             // добавляем изображение в коллекцию
                                             LocLookApp.imagesMap.put(photoId, bitmap);
+                                            // LocLookApp.tumbnailsMap.put(photoId, ImageDelivery.getResizedBitmap(bitmap, Constants.TUMBNAIL_WIDTH, Constants.TUMBNAIL_HEIGHT));
 
                                             // добавляем идентификатор изображения в список
                                             photosIdsList.add(photoId);
