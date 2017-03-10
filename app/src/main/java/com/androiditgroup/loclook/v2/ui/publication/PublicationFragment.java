@@ -153,7 +153,7 @@ public class PublicationFragment    extends     ParentFragment
 
         View view = inflater.inflate(R.layout.fragment_publication, container, false);
 
-        MainActivity.mSlidingPaneLayout.setEnableTouchEvents(false);
+//        MainActivity.mSlidingPaneLayout.setEnableTouchEvents(false);
 
         if(!LocLookApp.badgesMap.isEmpty()) {
 
@@ -453,7 +453,7 @@ public class PublicationFragment    extends     ParentFragment
             // Log.e("ABC", "PublicationFragment: sendPublication(): publication is saved");
             // LocLookApp.publicationsMap.put(publication.getId(), publication);
             mMainActivity.refreshFeed = true;
-            MainActivity.mSlidingPaneLayout.setEnableTouchEvents(true);
+//            MainActivity.mSlidingPaneLayout.setEnableTouchEvents(true);
             mMainActivity.onBackPressed();
         }
         else {

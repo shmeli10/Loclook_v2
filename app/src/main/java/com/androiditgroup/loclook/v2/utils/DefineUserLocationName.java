@@ -65,7 +65,8 @@ public class DefineUserLocationName {
                     sb.append(locationDataList.get(i));
                 }
             }
-            MainActivity.mNavigationUserLocationName.setText(sb.toString());
+            // MainActivity.mNavigationUserLocationName.setText(sb.toString());
+            MainActivity.mLeftMenuUserLocationName.setText(sb.toString());
         }
     }
 

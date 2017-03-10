@@ -69,7 +69,7 @@ public class SettingsMain { // extends BannerFragment {
 //        arrayBottom.add(new SettingsLineHolder(R.drawable.set_calibr, Vars.TYPE_2, Vars.SUB_TYPE_15));
 //
 //        View rootView = inflater.inflate(R.layout.settings_main, container, false);
-//        //menuNavigator = new MenuNavigator(MainActivity.leftMenu,Vars.pageHolder, getActivity(),SettingsMain.this);
+//        //menuNavigator = new MenuNavigator(MainActivity.mLeftMenu,Vars.pageHolder, getActivity(),SettingsMain.this);
 //        menuicon = (Button) rootView.findViewById(R.id.icon1);
 //        menuicon.setOnClickListener(new View.OnClickListener() {
 //            @Override

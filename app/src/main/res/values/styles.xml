@@ -47,6 +47,18 @@
 
     //////////////////////////////////////////////////////////////////
 
+    <style name="NO_WIDTH">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="HO_HEIGHT">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    //////////////////////////////////////////////////////////////////
+
     <style name="HLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
@@ -148,6 +160,28 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">14sp</item>
         <item name="android:text">@string/continue_text</item>
+    </style>
+
+    //////////////////////////////////////////////////////////////////
+
+    <style name="Drawer_Menu_Block">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Drawer_Menu_Image" parent="@style/WW">
+        <item name="android:tint">@color/dark_grey</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="Drawer_Menu_Text" parent="@style/MM">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/dark_grey</item>
     </style>
 
 </resources>

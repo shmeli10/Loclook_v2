@@ -3,17 +3,15 @@ package com.androiditgroup.loclook.v2.ui.gallery;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.adapters.GalleryPagerAdapter;
-import com.androiditgroup.loclook.v2.ui.general.MainActivity;
-import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
-import com.androiditgroup.loclook.v2.utils.ImageDelivery;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
 
 import java.util.ArrayList;
@@ -34,7 +32,6 @@ public class PhotoGalleryFragment extends ParentFragment {
     public static PhotoGalleryFragment newInstance(int position, ArrayList<Bitmap> photosList) {
         Bundle args = new Bundle();
         args.putInt("position", position);
-//        args.putStringArrayList("photosIdsList", photosIdsList);
         args.putParcelableArrayList("photosList", photosList);
         PhotoGalleryFragment fragment = new PhotoGalleryFragment();
         fragment.setArguments(args);
@@ -49,21 +46,25 @@ public class PhotoGalleryFragment extends ParentFragment {
         viewPager.setOffscreenPageLimit(3);
 
         mPosition = getArguments().getInt("position");
-        // mPhotosList = ImageDelivery.getPhotosListById(savedInstanceState.getStringArrayList("photosIdsList"));
         mPhotosList = getArguments().getParcelableArrayList("photosList");
 
-        // Log.e("ABC", "PhotoGalleryFragment: onCreateView(): mPosition= " +mPosition+ ", mPhotosList.size= " +mPhotosList.size());
-
         GalleryPagerAdapter adapter = new GalleryPagerAdapter(mPhotosList);
-
-//        for (int i=0; i<mPhotosList.size(); i++) {
-//            adapter.addFragment(GalleryImageFragment.newInstance(mPhotosList.get(i)), (i + 1) + " from " + mPhotosList.size());
-//        }
 
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(mPosition);
 
+        setHasOptionsMenu(true);
+
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // прячем меню
+        for(int i = 0; i < menu.size(); i++)
+            menu.getItem(i).setVisible(false);
+
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     @Override

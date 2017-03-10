@@ -1,37 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.androiditgroup.loclook.v2.utils.LockableSlidingPane
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/MainActivity_SlidingPanel"
-    style="@style/MM"
-    tools:context=".ui.general.MainActivity">
+    android:id="@+id/drawer_layout"
+    style="@style/MM">
 
-    <LinearLayout
+    <include layout="@layout/activity_main_content" />
+
+    <include
         style="@style/WM"
-        android:orientation="vertical">
+        android:layout_gravity="left"
+        layout="@layout/left_menu" />
 
-        <android.support.design.widget.NavigationView
-            android:id="@+id/MainActivity_NavigationView"
-            style="@style/WM"
-            android:layout_gravity="start"
-            android:background="@color/white"
-            app:itemBackground="@color/white"
-            app:itemTextColor="@color/nav_item_selector"
-            app:itemIconTint="@color/nav_item_selector"
-            app:headerLayout="@layout/nav_header_layout"
-            app:menu="@menu/activity_main_drawer"/>
-
-    </LinearLayout>
-    <LinearLayout
-        style="@style/MM"
-        android:elevation="4dp"
-        android:layout_gravity="end">
-
-        <include
-            layout="@layout/content_main"
-            style="@style/MM"/>
-
-    </LinearLayout>
-
-</com.androiditgroup.loclook.v2.utils.LockableSlidingPane>
+</android.support.v4.widget.DrawerLayout>

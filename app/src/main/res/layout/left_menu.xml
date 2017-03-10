@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MM"
+    android:layout_gravity="left|start"
+    android:fitsSystemWindows="true"
+    android:weightSum="100">
+
+    <LinearLayout
+        style="@style/NO_WIDTH"
+        android:orientation="vertical"
+        android:layout_weight="80"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            android:layout_weight="35"
+            android:orientation="vertical"
+            android:gravity="center_vertical|center_horizontal">
+
+            <include layout="@layout/left_menu_header" />
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="65"
+            android:paddingTop="20dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/Drawer_FeedBlock"
+                style="@style/Drawer_Menu_Block"
+                android:onClick="onClick">
+
+                <ImageView
+                    style="@style/Drawer_Menu_Image"
+                    android:src="@drawable/feed_icon" />
+                <TextView
+                    style="@style/Drawer_Menu_Text"
+                    android:text="@string/feed_text" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/Drawer_FavoritesBlock"
+                style="@style/Drawer_Menu_Block"
+                android:layout_below="@+id/Drawer_FeedBlock"
+                android:onClick="onClick">
+
+                <ImageView
+                    style="@style/Drawer_Menu_Image"
+                    android:src="@drawable/favorite_icon" />
+                <TextView
+                    style="@style/Drawer_Menu_Text"
+                    android:text="@string/favorites_text" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/Drawer_NotificationsBlock"
+                style="@style/Drawer_Menu_Block"
+                android:layout_below="@+id/Drawer_FavoritesBlock"
+                android:onClick="onClick">
+
+                <ImageView
+                    style="@style/Drawer_Menu_Image"
+                    android:src="@drawable/notifications_icon" />
+                <TextView
+                    style="@style/Drawer_Menu_Text"
+                    android:text="@string/notifications_text" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/Drawer_BadgesBlock"
+                style="@style/Drawer_Menu_Block"
+                android:layout_below="@+id/Drawer_NotificationsBlock"
+                android:onClick="onClick">
+
+                <ImageView
+                    style="@style/Drawer_Menu_Image"
+                    android:src="@drawable/badges_icon" />
+                <TextView
+                    style="@style/Drawer_Menu_Text"
+                    android:text="@string/badges_text" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/Drawer_GeolocationBlock"
+                style="@style/Drawer_Menu_Block"
+                android:layout_below="@+id/Drawer_BadgesBlock"
+                android:onClick="onClick">
+
+                <ImageView
+                    style="@style/Drawer_Menu_Image"
+                    android:src="@drawable/geolocation_icon" />
+                <TextView
+                    style="@style/Drawer_Menu_Text"
+                    android:text="@string/geolocation_text" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/Drawer_ExitBlock"
+                style="@style/Drawer_Menu_Block"
+                android:layout_below="@+id/Drawer_GeolocationBlock"
+                android:onClick="onClick">
+
+                <ImageView
+                    android:id="@+id/menu_img1"
+                    style="@style/Drawer_Menu_Image"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/exit_icon"/>
+                <TextView
+                    android:id="@+id/menu_text1"
+                    style="@style/Drawer_Menu_Text"
+                    android:text="@string/exit_text" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        style="@style/NO_WIDTH"
+        android:layout_weight="20" />
+
+</LinearLayout>

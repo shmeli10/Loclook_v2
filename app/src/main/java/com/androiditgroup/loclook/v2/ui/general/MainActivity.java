@@ -8,10 +8,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,49 +29,53 @@ import com.androiditgroup.loclook.v2.ui.geolocation.GeolocationFragment;
 import com.androiditgroup.loclook.v2.ui.notifications.NotificationsFragment;
 import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
 import com.androiditgroup.loclook.v2.utils.Constants;
-import com.androiditgroup.loclook.v2.utils.CustomTypefaceSpan;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 import com.androiditgroup.loclook.v2.utils.DefineUserLocationName;
-import com.androiditgroup.loclook.v2.utils.LockableSlidingPane;
 import com.androiditgroup.loclook.v2.utils.ParentActivity;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
 import com.mikhaellopez.circularimageview.CircularImageView;
+
+import static com.androiditgroup.loclook.v2.ui.general.MainActivity.SelectedFragment.badges;
+import static com.androiditgroup.loclook.v2.ui.general.MainActivity.SelectedFragment.favorites;
+import static com.androiditgroup.loclook.v2.ui.general.MainActivity.SelectedFragment.feed;
+import static com.androiditgroup.loclook.v2.ui.general.MainActivity.SelectedFragment.geolocation;
+import static com.androiditgroup.loclook.v2.ui.general.MainActivity.SelectedFragment.notifications;
 
 /**
  * Created by sostrovschi on 10.01.2017
  */
 
 public class MainActivity   extends     ParentActivity
-                            implements  NavigationView.OnNavigationItemSelectedListener,
-                                        FragmentManager.OnBackStackChangedListener {
+                            implements  FragmentManager.OnBackStackChangedListener {
 
     private TextView mToolbarTitle;
     private ImageButton mNavigationBtn;
-//    private LinearLayout mToolbarBtnContainer;
-//    private FrameLayout mPublicationBtn;
-//    private FrameLayout mCameraBtn;
-//    private FrameLayout mSendBtn;
 //    private ProgressBar mProgressBar;
-
-//    private LocationManager locationManager;
 
     private DefineUserLocationName mLocationDefiner;
 
-    private static NavigationView       mNavigationView;
-    public static CircularImageView     mNavigationUserAvatar;
-    public static TextView              mNavigationUserName;
-    public static TextView              mNavigationUserLocationName;
+    public static CircularImageView     mLeftMenuUserAvatar;
+    public static TextView              mLeftMenuUserName;
+    public static TextView              mLeftMenuUserLocationName;
 
-    public static LockableSlidingPane   mSlidingPaneLayout;
-    public static SelectedFragment      selectedFragment;
+    public static DrawerLayout      mLeftMenu;
+    public static SelectedFragment  selectedFragment;
+    public static SelectedFragment  newSelectedFragment;
 
     public static LayoutInflater mInflater;
 
     public static boolean refreshFeed;
 
     public enum SelectedFragment {
-        show_feed, send_publication, show_gallery
+        feed, send_publication, favorites, notifications, badges, geolocation, photo_gallery
     }
+
+    private static final int leftMenuFeedBlockResId             = R.id.Drawer_FeedBlock;
+    private static final int leftMenuFavoritesBlockResId        = R.id.Drawer_FavoritesBlock;
+    private static final int leftMenuNotificationsBlockResId    = R.id.Drawer_NotificationsBlock;
+    private static final int leftMenuBadgesBlockResId           = R.id.Drawer_BadgesBlock;
+    private static final int leftMenuGeolocationBlockResId      = R.id.Drawer_GeolocationBlock;
+    private static final int leftMenuExitBlockResId             = R.id.Drawer_ExitBlock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,14 +92,6 @@ public class MainActivity   extends     ParentActivity
 
         mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        // initialize sliding panel layout
-        mSlidingPaneLayout = (LockableSlidingPane) findViewById(R.id.MainActivity_SlidingPanel);
-        assert mSlidingPaneLayout != null;
-        mSlidingPaneLayout.setCoveredFadeColor(getResources().getColor(R.color.colorPrimary));
-        mSlidingPaneLayout.setSliderFadeColor(getResources().getColor(android.R.color.transparent));
-        mSlidingPaneLayout.setShadowDrawableLeft(getResources().getDrawable(R.drawable.nav_shadow));
-        mSlidingPaneLayout.setParallaxDistance(200);
-
         mToolbarTitle = (TextView) findViewById(R.id.MainActivity_ToolbarTitle);
         mToolbarTitle.setTypeface(LocLookApp.semiBold);
 
@@ -105,15 +100,53 @@ public class MainActivity   extends     ParentActivity
         assert mNavigationBtn != null;
         mNavigationBtn.setOnClickListener(mMenuClickListener);
 
-        mLocationDefiner = new DefineUserLocationName((LocationManager) getSystemService(LOCATION_SERVICE));
+        mLeftMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mLeftMenu.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) { }
 
-        mNavigationView = (NavigationView) findViewById(R.id.MainActivity_NavigationView);
-        mNavigationView.setNavigationItemSelectedListener(this);
-        Menu menu = mNavigationView.getMenu();
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
-            applyTypeFaceToMenu(item);
-        }
+            @Override
+            public void onDrawerOpened(View drawerView) { }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                if(selectedFragment != newSelectedFragment) {
+                    switch(newSelectedFragment) {
+
+                        case feed:
+                            setFragment(FeedFragment.newInstance(), false, false);
+                            break;
+                        case favorites:
+                            setFragment(FavoritesFragment.newInstance(), false, true);
+                            break;
+                        case notifications:
+                            setFragment(NotificationsFragment.newInstance(), false, true);
+                            break;
+                        case badges:
+                            setFragment(BadgesFragment.newInstance(), false, true);
+                            break;
+                        case geolocation:
+                            setFragment(GeolocationFragment.newInstance(), false, true);
+                            break;
+                        default:
+                            break;
+                    }
+                    selectedFragment = newSelectedFragment;
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) { }
+        });
+
+        mLeftMenuUserAvatar       = (CircularImageView) findViewById(R.id.Drawer_UserAvatar);
+        mLeftMenuUserName         = (TextView) findViewById(R.id.Drawer_UserName);
+        mLeftMenuUserName.setTypeface(LocLookApp.light);
+
+        mLeftMenuUserLocationName = (TextView) findViewById(R.id.Drawer_UserLocation);
+        mLeftMenuUserLocationName.setTypeface(LocLookApp.light);
+
+        mLocationDefiner = new DefineUserLocationName((LocationManager) getSystemService(LOCATION_SERVICE));
 
         // if user is not logged in
         if (!LocLookApp.getInstance().isLoggedIn()) {
@@ -129,13 +162,13 @@ public class MainActivity   extends     ParentActivity
 
             if (phoneNumber != null) {
 
-                Cursor data = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
+                Cursor cursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
 
                 // если данные получены
-                if (data.getCount() > 0) {
+                if (cursor.getCount() > 0) {
                     // формируем пользователя приложения
-                    if (setUserData(data))
-                        setUserDataOnNavView();
+                    if (setUserData(cursor))
+                        setLeftMenuUserData();
                 }
             }
         }
@@ -144,6 +177,8 @@ public class MainActivity   extends     ParentActivity
 
         // формируем список бейджей
         LocLookApp.setBadgesList();
+
+        selectedFragment = newSelectedFragment = feed;
     }
 
     @Override
@@ -165,10 +200,41 @@ public class MainActivity   extends     ParentActivity
         }
     }
 
+    public void onClick(View view) {
+        clearBackStack();
+        switch(view.getId()) {
+            case leftMenuFeedBlockResId:
+                newSelectedFragment = feed;
+                break;
+            case leftMenuFavoritesBlockResId:
+                newSelectedFragment = favorites;
+                break;
+            case leftMenuNotificationsBlockResId:
+                newSelectedFragment = notifications;
+                break;
+            case leftMenuBadgesBlockResId:
+                newSelectedFragment = badges;
+                break;
+            case leftMenuGeolocationBlockResId:
+                newSelectedFragment = geolocation;
+                break;
+            case leftMenuExitBlockResId:
+                Intent logoutIntent = new Intent(this, SplashActivity.class);
+                startActivity(logoutIntent);
+                LocLookApp.getInstance().logOut();
+                finish();
+                break;
+            default:
+                break;
+        }
+       mLeftMenu.closeDrawer(Gravity.LEFT);
+    }
+
     private View.OnClickListener mMenuClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
-            mSlidingPaneLayout.openPane();
+        public void onClick(View view) {
+                // mSlidingPaneLayout.openPane();
+                mLeftMenu.openDrawer(Gravity.LEFT);
         }
     };
 
@@ -221,65 +287,13 @@ public class MainActivity   extends     ParentActivity
 
     }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        clearBackStack();
-        switch (item.getItemId()) {
-            case R.id.nav_feed:
-                setFragment(FeedFragment.newInstance(), false, false);
-                break;
-            case R.id.nav_exit:
-                Intent logoutIntent = new Intent(this, SplashActivity.class);
-                startActivity(logoutIntent);
-                LocLookApp.getInstance().logOut();
-                finish();
-                return true;
-            case R.id.nav_favorites:
-                setFragment(FavoritesFragment.newInstance(), false, true);
-                break;
-            case R.id.nav_notifications:
-                setFragment(NotificationsFragment.newInstance(), false, true);
-                break;
-            case R.id.nav_badges:
-                setFragment(BadgesFragment.newInstance(), false, true);
-                break;
-            case R.id.nav_geolocation:
-                setFragment(GeolocationFragment.newInstance(), false, true);
-                break;
-        }
-        mNavigationBtn.setOnClickListener(mMenuClickListener);
-        mNavigationBtn.setImageResource(R.drawable.menu_icon);
-        if (mSlidingPaneLayout.isOpen()) {
-            mSlidingPaneLayout.closePane();
-        }
-        return true;
-    }
-
-    private void applyTypeFaceToMenu(MenuItem mi) {
-        SpannableString mNewTitle = new SpannableString(mi.getTitle());
-        mNewTitle.setSpan(new CustomTypefaceSpan("", LocLookApp.extraBold), 0, mNewTitle.length(),
-                Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        mi.setTitle(mNewTitle);
-    }
-
-    // public void setUserData(final User user) {
-    public void setUserDataOnNavView() {
-        View navHeaderView = mNavigationView.getHeaderView(0);
-        // final TextView userName = (TextView) navHeaderView.findViewById(R.id.navHeaderUserName);
-
-        mNavigationUserAvatar       = (CircularImageView) navHeaderView.findViewById(R.id.navHeaderUserAvatar);
-        mNavigationUserName         = (TextView) navHeaderView.findViewById(R.id.navHeaderUserName);
-        mNavigationUserName.setTypeface(LocLookApp.light);
-
-        mNavigationUserLocationName = (TextView) navHeaderView.findViewById(R.id.navHeaderUserLocation);
-        mNavigationUserLocationName.setTypeface(LocLookApp.light);
-
+    public void setLeftMenuUserData() {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 User user = LocLookApp.usersMap.get(LocLookApp.appUserId);
                 if(user != null) {
-                    mNavigationUserName.setText(user.getName());
+                    mLeftMenuUserName.setText(user.getName());
                 }
 
                 // if(LocLookApp.user != null) {
@@ -304,8 +318,8 @@ public class MainActivity   extends     ParentActivity
     @Override
     public void onBackPressed() {
         // Log.e("ABC", "MainActivity: onBackPressed()");
-        if (mSlidingPaneLayout.isOpen()) {
-            mSlidingPaneLayout.closePane();
+        if(mLeftMenu.isDrawerOpen(Gravity.LEFT)){
+            mLeftMenu.closeDrawer(Gravity.LEFT);
         }
         else if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
@@ -313,7 +327,8 @@ public class MainActivity   extends     ParentActivity
                 mNavigationBtn.setOnClickListener(mMenuClickListener);
                 mNavigationBtn.setImageResource(R.drawable.menu_icon);
             }
-        } else {
+        }
+        else {
             super.onBackPressed();
         }
     }
@@ -325,7 +340,7 @@ public class MainActivity   extends     ParentActivity
         int backStackSize = fragmentManager.getBackStackEntryCount();
         if (backStackSize == 0) {
             setToolbarTitle(LocLookApp.getInstance().getResources().getString(R.string.feed_text));
-            selectedFragment = SelectedFragment.show_feed;
+            selectedFragment = SelectedFragment.feed;
             return;
         }
 
@@ -335,7 +350,7 @@ public class MainActivity   extends     ParentActivity
         switch(selectedFragment) {
 
             case send_publication:
-            case show_gallery:
+            case photo_gallery:
                 mNavigationBtn.setOnClickListener(mBackClickListener);
                 mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);
                 break;

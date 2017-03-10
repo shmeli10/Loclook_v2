@@ -59,7 +59,7 @@ public class GalleryListAdapter  extends RecyclerView.Adapter<GalleryListAdapter
 //                    if(mGalleryItemInteractionListener != null)
 //                        mGalleryItemInteractionListener.onImageClick(mGalleryPhotos.get(position), position, mGalleryPhotos);
 
-                    MainActivity.selectedFragment = MainActivity.SelectedFragment.show_gallery;
+                    MainActivity.selectedFragment = MainActivity.SelectedFragment.photo_gallery;
                     mMainActivity.setFragment(PhotoGalleryFragment.newInstance(position, mGalleryPhotos), false, true);
                 }
             });
