@@ -85,11 +85,12 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="16sp"
                     android:text="@string/state_off_text"/>
-                <Switch
+                <android.support.v7.widget.SwitchCompat
                     android:id="@+id/Publication_AnonymousSwitchBTN"
                     style="@style/WW"
                     android:layout_alignParentRight="true"
-                    android:checked="false"/>
+                    android:checked="false"
+                    android:theme="@style/SCBSwitch"/>
 
             </RelativeLayout>
             <View
@@ -111,11 +112,12 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="16sp"
                     android:text="@string/state_off_text"/>
-                <Switch
+                <android.support.v7.widget.SwitchCompat
                     android:id="@+id/Publication_QuizSwitchBTN"
                     style="@style/WW"
                     android:layout_alignParentRight="true"
-                    android:checked="false"/>
+                    android:checked="false"
+                    android:theme="@style/SCBSwitch"/>
 
                 <TextView
                     android:id="@+id/Publication_QuizTV"
@@ -203,7 +205,6 @@
                     android:id="@+id/Publication_ShowBadges"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:tint="@color/dark_grey"
                     android:src="@drawable/show_data"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
@@ -291,7 +292,6 @@
                     android:id="@+id/Publication_ShowPhotos"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:tint="@color/dark_grey"
                     android:src="@drawable/show_data"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
@@ -382,5 +382,10 @@
         </RelativeLayout>
 
     </ScrollView>
+    <ProgressBar
+        android:id="@+id/Publication_ProgressBar"
+        style="@style/WW"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
 
 </RelativeLayout>

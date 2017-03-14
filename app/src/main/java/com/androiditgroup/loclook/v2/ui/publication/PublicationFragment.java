@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -27,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -88,8 +90,8 @@ public class PublicationFragment    extends     ParentFragment
     private TextView mCreatePhotoTV;
     private TextView mPhotosAddedSumTV;
 
-    private Switch mAnonymousSwitch;
-    private Switch mQuizSwitch;
+    private SwitchCompat mAnonymousSwitch;
+    private SwitchCompat mQuizSwitch;
 
     private ArrayList<String> mAnswersList = new ArrayList<>();
     private ArrayList<Bitmap> mTumbnailsList = new ArrayList<>();
@@ -108,6 +110,8 @@ public class PublicationFragment    extends     ParentFragment
     private QuizAnswersAdapter mQuizAnswersAdapter;
     private BadgesAdapter mBadgesAdapter;
     private GalleryListAdapter mGalleryPhotosAdapter;
+
+    private ProgressBar mProgressBar;
 
     private final int anonymousSwitchResId      = R.id.Publication_AnonymousSwitchBTN;
     private final int quizSwitchResId           = R.id.Publication_QuizSwitchBTN;
@@ -129,8 +133,6 @@ public class PublicationFragment    extends     ParentFragment
     private boolean isBadgesBlockHidden;
     private boolean isPhotoBlockHidden;
 
-    // private Badge selectedBadge = LocLookApp.badgesList.get(0);
-    // private Badge selectedBadge = LocLookApp.badgesMap.get(LocLookApp.badgesMap.keySet().iterator().next()); // получаем первый элемент в колллекции
     private Badge selectedBadge;
     private String mCreatedPhotoPath;
 
@@ -152,21 +154,12 @@ public class PublicationFragment    extends     ParentFragment
 
         View view = inflater.inflate(R.layout.fragment_publication, container, false);
 
-//        MainActivity.mSlidingPaneLayout.setEnableTouchEvents(false);
-
         if(!LocLookApp.badgesMap.isEmpty()) {
 
             String key = LocLookApp.badgesMap.keySet().iterator().next();
-            Log.e("ABC", "PublicationFragment: onCreateView(): key= " +key);
-
             selectedBadge = LocLookApp.badgesMap.get(key);
         }
-        else
-            Log.e("ABC", "PublicationFragment: onCreateView(): badgesMap is empty");
 
-
-
-        // selectedBadge = LocLookApp.badgesList.get(0);
         mScroll = (ScrollView) view.findViewById(R.id.Publication_ScrollView);
 
         mPublicationText = (EditText) view.findViewById(R.id.Publication_PublicationTextET);
@@ -195,10 +188,10 @@ public class PublicationFragment    extends     ParentFragment
         mCreatePhotoTV = (TextView) view.findViewById(R.id.Publication_CreatePhoto);
         mCreatePhotoTV.setOnClickListener(this);
 
-        mAnonymousSwitch = (Switch) view.findViewById(anonymousSwitchResId);
+        mAnonymousSwitch = (SwitchCompat) view.findViewById(anonymousSwitchResId);
         mAnonymousSwitch.setOnCheckedChangeListener(this);
 
-        mQuizSwitch = (Switch) view.findViewById(R.id.Publication_QuizSwitchBTN);
+        mQuizSwitch = (SwitchCompat) view.findViewById(R.id.Publication_QuizSwitchBTN);
         mQuizSwitch.setOnCheckedChangeListener(this);
 
         mAddAnswerTV = (TextView) view.findViewById(addAnswerResId);
@@ -227,9 +220,7 @@ public class PublicationFragment    extends     ParentFragment
         mChooseBadgeBlockGV.setAdapter(mBadgesAdapter);
         mChooseBadgeBlockGV.setOnItemClickListener(onBadgeClickListener);
 
-        // mGalleryPhotosAdapter = new GalleryListAdapter(mPhotosList);
         mGalleryPhotosAdapter = new GalleryListAdapter(mMainActivity, mPhotosList);
-        // mGalleryPhotosAdapter = new GalleryListAdapter(mMainActivity, mTumbnailsList, mPhotosList);
         mGalleryPhotosRV = (RecyclerView) view.findViewById(R.id.Publication_GalleryRecyclerView);
         mGalleryPhotosRV.setAdapter(mGalleryPhotosAdapter);
 
@@ -238,6 +229,8 @@ public class PublicationFragment    extends     ParentFragment
 
         mGalleryRightScrollIV = (ImageView) view.findViewById(galleryRightScrollResId);
         mGalleryRightScrollIV.setOnClickListener(this);
+
+        mProgressBar = (ProgressBar) view.findViewById(R.id.Publication_ProgressBar);
 
         setHasOptionsMenu(true);
 
@@ -430,6 +423,8 @@ public class PublicationFragment    extends     ParentFragment
             return;
         }
 
+        mProgressBar.setVisibility(View.VISIBLE);
+
         ArrayList<String> realQuizAnswersList = new ArrayList<>();
         // если надо включить опрос в публикацию
         if(mQuizSwitch.isChecked()) {
@@ -443,17 +438,13 @@ public class PublicationFragment    extends     ParentFragment
                 return;
             }
         }
-
-        // Publication publication = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
-
+        
         boolean publicationCreated = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
 
-        // if(publication != null) {
+        mProgressBar.setVisibility(View.GONE);
+
         if(publicationCreated) {
-            // Log.e("ABC", "PublicationFragment: sendPublication(): publication is saved");
-            // LocLookApp.publicationsMap.put(publication.getId(), publication);
             mMainActivity.refreshFeed = true;
-//            MainActivity.mSlidingPaneLayout.setEnableTouchEvents(true);
             mMainActivity.onBackPressed();
         }
         else {
@@ -478,8 +469,7 @@ public class PublicationFragment    extends     ParentFragment
                     inputStream.read(buffer);
                     inputStream.close();
 
-                    // create a cropped bitmap
-                    // photoBitmap = cropBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length));
+                    // create a cropped bitmap                    
                     tumbnailBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length), Constants.TUMBNAIL_WIDTH, Constants.TUMBNAIL_HEIGHT);
                     photoBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length), Constants.PHOTO_WIDTH, Constants.PHOTO_HEIGHT);
                 } catch (Exception exc) {
@@ -489,8 +479,7 @@ public class PublicationFragment    extends     ParentFragment
             } else if (requestCode == Constants.TAKE_PHOTO_RC) {
                 try {
                     // create a cropped bitmap
-                    if(mCreatedPhotoPath != null)
-                        // photoBitmap = cropBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath));
+                    if(mCreatedPhotoPath != null)                        
                         tumbnailBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath), Constants.TUMBNAIL_WIDTH, Constants.TUMBNAIL_HEIGHT);
                         photoBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath), Constants.PHOTO_WIDTH, Constants.PHOTO_HEIGHT);
                 } catch (Exception exc) {
@@ -558,10 +547,4 @@ public class PublicationFragment    extends     ParentFragment
             }
         }
     }
-
-//    private Bitmap cropBitmap(Bitmap src) {
-//        int width = LocLookApp.getPixelsFromDp(100);
-//        int height = LocLookApp.getPixelsFromDp(75);
-//        return ThumbnailUtils.extractThumbnail(src, width, height, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-//    }
 }
