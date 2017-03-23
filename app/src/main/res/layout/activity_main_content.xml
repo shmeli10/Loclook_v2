@@ -41,12 +41,6 @@
             android:textSize="18sp"/>
 
     </RelativeLayout>
-    <ProgressBar
-        android:id="@+id/mainActivityProgressBar"
-        style="@style/WW"
-        android:layout_gravity="center"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
     <FrameLayout
         android:id="@+id/MainActivity_FragmentContainer"
         style="@style/MM"

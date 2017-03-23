@@ -1,6 +1,7 @@
 package com.androiditgroup.loclook.v2.ui.publication;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -73,7 +74,6 @@ public class PublicationFragment    extends     ParentFragment
 
     private MainActivity mMainActivity;
 
-    private RelativeLayout mPublicationContainer;
     private RelativeLayout mBadgeBlock;
     private RelativeLayout mQuizAnswersBlock;
     private RelativeLayout mShowPhotoBlockRL;
@@ -111,7 +111,7 @@ public class PublicationFragment    extends     ParentFragment
     private BadgesAdapter mBadgesAdapter;
     private GalleryListAdapter mGalleryPhotosAdapter;
 
-    private ProgressBar mProgressBar;
+    private Handler mHandler;
 
     private final int anonymousSwitchResId      = R.id.Publication_AnonymousSwitchBTN;
     private final int quizSwitchResId           = R.id.Publication_QuizSwitchBTN;
@@ -160,12 +160,26 @@ public class PublicationFragment    extends     ParentFragment
             selectedBadge = LocLookApp.badgesMap.get(key);
         }
 
+        mHandler = new Handler() {
+            public void handleMessage(android.os.Message msg) {
+                switch (msg.what) {
+                    case 1:
+                        mMainActivity.onBackPressed();
+                        break;
+                    case -1:
+                    default:
+                        LocLookApp.showSimpleSnakeBar(mScroll, "publication_send_error_text");
+                        break;
+                }
+                mMainActivity.hidePD();
+            }
+        };
+
         mScroll = (ScrollView) view.findViewById(R.id.Publication_ScrollView);
 
         mPublicationText = (EditText) view.findViewById(R.id.Publication_PublicationTextET);
         mPublicationText.addTextChangedListener(this);
 
-        mPublicationContainer   = (RelativeLayout) view.findViewById(R.id.Publication_Container);
         mQuizAnswersBlock       = (RelativeLayout) view.findViewById(R.id.Publication_QuizAnswersBlock);
         mPhotoBlockRL           = (RelativeLayout) view.findViewById(R.id.Publication_PhotoBlock);
 
@@ -229,8 +243,6 @@ public class PublicationFragment    extends     ParentFragment
 
         mGalleryRightScrollIV = (ImageView) view.findViewById(galleryRightScrollResId);
         mGalleryRightScrollIV.setOnClickListener(this);
-
-        mProgressBar = (ProgressBar) view.findViewById(R.id.Publication_ProgressBar);
 
         setHasOptionsMenu(true);
 
@@ -393,9 +405,6 @@ public class PublicationFragment    extends     ParentFragment
 
         @Override
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            // Badge selectedBadge = LocLookApp.badgesList.get(position);
-            // selectedBadge = LocLookApp.badgesList.get(position);
-            // selectedBadge = LocLookApp.badgesMap.get(position);
             selectedBadge = LocLookApp.badgesMap.get(String.valueOf(position+1));
 
             if(selectedBadge != null) {
@@ -419,37 +428,39 @@ public class PublicationFragment    extends     ParentFragment
 
         // если публикация без текста
         if (TextUtils.isEmpty(mPublicationText.getText())) {
-            LocLookApp.showSimpleSnakeBar(mPublicationContainer, "empty_publication_text");
+            LocLookApp.showSimpleSnakeBar(mScroll, "empty_publication_text");
             return;
         }
 
-        mProgressBar.setVisibility(View.VISIBLE);
+        mMainActivity.showPD();
 
-        ArrayList<String> realQuizAnswersList = new ArrayList<>();
-        // если надо включить опрос в публикацию
-        if(mQuizSwitch.isChecked()) {
-            for(int i=0; i<mAnswersList.size(); i++) {
-                if(!TextUtils.isEmpty(mAnswersList.get(i)))
-                    realQuizAnswersList.add(mAnswersList.get(i));
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                ArrayList<String> realQuizAnswersList = new ArrayList<>();
+                // если надо включить опрос в публикацию
+                if(mQuizSwitch.isChecked()) {
+                    for(int i=0; i<mAnswersList.size(); i++) {
+                        if(!TextUtils.isEmpty(mAnswersList.get(i)))
+                            realQuizAnswersList.add(mAnswersList.get(i));
+                    }
+
+                    if(realQuizAnswersList.size() < Constants.QUIZ_MIN_ANSWERS) {
+                        LocLookApp.showSimpleSnakeBar(mScroll, "need_more_answers_text");
+                        return;
+                    }
+                }
+
+                boolean publicationCreated = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
+
+                if(publicationCreated)
+                    mHandler.sendEmptyMessage(1);
+                else
+                    mHandler.sendEmptyMessage(-1);
             }
+        });
+        t.start();
 
-            if(realQuizAnswersList.size() < Constants.QUIZ_MIN_ANSWERS) {
-                LocLookApp.showSimpleSnakeBar(mPublicationContainer, "need_more_answers_text");
-                return;
-            }
-        }
-        
-        boolean publicationCreated = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
-
-        mProgressBar.setVisibility(View.GONE);
-
-        if(publicationCreated) {
-            mMainActivity.refreshFeed = true;
-            mMainActivity.onBackPressed();
-        }
-        else {
-            LocLookApp.showSimpleSnakeBar(mPublicationContainer, "publication_send_error_text");
-        }
+        // LocLookApp.showActionSnakeBar(mScroll, "sending_publication_text", "action_publication_text", "action_result_publication_text");
     }
 
     @Override
@@ -474,7 +485,7 @@ public class PublicationFragment    extends     ParentFragment
                     photoBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length), Constants.PHOTO_WIDTH, Constants.PHOTO_HEIGHT);
                 } catch (Exception exc) {
                     exc.printStackTrace();
-                    LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
+                    LocLookApp.showSimpleSnakeBar(mScroll, "get_photo_error_text");
                 }
             } else if (requestCode == Constants.TAKE_PHOTO_RC) {
                 try {
@@ -484,7 +495,7 @@ public class PublicationFragment    extends     ParentFragment
                         photoBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath), Constants.PHOTO_WIDTH, Constants.PHOTO_HEIGHT);
                 } catch (Exception exc) {
                     exc.printStackTrace();
-                    LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
+                    LocLookApp.showSimpleSnakeBar(mScroll, "get_photo_error_text");
                 }
             }
 
@@ -543,7 +554,7 @@ public class PublicationFragment    extends     ParentFragment
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                LocLookApp.showSimpleSnakeBar(mPublicationContainer, "get_photo_error_text");
+                LocLookApp.showSimpleSnakeBar(mScroll, "get_photo_error_text");
             }
         }
     }

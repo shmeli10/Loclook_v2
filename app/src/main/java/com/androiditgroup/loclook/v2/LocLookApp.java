@@ -154,9 +154,21 @@ public class LocLookApp extends Application {
         return context.getResources().getIdentifier("@drawable/" +resource, null, context.getPackageName());
     }
 
-    public static int getDpFromPixels(int px) {
-        return (int) (context.getResources().getDisplayMetrics().density * px);
-    }
+//    public static int getStringResId(String resource) {
+//        return context.getResources().getIdentifier("@string/" +resource, null, context.getPackageName());
+//    }
+
+//    public static String getStringByResId(int resId) {
+//        return context.getResources().getString(resId);
+//    }
+
+//    public static String getStringByResName(String resource) {
+//        return context.getResources().getString(getStringResId(resource));
+//    }
+
+//    public static int getDpFromPixels(int px) {
+//        return (int) (context.getResources().getDisplayMetrics().density * px);
+//    }
 
     /**
      * Convert dp to pixels
@@ -178,4 +190,17 @@ public class LocLookApp extends Application {
         String text = context.getResources().getString(resId);
         Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
     }
+
+//    public static void showActionSnakeBar(View view, String resName, String actionResName, final String actionResultResName) {
+//        Snackbar.make(view, getStringByResName(resName), Snackbar.LENGTH_LONG)
+//                .setAction(getStringByResName(actionResName), new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if(actionResultResName != null) {
+//                            Snackbar snackbar1 = Snackbar.make(view, getStringByResName(actionResultResName), Snackbar.LENGTH_SHORT);
+//                            snackbar1.show();
+//                        }
+//                    }
+//                }).show();
+//    }
 }

@@ -58,6 +58,10 @@
 
     <string name="photo_gallery_text">Фото Галерея</string>
 
+    <!--<string name="sending_publication_text">Отправка публикации</string>-->
+    <!--<string name="action_publication_text">Действие</string>-->
+    <!--<string name="action_result_publication_text">Результат</string>-->
+
     <string-array name="badges">
         <item>LocLook</item>
         <item>Интересные места</item>

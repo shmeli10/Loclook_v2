@@ -3,6 +3,7 @@ package com.androiditgroup.loclook.v2.ui.general;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -50,7 +51,6 @@ public class MainActivity   extends     ParentActivity
 
     private TextView mToolbarTitle;
     private ImageButton mNavigationBtn;
-//    private ProgressBar mProgressBar;
 
     private DefineUserLocationName mLocationDefiner;
 
@@ -58,13 +58,13 @@ public class MainActivity   extends     ParentActivity
     public static TextView              mLeftMenuUserName;
     public static TextView              mLeftMenuUserLocationName;
 
-    public static DrawerLayout      mLeftMenu;
-    public static SelectedFragment  selectedFragment;
-    public static SelectedFragment  newSelectedFragment;
+    public static DrawerLayout          mLeftMenu;
+    public static SelectedFragment      selectedFragment;
+    public static SelectedFragment      newSelectedFragment;
 
-    public static LayoutInflater mInflater;
+    public static LayoutInflater        mInflater;
 
-    public static boolean refreshFeed;
+    private ProgressDialog              mProgressDialog;
 
     public enum SelectedFragment {
         feed, send_publication, favorites, notifications, badges, geolocation, photo_gallery
@@ -362,5 +362,22 @@ public class MainActivity   extends     ParentActivity
 //            mNavigationBtn.setOnClickListener(mBackClickListener);
 //            mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);
 //        }
+    }
+
+    public void showPD() {
+        if(mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.show();
+        }
+    }
+
+    public void hidePD() {
+        if(mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 }
