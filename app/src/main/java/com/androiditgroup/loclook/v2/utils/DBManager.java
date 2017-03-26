@@ -137,21 +137,26 @@ public class DBManager {
     }
 
     /**
-     * Запрос на возвращение строк из таблицы
-     *
-     * @param sql           SQL запрос. Щн не должен заканчиваться с ;
-     * @param selectionArgs Можете включить ?s в WHERE и он будет заменятся на selectionArgs.
+     * Запрос на возвращение числовой раскладки по кол-ву выбранных ответов в опросе
      * @return Возвращает строки из таблицы
      */
-//    public Cursor queryRows(SQLiteDatabase database, String sql, String[] selectionArgs) {
-//        return database.rawQuery(sql, selectionArgs);
-//    }
+    public Cursor getQuizAnswersSum(SQLiteDatabase db, String[] answersIdsArr) {
+        // return db.rawQuery(sql, selectionArgs);
+
+        // String[] names = { "name1", "name2" }; // do whatever is needed first
+        String query = "SELECT QUIZ_ANSWER_ID, COUNT(*) QUIZ_SUM FROM " +Constants.DataBase.USER_QUIZ_ANSWER_TABLE+ " WHERE QUIZ_ANSWER_ID IN (" + makePlaceholders(answersIdsArr.length) + ") GROUP BY QUIZ_ANSWER_ID ";
+        LocLookApp.showLog("DBManager: getQuizAnswersSum(): query= " +query);
+
+        showAllTableData(db, Constants.DataBase.USER_QUIZ_ANSWER_TABLE);
+
+        return db.rawQuery(query, answersIdsArr);
+    }
 
     /**
      * Запрос на создание пользователя
      * @param userName      Введенное пользователем имя
      * @param phoneNumber   Введенный пользователем номер телефона
-     * @return Возвращаем идентификатор пользователя
+     * @return Возвращаем курсор с данными созданного в БД пользователя
      */
     public Cursor createUser(String userName, String phoneNumber) {
         // Log.e("ABC", "DBManager: createUser()");
@@ -467,7 +472,6 @@ public class DBManager {
 
     /**
      * Search the data in database using the given key
-     * @param request the request url is used like primary key
      * @return a last inserted JSON with the given key (request URL)
      */
 //    public static String loadDataFromDB(URL request) {
@@ -503,4 +507,36 @@ public class DBManager {
 //            return "---";
 //        }
 //    }
+
+
+    private String makePlaceholders(int len) {
+        if (len < 1) {
+            // It will lead to an invalid query anyway ..
+            throw new RuntimeException("No placeholders");
+        } else {
+            StringBuilder sb = new StringBuilder(len * 2 - 1);
+            sb.append("?");
+            for (int i = 1; i < len; i++) {
+                sb.append(",?");
+            }
+            return sb.toString();
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Запрос на сохранение выбранного пользователем ответа в опросе
+     * @param quizAnswerId   Идентификатор выбранного пользователем ответа в опросе
+     * @return Возвращаем курсор с данными добавленной записи
+     */
+    public Cursor saveSelectedQuizAnswer(String quizAnswerId) {
+        LocLookApp.showLog("DBManager: saveSelectedQuizAnswer()");
+
+        String[] columnsArr = {"QUIZ_ANSWER_ID", "USER_ID"};
+        String[] dataArr    = {quizAnswerId, LocLookApp.appUserId};
+
+        return insertData(getDataBase(), Constants.DataBase.USER_QUIZ_ANSWER_TABLE, columnsArr, dataArr);
+    }
+
 }

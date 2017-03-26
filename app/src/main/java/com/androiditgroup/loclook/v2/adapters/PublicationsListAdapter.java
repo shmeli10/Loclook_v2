@@ -6,16 +6,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
+import com.androiditgroup.loclook.v2.models.Quiz;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
+import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
 import com.androiditgroup.loclook.v2.utils.ImageDelivery;
+import com.androiditgroup.loclook.v2.utils.UiUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -76,21 +81,33 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         // если есть изображения
         if(publication.hasImages()) {
             // отобразить фото-блок
-            holder.mPhotoBlockLL.setVisibility(View.VISIBLE);
-
-            // наполнить блок изображениями
-//            ArrayList<Bitmap> tumbnailsList = new ArrayList<>();
-//            tumbnailsList.addAll(ImageDelivery.getTumbnailsListById(publication.getPhotosIdsList()));
+            holder.mPhotoBlock.setVisibility(View.VISIBLE);
 
             ArrayList<Bitmap> photosList = new ArrayList<>();
             photosList.addAll(ImageDelivery.getPhotosListById(publication.getPhotosIdsList()));
 
             // Log.e("ABC", "PublicationsListAdapter: onBindViewHolder(): photosList size= " +photosList.size()+ ", tumbnailsList size= " +tumbnailsList.size());
 
-            // GalleryListAdapter galleryAdapter = new GalleryListAdapter(photosList);
             GalleryListAdapter galleryAdapter = new GalleryListAdapter(mMainActivity, photosList);
-            // GalleryListAdapter galleryAdapter = new GalleryListAdapter(mMainActivity, tumbnailsList, photosList);
             holder.mGalleryPhotosRV.setAdapter(galleryAdapter);
+        }
+
+        // если есть опрос
+        if(publication.hasQuiz()) {
+            // отобразить блок с опросом
+            holder.mQuizBlock.setVisibility(View.VISIBLE);
+
+            // получаем опрос
+            Quiz quiz = publication.getQuiz();
+
+            if(quiz != null) {
+                ShowPublicationQuizAnswersAdapter quizAnswersAdapter = new ShowPublicationQuizAnswersAdapter(mMainActivity.getLayoutInflater(), quiz, quiz.getAnswersList());
+
+                // настраиваем список
+                holder.mQuizAnswersList.setAdapter(quizAnswersAdapter);
+
+                holder.mQuizAnswersSum.setText("" +quiz.getSelectedAnswersSum());
+            }
         }
     }
 
@@ -111,19 +128,32 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         TextView mDateAndTimeTV;
         CircularImageView mBadgeImageIV;
 
-        LinearLayout mPhotoBlockLL;
+        LinearLayout mPhotoBlock;
         RecyclerView mGalleryPhotosRV;
+
+        LinearLayout mQuizBlock;
+        // ListView mQuizAnswersList;
+        ExpandableHeightListView mQuizAnswersList;
+
+        TextView mQuizAnswersSum;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mText               = (TextView) itemView.findViewById(R.id.Publication_LI_TextTV);
-            mAuthorNameTV       = (TextView) itemView.findViewById(R.id.Publication_LI_UserNameTV);
-            mDateAndTimeTV      = (TextView) itemView.findViewById(R.id.Publication_LI_DateAndTimeTV);
-            mBadgeImageIV       = (CircularImageView) itemView.findViewById(R.id.Publication_LI_BadgeImageIV);
 
-            mPhotoBlockLL       = (LinearLayout) itemView.findViewById(R.id.Publication_LI_PhotoBlock);
-            mGalleryPhotosRV    = (RecyclerView) itemView.findViewById(R.id.Publication_LI_GalleryRecyclerView);
+            mText               = UiUtils.findView(itemView, R.id.Publication_LI_TextTV);
+            mAuthorNameTV       = UiUtils.findView(itemView, R.id.Publication_LI_UserNameTV);
+            mDateAndTimeTV      = UiUtils.findView(itemView, R.id.Publication_LI_DateAndTimeTV);
+            mBadgeImageIV       = UiUtils.findView(itemView, R.id.Publication_LI_BadgeImageIV);
+
+            mPhotoBlock         = UiUtils.findView(itemView, R.id.Publication_LI_PhotoBlock);
+            mGalleryPhotosRV    = UiUtils.findView(itemView, R.id.Publication_LI_GalleryRecyclerView);
+
+            mQuizBlock          = UiUtils.findView(itemView, R.id.Publication_LI_QuizBlock);
+            mQuizAnswersList    = UiUtils.findView(itemView,R.id.Publication_LI_AnswersList);
+            mQuizAnswersList.setExpanded(true);
+
+            mQuizAnswersSum     = UiUtils.findView(itemView, R.id.Publication_LI_AnswersSum);
         }
 
         @Override

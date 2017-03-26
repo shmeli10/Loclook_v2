@@ -93,4 +93,6 @@
     <string name="need_more_answers_text">В опросе должно быть не менее 2 ответов</string>
     <string name="publication_send_error_text">Отправить публикацию не удалось</string>
 
+    <string name="all_answered_sum_text">Всего проголосовало:</string>
+
 </resources>

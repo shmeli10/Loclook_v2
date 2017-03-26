@@ -37,7 +37,7 @@
             android:layout_below="@+id/Publication_PublicationTextET"
             android:textColor="@color/dark_grey"
             android:text="@string/publication_left_characters_head"/>
-         <TextView
+        <TextView
             android:id="@+id/Publication_LeftCharactersBodyTV"
             style="@style/WW"
             android:layout_below="@+id/Publication_PublicationTextET"
@@ -47,7 +47,7 @@
             android:textStyle="bold"
             android:textSize="14sp"
             android:text="0"/>
-         <TextView
+        <TextView
             android:id="@+id/Publication_LeftCharactersTail"
             style="@style/WW"
             android:layout_below="@+id/Publication_PublicationTextET"
@@ -55,12 +55,12 @@
             android:layout_marginLeft="3dp"
             android:textColor="@color/dark_grey"
             android:text="@string/publication_left_characters_tail"/>
-         <View
+        <View
             android:id="@+id/Publication_LeftCharactersBottomLine"
             style="@style/HLine_Grey"
             android:layout_below="@+id/Publication_LeftCharactersHead"
             android:layout_marginTop="5dp"/>
-         <RelativeLayout
+        <RelativeLayout
             android:id="@+id/Publication_AnonymousBlock"
             style="@style/MW"
             android:layout_below="@+id/Publication_LeftCharactersBottomLine"

@@ -83,10 +83,53 @@
 
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/Publication_LI_QuizBlock"
+        style="@style/MW"
+        android:layout_below="@+id/Publication_LI_PhotoBlock"
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:visibility="gone">
+
+        <!--<ListView-->
+            <!--android:id="@+id/Publication_LI_AnswersList"-->
+            <!--style="@style/MW"/>-->
+        <com.androiditgroup.loclook.v2.utils.ExpandableHeightListView
+            android:id="@+id/Publication_LI_AnswersList"
+            style="@style/MW"
+            android:cacheColorHint="#00000000"
+            android:fadingEdge="none"
+            android:focusable="false"
+            android:scrollbars="none"
+            android:divider="@color/white"
+            android:dividerHeight="2dp"/>
+        <RelativeLayout style="@style/MW">
+
+            <TextView
+                style="@style/WW"
+                android:layout_toLeftOf="@+id/Publication_LI_AnswersSum"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/dark_grey"
+                android:text="@string/all_answered_sum_text" />
+            <TextView
+                android:id="@+id/Publication_LI_AnswersSum"
+                style="@style/WW"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/dark_grey"
+                android:textStyle="bold"
+                android:text="0" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/Publication_LI_FooterBlock"
         style="@style/MW"
         android:orientation="horizontal"
-        android:layout_below="@+id/Publication_LI_PhotoBlock"
+        android:layout_below="@+id/Publication_LI_QuizBlock"
         android:layout_marginTop="20dp"
         android:weightSum="4">
 

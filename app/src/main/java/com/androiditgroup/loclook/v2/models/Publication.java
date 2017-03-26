@@ -21,7 +21,8 @@ public class Publication {
     private String mStreetName;
     private boolean mHasQuiz;
     //    private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
-    private ArrayList<String> mQuizAnswersIdsList = new ArrayList<>();
+    // private ArrayList<String> mQuizAnswersIdsList = new ArrayList<>();
+    private Quiz mQuiz;
     private boolean mHasImages;
     //    private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
     private ArrayList<String> mPhotosIdsList = new ArrayList<>();
@@ -43,6 +44,10 @@ public class Publication {
 
     public ArrayList<String> getPhotosIdsList() { return mPhotosIdsList; }
 
+    public boolean hasQuiz() { return mHasQuiz; }
+
+    public Quiz getQuiz() { return mQuiz; }
+
     public boolean isAnonymous() { return mIsAnonymous; }
 
     public static class Builder {
@@ -56,8 +61,10 @@ public class Publication {
         private String mRegionName;
         private String mStreetName;
         private boolean mHasQuiz;
+        private Quiz mQuiz;
+
         //        private ArrayList<QuizAnswer> mQuizAnswersList = new ArrayList<>();
-        private ArrayList<String> mQuizAnswersIdsList = new ArrayList<>();
+        // private ArrayList<String> mQuizAnswersIdsList = new ArrayList<>();
         private boolean mHasImages;
         //        private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
         private ArrayList<String> mPhotosIdsList = new ArrayList<>();
@@ -114,15 +121,20 @@ public class Publication {
             return this;
         }
 
+        public Builder quiz(Quiz value) {
+            mQuiz = value;
+            return this;
+        }
+
 //        public Builder quizAnswerList(ArrayList<QuizAnswer> list) {
 //            mQuizAnswersList = list;
 //            return this;
 //        }
 
-        public Builder quizAnswerList(ArrayList<String> list) {
-            mQuizAnswersIdsList = list;
-            return this;
-        }
+//        public Builder quizAnswerList(ArrayList<String> list) {
+//            mQuizAnswersIdsList = list;
+//            return this;
+//        }
 
         public Builder hasImages(boolean value) {
             mHasImages = value;
@@ -155,7 +167,8 @@ public class Publication {
             publication.mRegionName = this.mRegionName;
             publication.mStreetName = this.mStreetName;
             publication.mHasQuiz = this.mHasQuiz;
-            publication.mQuizAnswersIdsList = this.mQuizAnswersIdsList;
+            publication.mQuiz = this.mQuiz;
+//            publication.mQuizAnswersIdsList = this.mQuizAnswersIdsList;
             publication.mHasImages = this.mHasImages;
             publication.mPhotosIdsList = this.mPhotosIdsList;
             publication.mIsAnonymous = this.mIsAnonymous;

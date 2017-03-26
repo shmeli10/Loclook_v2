@@ -203,4 +203,8 @@ public class LocLookApp extends Application {
 //                    }
 //                }).show();
 //    }
+
+    public static void showLog(String msg) {
+        Log.e("ABC", msg);
+    }
 }

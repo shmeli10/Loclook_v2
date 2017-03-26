@@ -17,6 +17,10 @@
 
     <color name="white">#fdfdfe</color>
 
+    <color name="quiz_grey">#e0e9ed</color>
+    <color name="quiz_selected_answer">#fdda97</color>
+    <color name="quiz_answer">#fdf3de</color>
+
     <!--.dark-primary-color    { background: #FFA000; }-->
     <!--.default-primary-color { background: #FFC107; }-->
     <!--.light-primary-color   { background: #FFECB3; }-->

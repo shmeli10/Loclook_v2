@@ -1,7 +1,6 @@
 package com.androiditgroup.loclook.v2.ui.publication;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -29,17 +28,15 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.adapters.BadgesAdapter;
 import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter;
-import com.androiditgroup.loclook.v2.adapters.QuizAnswersAdapter;
+import com.androiditgroup.loclook.v2.adapters.AddPublicationQuizAnswersAdapter;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.utils.Constants;
@@ -68,7 +65,7 @@ public class PublicationFragment    extends     ParentFragment
                                     implements  View.OnClickListener,
                                                 TextWatcher,
                                                 CompoundButton.OnCheckedChangeListener,
-                                                QuizAnswersAdapter.QuizAnswerCallback {
+                                                AddPublicationQuizAnswersAdapter.QuizAnswerCallback {
 
     private static LayoutInflater mInflater;
 
@@ -107,7 +104,7 @@ public class PublicationFragment    extends     ParentFragment
     private ExpandableHeightGridView mChooseBadgeBlockGV;
     private RecyclerView mGalleryPhotosRV;
 
-    private QuizAnswersAdapter mQuizAnswersAdapter;
+    private AddPublicationQuizAnswersAdapter mQuizAnswersAdapter;
     private BadgesAdapter mBadgesAdapter;
     private GalleryListAdapter mGalleryPhotosAdapter;
 
@@ -214,7 +211,7 @@ public class PublicationFragment    extends     ParentFragment
         for(int i=0; i<Constants.QUIZ_MIN_ANSWERS; i++)
             mAnswersList.add(null);
 
-        mQuizAnswersAdapter = new QuizAnswersAdapter(mInflater, mAnswersList, this);
+        mQuizAnswersAdapter = new AddPublicationQuizAnswersAdapter(mInflater, mAnswersList, this);
         mQuizAnswersList = (ExpandableHeightListView) view.findViewById(R.id.Publication_QuizAnswersList);
         mQuizAnswersList.setExpanded(true);
         mQuizAnswersList.setAdapter(mQuizAnswersAdapter);
