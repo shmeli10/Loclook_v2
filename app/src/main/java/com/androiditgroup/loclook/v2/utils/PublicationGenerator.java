@@ -156,7 +156,7 @@ public class PublicationGenerator {
         ArrayList<Publication> result = new ArrayList<>();
 
         if((pCursor != null) && (pCursor.getCount() > 0)) {
-            // Log.e("ABC", "PublicationGenerator: getPublicationsList(): pCursor.getCount()= " + pCursor.getCount());
+            // LocLookApp.showLog("PublicationGenerator: getPublicationsList(): pCursor.getCount()= " + pCursor.getCount());
             pCursor.moveToFirst();
 
             // ArrayList<QuizAnswer> mQuizAnswerList = new ArrayList<>();
@@ -233,7 +233,8 @@ public class PublicationGenerator {
 
                             if(list != null) {
                                 pQuiz = mQuizBuilder.answersList(list).build();
-                                QuizUtility.setQuizAnswersSum(pQuiz);
+                                QuizUtility.setQuizAnswersVotesSum(pQuiz);
+                                QuizUtility.setQuizAnswersVotesInPercents(pQuiz);
                                 QuizUtility.setUserSelectedQuizAnswer(pQuiz, true);
                             }
                         }
@@ -258,7 +259,7 @@ public class PublicationGenerator {
                                     //////////////////////////////////////////////////////////////////////////////////////
 
                                     if(photoArr != null) {
-                                        // Log.e("ABC", "PublicationGenerator: getPublicationsList(): publication(" +pId+ ") photoArr size=: " +photoArr.length);
+                                        // LocLookApp.showLog("PublicationGenerator: getPublicationsList(): publication(" +pId+ ") photoArr size=: " +photoArr.length);
 
                                         Bitmap bitmap = DbBitmapUtility.getImage(photoArr);
 

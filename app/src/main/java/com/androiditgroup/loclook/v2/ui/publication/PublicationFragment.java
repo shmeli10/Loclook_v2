@@ -421,7 +421,7 @@ public class PublicationFragment    extends     ParentFragment
     }
 
     private void sendPublication() {
-        Log.e("ABC", "PublicationFragment: sendPublication()");
+//        LocLookApp.showLog("PublicationFragment: sendPublication()");
 
         // если публикация без текста
         if (TextUtils.isEmpty(mPublicationText.getText())) {

@@ -309,7 +309,8 @@ public class MainActivity   extends     ParentActivity
     }
 
     public void clearBackStack() {
-        // Log.e("ABC", "MainActivity: clearBackStack()");
+        // LocLookApp.showLog("MainActivity: clearBackStack()");
+
         FragmentManager fragmentManager = getFragmentManager();
         for (int f = 0; f < fragmentManager.getBackStackEntryCount(); f++)
             fragmentManager.popBackStack();
@@ -317,7 +318,8 @@ public class MainActivity   extends     ParentActivity
 
     @Override
     public void onBackPressed() {
-        // Log.e("ABC", "MainActivity: onBackPressed()");
+        // LocLookApp.showLog("MainActivity: onBackPressed()");
+
         if(mLeftMenu.isDrawerOpen(Gravity.LEFT)){
             mLeftMenu.closeDrawer(Gravity.LEFT);
         }
@@ -335,7 +337,8 @@ public class MainActivity   extends     ParentActivity
 
     @Override
     public void onBackStackChanged() {
-        // Log.e("ABC", "MainActivity: onBackStackChanged()");
+        // LocLookApp.showLog("MainActivity: onBackStackChanged()");
+
         FragmentManager fragmentManager = getFragmentManager();
         int backStackSize = fragmentManager.getBackStackEntryCount();
         if (backStackSize == 0) {

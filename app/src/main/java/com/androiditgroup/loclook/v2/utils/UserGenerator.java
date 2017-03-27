@@ -3,6 +3,7 @@ package com.androiditgroup.loclook.v2.utils;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.models.User;
 
 /**
@@ -94,7 +95,7 @@ public class UserGenerator {
             return mUserBuilder.build();
 
         } catch(Exception exc) {
-            Log.e("ABC", "UserGenerator: getUserFromCursor(): error: " +exc.toString());
+            LocLookApp.showLog("UserGenerator: getUserFromCursor(): error: " +exc.toString());
         } finally {
             cursor.close();
         }

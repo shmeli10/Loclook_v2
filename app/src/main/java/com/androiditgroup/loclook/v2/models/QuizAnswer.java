@@ -7,20 +7,24 @@ public class QuizAnswer {
 
     private String mId;
     private String mText;
-    private int mSelectedSum = 0;
+    private int mVotesSum = 0;
+    private int mVotesInPercents = 0;
 
     public String getId() { return mId; }
 
     public String getText() { return mText; }
 
-    public int getSelectedSum() { return mSelectedSum; }
+    public int getVotesSum() { return mVotesSum; }
 
-    public void setSelectedSum(int selectedSum) { mSelectedSum = selectedSum; }
+    public void setVotesSum(int value) { mVotesSum = value; }
+
+    public int getVotesInPercents() { return mVotesInPercents; }
+
+    public void setVotesInPercents(int value) { mVotesInPercents = value; }
 
     public static class Builder {
         private String mId;
         private String mText;
-        private int mSelectedSum;
 
         public Builder id(String value) {
             mId = value;
@@ -32,16 +36,10 @@ public class QuizAnswer {
             return this;
         }
 
-        public Builder selectedSum(int value) {
-            mSelectedSum = value;
-            return this;
-        }
-
         public QuizAnswer build() {
             QuizAnswer quizAnswer = new QuizAnswer();
             quizAnswer.mId = this.mId;
             quizAnswer.mText = this.mText;
-            quizAnswer.mSelectedSum = this.mSelectedSum;
             return quizAnswer;
         }
     }

@@ -38,17 +38,17 @@ public class GalleryListAdapter  extends RecyclerView.Adapter<GalleryListAdapter
 //        if(tumbnailsList != null)
 //            mGalleryTumbnails.addAll(tumbnailsList);
 //        else
-//            Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): tumbnailsList is null");
+//            LocLookApp.showLog("GalleryListAdapter: onBindViewHolder(): tumbnailsList is null");
 //
 //        if(photosList != null)
 //            mGalleryPhotos.addAll(photosList);
 //        else
-//            Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): photosList is null");
+//            LocLookApp.showLog("GalleryListAdapter: onBindViewHolder(): photosList is null");
 
 //        if(mainActivity instanceof OnGalleryItemInteractionListener)
 //            mGalleryItemInteractionListener = (OnGalleryItemInteractionListener) mainActivity;
 //        else
-//            Log.e("ABC", "GalleryListAdapter: GalleryListAdapter(): mainActivity does not implement OnGalleryItemInteractionListener interface");
+//            LocLookApp.showLog("GalleryListAdapter: GalleryListAdapter(): mainActivity does not implement OnGalleryItemInteractionListener interface");
     }
 
     @Override
@@ -72,8 +72,8 @@ public class GalleryListAdapter  extends RecyclerView.Adapter<GalleryListAdapter
             holder.mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): imageView(" +position+ ") clicked");
-//                    Log.e("ABC", "GalleryListAdapter: onBindViewHolder(): imageView(" +position+ ") clicked, mGalleryPhotos size= " +mGalleryPhotos.size());
+//                    LocLookApp.showLog("GalleryListAdapter: onBindViewHolder(): imageView(" +position+ ") clicked");
+//                    LocLookApp.showLog("GalleryListAdapter: onBindViewHolder(): imageView(" +position+ ") clicked, mGalleryPhotos size= " +mGalleryPhotos.size());
 
 //                    if(mGalleryItemInteractionListener != null)
 //                        mGalleryItemInteractionListener.onImageClick(mGalleryPhotos.get(position), position, mGalleryPhotos);

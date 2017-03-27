@@ -3,13 +3,9 @@ package com.androiditgroup.loclook.v2;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,18 +14,14 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.androiditgroup.loclook.v2.models.Badge;
-import com.androiditgroup.loclook.v2.models.Publication;
-import com.androiditgroup.loclook.v2.models.QuizAnswer;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.utils.BadgeGenerator;
 import com.androiditgroup.loclook.v2.utils.Constants;
 import com.androiditgroup.loclook.v2.utils.DBManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -39,21 +31,15 @@ import java.util.Map;
 
 public class LocLookApp extends Application {
 
-    // public static       User        user;
     public static       String      appUserId;
     public static       Context     context;
     protected static    LocLookApp  instance;
 
     private static      SharedPreferences preferences;
 
-//    public static String authCode;
-
     public static Map<String, User> usersMap = new HashMap<>();
     public static Map<String, Badge> badgesMap = new LinkedHashMap<>();
     public static Map<String, Bitmap> imagesMap = new LinkedHashMap<>();
-//    public static Map<String, Bitmap> tumbnailsMap = new LinkedHashMap<>();
-//    public static Map<String, Publication> publicationsMap = new LinkedHashMap<>();
-//    public static Map<String, QuizAnswer> quizAnswersMap = new LinkedHashMap<>();
 
     public static Typeface bold, boldItalic, extraBold, extraBoldItalic, italic,
             light, lightItalic, regular, semiBold, semiBoldItalic;
@@ -63,8 +49,6 @@ public class LocLookApp extends Application {
     public static LocLookApp getInstance() {
         return instance;
     }
-
-//    public static ArrayList<Badge> badgesList = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -142,7 +126,7 @@ public class LocLookApp extends Application {
 
         ArrayList<Badge> badgesList = BadgeGenerator.getBadgesList(cursor);
 
-        // Log.e("ABC", "LocLookApp: setBadgesList(): badgesList size = " +badgesList.size());
+//        LocLookApp.showLog("LocLookApp: setBadgesList(): badgesList size = " +badgesList.size());
 
         for(int i=0; i<badgesList.size(); i++) {
             Badge badge = badgesList.get(i);

@@ -27,12 +27,12 @@ public class QuizUtility {
                 String userAnswerRowId = cursor.getString(cursor.getColumnIndex("_ID"));
 
                 if(!TextUtils.isEmpty(userAnswerRowId)) {
-                    // LocLookApp.showLog("QuizUtility: saveUserAnswer(): Saved user answer id= " + userAnswerRowId);
+//                    LocLookApp.showLog("QuizUtility: saveUserAnswer(): Saved user answer id= " + userAnswerRowId);
                     return true;
                 }
-                else {
+//                else {
                     // LocLookApp.showLog("QuizUtility: saveUserAnswer(): Saved user answer error(0)");
-                }
+//                }
             } catch(Exception exc) {
                 LocLookApp.showLog("QuizUtility: saveUserAnswer(): Saved user answer error: " +exc.toString());
             } finally {
@@ -46,7 +46,7 @@ public class QuizUtility {
         return false;
     }
 
-    public static void setQuizAnswersSum(Quiz quiz) {
+    public static void setQuizAnswersVotesSum(Quiz quiz) {
 
         ArrayList<QuizAnswer> quizAnswersList = quiz.getAnswersList();
 
@@ -59,7 +59,7 @@ public class QuizUtility {
 
             quizAnswersIdsArr[i] = quizAnswer.getId();
             quizAnswersMap.put(quizAnswer.getId(), quizAnswer);
-            LocLookApp.showLog("QuizUtility: setQuizAnswersSum(): id= " +quizAnswersIdsArr[i]);
+//            LocLookApp.showLog("QuizUtility: setQuizAnswersVotesSum(): id= " +quizAnswersIdsArr[i]);
         }
 
         Cursor cursor = DBManager.getInstance().getQuizAnswersSum(DBManager.getInstance().getDataBase(), quizAnswersIdsArr);
@@ -74,15 +74,54 @@ public class QuizUtility {
                     String quizAnswerSelectedSum    = cursor.getString(cursor.getColumnIndex("QUIZ_SUM"));
 
                     // задаем кол-во выбора пользователями заданного ответа
-                    quizAnswersMap.get(quizAnswerId).setSelectedSum(Integer.valueOf(quizAnswerSelectedSum));
+                    quizAnswersMap.get(quizAnswerId).setVotesSum(Integer.valueOf(quizAnswerSelectedSum));
 
                     // LocLookApp.showLog("QUIZ_ANSWER_ID= " +quizAnswerId+ ", sum= " +quizAnswerSelectedSum);
                 }
             }
         } catch(Exception exc) {
-            LocLookApp.showLog("QuizUtility: setQuizAnswersSum(): error: " +exc.toString());
+            LocLookApp.showLog("QuizUtility: setQuizAnswersVotesSum(): error: " +exc.toString());
         } finally {
             cursor.close();
+        }
+    }
+
+    public static void setQuizAnswersVotesInPercents(Quiz quiz) {
+        // получаем общее кол-во ответов пользователей
+        int allVotesSum = quiz.getAllVotesSum();
+
+//        LocLookApp.showLog("QuizUtility: setQuizAnswersVotesSum(): quiz allVotesSum= " +allVotesSum);
+
+        // если хоть кто-то уже проголосовал
+        if(allVotesSum > 0) {
+
+            // получаем список с вариантами ответов опраса
+            ArrayList<QuizAnswer> quizAnswersList = quiz.getAnswersList();
+
+            // проходим циклом по вариантам ответов опроса
+            for(int i=0; i<quizAnswersList.size(); i++) {
+                // получаем очередной вариант ответа
+                QuizAnswer quizAnswer = quizAnswersList.get(i);
+
+                int votesInPercents    = 0;
+                int quizAnswerVotesSum = quizAnswer.getVotesSum();
+
+                // если хоть один человек выбрал этот вариант ответа
+                if(quizAnswerVotesSum > 0) {
+
+                    // получаем результат
+                    double value = (100 / allVotesSum) * quizAnswerVotesSum;
+
+                    // приводим результат к целому числу
+                    votesInPercents = (int) value;
+
+                }
+
+                // задаем значение в процентах
+                quizAnswer.setVotesInPercents(votesInPercents);
+
+//                LocLookApp.showLog("QuizUtility: setQuizAnswersVotesSum(): quiz(\"" +quizAnswer.getText()+"\") votesInPercents= " +votesInPercents);
+            }
         }
     }
 

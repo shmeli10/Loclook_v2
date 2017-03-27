@@ -69,14 +69,15 @@ public class PhoneNumberFragment extends Fragment {
 
         // если это существующий в БД пользователь
         if(data.getCount() > 0) {
-            // Log.e("ABC", "PhoneNumberFragment: moveForward(): это существующий в БД пользователь");
+            // LocLookApp.showLog("PhoneNumberFragment: moveForward(): это существующий в БД пользователь");
+
             if(mAuthActivity.setUserData(data)) {
                 mAuthActivity.setFragment(SMSCodeFragment.newInstance(), false, true);
             }
         }
         // если это новый пользователь
         else {
-            // Log.e("ABC", "PhoneNumberFragment: moveForward(): это новый пользователь");
+            // LocLookApp.showLog("PhoneNumberFragment: moveForward(): это новый пользователь");
             mAuthActivity.setFragment(UserNameFragment.newInstance(), false, true);
         }
     }

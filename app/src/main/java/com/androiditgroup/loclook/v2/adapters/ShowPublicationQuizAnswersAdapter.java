@@ -8,11 +8,9 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.models.Quiz;
 import com.androiditgroup.loclook.v2.models.QuizAnswer;
-import com.androiditgroup.loclook.v2.utils.QuizUtility;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -25,18 +23,11 @@ public class ShowPublicationQuizAnswersAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Quiz mQuiz;
     private ArrayList<QuizAnswer> quizAnswersList;
-    // private QuizAnswerCallback mQuizAnswerCallback;
-
-//    public interface QuizAnswerCallback {
-//        void onDelete(int quizAnswerId);
-//    }
 
     public ShowPublicationQuizAnswersAdapter(LayoutInflater inflater, Quiz quiz, ArrayList<QuizAnswer> list) {
-    // public ShowPublicationQuizAnswersAdapter(LayoutInflater inflater, ArrayList<Boolean> list, QuizAnswerCallback callback) {
         mInflater = inflater;
         mQuiz = quiz;
         quizAnswersList = list;
-//        mQuizAnswerCallback = callback;
     }
 
     @Override
@@ -64,37 +55,25 @@ public class ShowPublicationQuizAnswersAdapter extends BaseAdapter {
 
         final QuizAnswer answer = quizAnswersList.get(position);
 
+        TextView mQuizAnswerText = UiUtils.findView(view, R.id.ShowPublication_QI_AnswerText);
+        mQuizAnswerText.setText(answer.getText());
+
         // если пользователь уже выбрал ответ в опросе
         if(mQuiz.userSelectedAnswer()) {
+            // больше голосвать нельзя
+            FrameLayout answerBlock = UiUtils.findView(view, R.id.ShowPublication_QI_AnswerBlock);
+            answerBlock.setClickable(false);
+
+            // отображаем прогресс голосования за данные ответ
             ProgressBar mProgress = UiUtils.findView(view, R.id.ShowPublication_QI_Progress);
             mProgress.setVisibility(View.VISIBLE);
-            mProgress.setProgress(50);
+            mProgress.setProgress(answer.getVotesInPercents());
+
+            // отображаем кол-во пользователей выбравших данный ответ
+            TextView mQuizAnswersSum = UiUtils.findView(view, R.id.ShowPublication_QI_AnswersSum);
+            mQuizAnswersSum.setVisibility(View.VISIBLE);
+            mQuizAnswersSum.setText("" +answer.getVotesSum());
         }
-        // если пользователь еще не отвечал в опросе
-        else {
-            UiUtils.findView(view, R.id.ShowPublication_QI_AnswerBlock).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    LocLookApp.showLog("ShowPublicationQuizAnswersAdapter: getView(): click on answer(" +answer.getId()+ "): " +answer.getText());
-
-                    boolean answerSaved = QuizUtility.saveUserAnswer(answer.getId());
-
-                    if(answerSaved) {
-                        LocLookApp.showLog("ShowPublicationQuizAnswersAdapter: user answer saved successfully");
-
-                        QuizUtility.setUserSelectedQuizAnswer(mQuiz, false);
-                    }
-                    else
-                        LocLookApp.showLog("ShowPublicationQuizAnswersAdapter: user answer save error");
-                }
-            });
-        }
-
-        TextView mQuizAnswerText = UiUtils.findView(view, R.id.ShowPublication_QI_AnswerText);
-        mQuizAnswerText.setText(quizAnswersList.get(position).getText());
-
-        TextView mQuizAnswersSum = UiUtils.findView(view, R.id.ShowPublication_QI_AnswersSum);
-        mQuizAnswersSum.setText("" +quizAnswersList.get(position).getSelectedSum());
 
         return view;
     }

@@ -38,7 +38,7 @@ public class DBManager {
                     // sqLiteDatabase.execSQL(Constants.DataBase.CREATE_USER_DATA_TABLE);
                     // sqLiteDatabase.execSQL(Constants.DataBase.CREATE_HISTORY_TABLE);
 
-                    Log.e("ABC", "DBManager: onCreate()");
+                    LocLookApp.showLog("DBManager: onCreate()");
 
                     createTable(sqLiteDatabase, Constants.DataBase.USER_TABLE, Constants.DataBase.USER_TABLE_COLUMNS);
                     createTable(sqLiteDatabase, Constants.DataBase.BADGE_TABLE, Constants.DataBase.BADGE_TABLE_COLUMNS);
@@ -50,7 +50,7 @@ public class DBManager {
                     populateTables(sqLiteDatabase);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e("ABC", "DBManager: onCreate(): error: " +e.toString());
+                    LocLookApp.showLog("DBManager: onCreate(): error: " +e.toString());
                 }
             }
 
@@ -60,7 +60,7 @@ public class DBManager {
                     // sqLiteDatabase.execSQL(Constants.DataBase.DROP_USER_DATA_TABLE);
                     // sqLiteDatabase.execSQL(Constants.DataBase.DROP_HISTORY_TABLE);
 
-                    Log.e("ABC", "DBManager: onUpgrade()");
+                    LocLookApp.showLog("DBManager: onUpgrade()");
 
                     onCreate(sqLiteDatabase);
                 } catch (Exception e) {
@@ -78,7 +78,7 @@ public class DBManager {
     }
 
     private void createTable(SQLiteDatabase db,String tableName, String columns) {
-        Log.e("ABC", "--- create table " + tableName + " ---");
+        LocLookApp.showLog("--- create table " + tableName + " ---");
 
         // String createQuery = "CREATE TABLE IF NOT EXISTS " +tableName+ " (" + "id integer primary key autoincrement, " +columns+ ");";
 
@@ -104,13 +104,11 @@ public class DBManager {
      * Populate db tables by persistent data
      */
     private void populateTables(SQLiteDatabase db) {
-        Log.e("ABC", "DBManager: populateTables()");
+        LocLookApp.showLog("DBManager: populateTables()");
 
         String[] badgesArr = context.getResources().getStringArray(R.array.badges);
         // String[] columnsArr = {"NAME", "IS_ENABLED"};
         String[] columnsArr = {"NAME"};
-
-        // Log.e("ABC", "DBManager: populateTables(): badgesArr length = " +badgesArr.length);
 
         for(int i=0; i<badgesArr.length; i++)
             // insertData(db, Constants.DataBase.BADGE_DATA_TABLE, columnsArr, new String[] {badgesArr[i], "0"});
@@ -141,13 +139,9 @@ public class DBManager {
      * @return Возвращает строки из таблицы
      */
     public Cursor getQuizAnswersSum(SQLiteDatabase db, String[] answersIdsArr) {
-        // return db.rawQuery(sql, selectionArgs);
-
-        // String[] names = { "name1", "name2" }; // do whatever is needed first
+        // формируем запрос к БД
         String query = "SELECT QUIZ_ANSWER_ID, COUNT(*) QUIZ_SUM FROM " +Constants.DataBase.USER_QUIZ_ANSWER_TABLE+ " WHERE QUIZ_ANSWER_ID IN (" + makePlaceholders(answersIdsArr.length) + ") GROUP BY QUIZ_ANSWER_ID ";
-        LocLookApp.showLog("DBManager: getQuizAnswersSum(): query= " +query);
-
-        showAllTableData(db, Constants.DataBase.USER_QUIZ_ANSWER_TABLE);
+//        LocLookApp.showLog("DBManager: getQuizAnswersSum(): query= " +query);
 
         return db.rawQuery(query, answersIdsArr);
     }
@@ -159,7 +153,7 @@ public class DBManager {
      * @return Возвращаем курсор с данными созданного в БД пользователя
      */
     public Cursor createUser(String userName, String phoneNumber) {
-        // Log.e("ABC", "DBManager: createUser()");
+        LocLookApp.showLog("DBManager: createUser()");
 
         // String[] columnsArr = {"NAME", "PHONE_NUMBER", "RATE"};
         // String[] dataArr    = {userName, phoneNumber, "0"};
@@ -243,11 +237,14 @@ public class DBManager {
                     long rowID = getDataBase().insert(Constants.DataBase.PHOTOS_TABLE, null, cv);
 
                     // если идентификатор записи получен
-                    if (rowID > 0) {
-                        Log.e("ABC", "image inserted, ID = " + rowID + " in table " + Constants.DataBase.PHOTOS_TABLE);
-                    }
-                    else {
-                        Log.e("ABC", "ERROR: image(" +i+ ") not inserted");
+//                    if (rowID > 0) {
+//                        LocLookApp.showLog("image inserted, ID = " + rowID + " in table " + Constants.DataBase.PHOTOS_TABLE);
+//                    }
+//                    else {
+
+                        // если идентификатор записи получен
+                    if (rowID <= 0) {
+//                        LocLookApp.showLog("ERROR: image(" +i+ ") not inserted");
                         throw new SQLiteException();
                     }
                 }
@@ -256,10 +253,10 @@ public class DBManager {
             getDataBase().setTransactionSuccessful();
             result = true;
         } catch(SQLiteException sqliteExc) {
-            Log.e("ABC", "DBManager: createPublication(): sqliteExc: " +sqliteExc.toString());
+            LocLookApp.showLog("DBManager: createPublication(): sqliteExc: " +sqliteExc.toString());
         } catch(Exception exc) {
             //Error in between database transaction
-            Log.e("ABC", "DBManager: createPublication(): error: " +exc.toString());
+            LocLookApp.showLog("DBManager: createPublication(): error: " +exc.toString());
         } finally {
             getDataBase().endTransaction();
             // return PublicationGenerator.getPublicationFromCursor(pCursor, pQuizAnswersList, photosList);
@@ -268,7 +265,7 @@ public class DBManager {
     }
 
     public Cursor insertData(SQLiteDatabase db, String tableName, String[] columnsArr, String[] dataArr) {
-        Log.e("ABC", "DBManager: insertData(): tableName= " +tableName);
+        LocLookApp.showLog("DBManager: insertData(): tableName= " +tableName);
 
         Cursor result = null;
 
@@ -283,7 +280,7 @@ public class DBManager {
 
             // если идентификатор записи получен
             if (rowID > 0) {
-                Log.e("ABC", "row inserted, ID = " + rowID + " in table " + tableName);
+                LocLookApp.showLog("row inserted, ID = " + rowID + " in table " + tableName);
 
                 // получаем курсор с данными
                 result = queryColumns(db, tableName, null, "_ID", String.valueOf(rowID));
@@ -301,7 +298,7 @@ public class DBManager {
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
 
-            Log.e("ABC", "----- Table: " + table + " -----");
+            LocLookApp.showLog("----- Table: " + table + " -----");
 
             StringBuilder sb1 = new StringBuilder();
 
@@ -309,7 +306,7 @@ public class DBManager {
                 sb1.append("" + cursorArr[i] + " \t\t");
             }
 
-            Log.e("ABC", sb1.toString());
+            LocLookApp.showLog(sb1.toString());
 
             do {
                 StringBuilder sb2 = new StringBuilder();
@@ -318,14 +315,14 @@ public class DBManager {
                     sb2.append("" +cursor.getString(cursor.getColumnIndex(cursorArr[i])) + "\t\t");
                 }
 
-                Log.e("ABC", sb2.toString());
+                LocLookApp.showLog(sb2.toString());
 
             } while (cursor.moveToNext());
         }
 
         cursor.close();
 
-        Log.e("ABC", "--------------------------------------------------");
+        LocLookApp.showLog("--------------------------------------------------");
     }
 
     /**
@@ -531,7 +528,7 @@ public class DBManager {
      * @return Возвращаем курсор с данными добавленной записи
      */
     public Cursor saveSelectedQuizAnswer(String quizAnswerId) {
-        LocLookApp.showLog("DBManager: saveSelectedQuizAnswer()");
+//        LocLookApp.showLog("DBManager: saveSelectedQuizAnswer()");
 
         String[] columnsArr = {"QUIZ_ANSWER_ID", "USER_ID"};
         String[] dataArr    = {quizAnswerId, LocLookApp.appUserId};

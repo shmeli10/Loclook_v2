@@ -14,7 +14,7 @@ import com.androiditgroup.loclook.v2.LocLookApp;
 public class ImageDelivery {
 
     public static Bitmap getPhotoById(String id) {
-        // Log.e("ABC", "ImageDelivery: getPhotoById(): id is null:" +(id == null));
+//        LocLookApp.showLog("ImageDelivery: getPhotoById(): id is null:" +(id == null));
 
         if((id != null) && (LocLookApp.imagesMap.containsKey(id)))
             return LocLookApp.imagesMap.get(id);

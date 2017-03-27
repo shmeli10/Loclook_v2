@@ -2,13 +2,13 @@ package com.androiditgroup.loclook.v2.adapters;
 
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
@@ -20,6 +20,7 @@ import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
 import com.androiditgroup.loclook.v2.utils.ImageDelivery;
+import com.androiditgroup.loclook.v2.utils.QuizUtility;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -47,8 +48,9 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
     }
 
     @Override
-    public void onBindViewHolder(PublicationsListAdapter.ViewHolder holder, int position) {
-        // Log.e("ABC", "PublicationsListAdapter: onBindViewHolder(): publication(" +position+ ")");
+    public void onBindViewHolder(final PublicationsListAdapter.ViewHolder holder, int position) {
+//        LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): publication(" +position+ ")");
+
         Publication publication = mPublications.get(position);
 
         // текст публикации
@@ -86,7 +88,7 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             ArrayList<Bitmap> photosList = new ArrayList<>();
             photosList.addAll(ImageDelivery.getPhotosListById(publication.getPhotosIdsList()));
 
-            // Log.e("ABC", "PublicationsListAdapter: onBindViewHolder(): photosList size= " +photosList.size()+ ", tumbnailsList size= " +tumbnailsList.size());
+            // LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): photosList size= " +photosList.size()+ ", tumbnailsList size= " +tumbnailsList.size());
 
             GalleryListAdapter galleryAdapter = new GalleryListAdapter(mMainActivity, photosList);
             holder.mGalleryPhotosRV.setAdapter(galleryAdapter);
@@ -98,15 +100,48 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             holder.mQuizBlock.setVisibility(View.VISIBLE);
 
             // получаем опрос
-            Quiz quiz = publication.getQuiz();
+            final Quiz quiz = publication.getQuiz();
 
             if(quiz != null) {
-                ShowPublicationQuizAnswersAdapter quizAnswersAdapter = new ShowPublicationQuizAnswersAdapter(mMainActivity.getLayoutInflater(), quiz, quiz.getAnswersList());
+                final ShowPublicationQuizAnswersAdapter quizAnswersAdapter = new ShowPublicationQuizAnswersAdapter(mMainActivity.getLayoutInflater(), quiz, quiz.getAnswersList());
 
-                // настраиваем список
+                // настраиваем список С ответами
                 holder.mQuizAnswersList.setAdapter(quizAnswersAdapter);
 
-                holder.mQuizAnswersSum.setText("" +quiz.getSelectedAnswersSum());
+                // если пользователь еще не отвечал в опросе
+                if(!quiz.userSelectedAnswer()) {
+                    holder.mQuizAnswersList.setOnItemClickListener(new ListView.OnItemClickListener(){
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                            LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): answer was not selected: click on answer(" +quiz.getAnswersList().get(position).getId()+ "): " +quiz.getAnswersList().get(position).getText());
+
+                            boolean answerSaved = QuizUtility.saveUserAnswer(quiz.getAnswersList().get(position).getId());
+
+                            if(answerSaved) {
+//                                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): user answer saved successfully");
+
+                                // получаем из БД обновленные данные и задаем их опросу
+                                QuizUtility.setQuizAnswersVotesSum(quiz);
+                                QuizUtility.setQuizAnswersVotesInPercents(quiz);
+                                QuizUtility.setUserSelectedQuizAnswer(quiz, false);
+
+                                // обновляем данные в опросе
+                                quizAnswersAdapter.notifyDataSetChanged();
+
+                                // задаем общее кол-во ответов в опросе
+                                holder.mQuizAnswersSum.setText("" +quiz.getAllVotesSum());
+
+                                // отключаем слушателя клика по вариантам ответов опроса
+                                holder.mQuizAnswersList.setOnItemClickListener(null);
+                            }
+//                            else
+//                                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): user answer save error");
+                        }
+                    });
+                }
+
+                // задаем общее кол-во ответов в опросе
+                holder.mQuizAnswersSum.setText("" +quiz.getAllVotesSum());
             }
         }
     }
@@ -122,7 +157,7 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder { // implements View.OnClickListener {
         TextView mText;
         TextView mAuthorNameTV;
         TextView mDateAndTimeTV;
@@ -139,7 +174,7 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
 
         public ViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
+//            itemView.setOnClickListener(this);
 
             mText               = UiUtils.findView(itemView, R.id.Publication_LI_TextTV);
             mAuthorNameTV       = UiUtils.findView(itemView, R.id.Publication_LI_UserNameTV);
@@ -156,9 +191,9 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             mQuizAnswersSum     = UiUtils.findView(itemView, R.id.Publication_LI_AnswersSum);
         }
 
-        @Override
-        public void onClick(View v) {
-            Log.e("ABC", "PublicationsListAdapter: onClick(): publication(" +getPosition()+ ")");
-        }
+//        @Override
+//        public void onClick(View v) {
+//            LocLookApp.showLog("PublicationsListAdapter: onClick(): publication(" +getPosition()+ ")");
+//        }
     }
 }

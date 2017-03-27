@@ -13,11 +13,11 @@ public class Quiz {
 
     public ArrayList<QuizAnswer> getAnswersList() { return mAnswersList; }
 
-    public int getSelectedAnswersSum() {
+    public int getAllVotesSum() {
         int result = 0;
 
         for(int i=0; i<mAnswersList.size(); i++)
-            result += mAnswersList.get(i).getSelectedSum();
+            result += mAnswersList.get(i).getVotesSum();
 
         return result;
     }

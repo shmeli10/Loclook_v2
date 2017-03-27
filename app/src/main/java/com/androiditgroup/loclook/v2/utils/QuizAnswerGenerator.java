@@ -3,6 +3,7 @@ package com.androiditgroup.loclook.v2.utils;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.models.QuizAnswer;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class QuizAnswerGenerator {
             return mQuizAnswerBuilder.build();
 
         } catch(Exception exc) {
-            Log.e("ABC", "QuizAnswerGenerator: getQuizAnswerFromCursor(): error: " +exc.toString());
+            LocLookApp.showLog("QuizAnswerGenerator: getQuizAnswerFromCursor(): error: " +exc.toString());
         } finally {
             cursor.close();
         }
@@ -79,7 +80,7 @@ public class QuizAnswerGenerator {
                 cursor.close();
             }
         } catch(Exception exc) {
-            Log.e("ABC", "QuizAnswerGenerator: getQuizAnswersList(): error: " +exc.toString());
+            LocLookApp.showLog("QuizAnswerGenerator: getQuizAnswersList(): error: " +exc.toString());
         } finally {
             cursor.close();
         }

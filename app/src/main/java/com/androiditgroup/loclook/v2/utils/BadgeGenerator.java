@@ -17,7 +17,7 @@ public class BadgeGenerator {
         ArrayList<Badge> result = new ArrayList<>();
 
         if((cursor != null) && (cursor.getCount() > 0)) {
-            // Log.e("ABC", "BadgeGenerator: getBadgesList(): pCursor.getCount()= " + cursor.getCount());
+            // LocLookApp.showLog("BadgeGenerator: getBadgesList(): pCursor.getCount()= " + cursor.getCount());
             cursor.moveToFirst();
 
             try {
@@ -48,14 +48,14 @@ public class BadgeGenerator {
                 } while (cursor.moveToNext());
 
             } catch(Exception exc) {
-                Log.e("ABC", "BadgeGenerator: getBadgesList(): error: " +exc.toString());
+                LocLookApp.showLog("BadgeGenerator: getBadgesList(): error: " +exc.toString());
             } finally {
                 cursor.close();
             }
         }
-        else {
-            Log.e("ABC", "BadgeGenerator: getBadgesList(): pCursor is empty");
-        }
+//        else {
+//            LocLookApp.showLog("BadgeGenerator: getBadgesList(): pCursor is empty");
+//        }
 
         return result;
     }
