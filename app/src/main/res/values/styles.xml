@@ -14,10 +14,10 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
 
         <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">@color/dark_grey</item>
+        <item name="colorSwitchThumbNormal">@color/medium_dark_grey</item>
 
         <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">@color/dark_grey</item>
+        <item name="android:colorForeground">@color/medium_dark_grey</item>
 
     </style>
 
@@ -93,7 +93,7 @@
         <item name="android:layout_height">3dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:background">@color/light_blue</item>
+        <item name="android:background">@color/medium_dark_grey</item>
     </style>
 
     <style name="Root_Container" parent="@style/MM">
@@ -126,7 +126,7 @@
     <style name="Auth_EnterLabel" parent="@style/WW">
         <item name="android:textAllCaps">true</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:textColor">@color/blue</item>
+        <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:text">@string/enter_text</item>
@@ -134,10 +134,8 @@
 
     <style name="Auth_EnterDataLabel" parent="@style/MW">
         <item name="android:layout_marginTop">20dp</item>
-        <!--<item name="android:layout_marginLeft">35dp</item>-->
-        <!--<item name="android:layout_marginRight">35dp</item>-->
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/light_blue</item>
+        <item name="android:textColor">@color/medium_dark_grey</item>
         <item name="android:textSize">13sp</item>
     </style>
 
@@ -147,21 +145,27 @@
         <item name="android:selectAllOnFocus">false</item>
         <item name="android:maxLines">1</item>
         <item name="android:background">@drawable/rounded_rect_field_white</item>
-        <item name="android:textColor">@color/blue</item>
+        <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColorHint">@color/light_blue</item>
+        <item name="android:textColorHint">@color/medium_dark_grey</item>
     </style>
 
     <style name="Auth_BackButton" parent="@style/WW">
         <item name="android:layout_centerInParent">true</item>
-        <item name="android:layout_alignParentLeft">true</item>
-        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:tint">@color/medium_dark_grey</item>
         <item name="android:src">@drawable/auth_arrow_back</item>
     </style>
 
+    <style name="Auth_BackButton_Arrow">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:src">@drawable/arrow_back_icon</item>
+    </style>
+
     <style name="Auth_BackText" parent="@style/WW">
-        <item name="android:textColor">@color/blue</item>
+        <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">14sp</item>
         <item name="android:text">@string/back_text</item>
@@ -198,8 +202,8 @@
 
     <style name="Drawer_Menu_Text" parent="@style/MM">
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16dp</item>
+        <!--<item name="android:textStyle">bold</item>-->
+        <item name="android:textSize">18dp</item>
         <item name="android:textColor">@color/dark_grey</item>
     </style>
 

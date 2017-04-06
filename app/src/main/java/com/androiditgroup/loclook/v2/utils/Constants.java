@@ -70,6 +70,9 @@ public class Constants {
         public static final String USER_QUIZ_ANSWER_TABLE = "USER_QUIZ_ANSWER_DATA";
         public static final String USER_QUIZ_ANSWER_TABLE_COLUMNS = "QUIZ_ANSWER_ID INTEGER NOT NULL, USER_ID INTEGER NOT NULL";
 
+        public static final String FAVORITES_TABLE = "FAVORITES_DATA";
+        public static final String FAVORITES_TABLE_COLUMNS = "PUBLICATION_ID INTEGER NOT NULL, USER_ID INTEGER NOT NULL";
+
 //        public static final String CREATE_USER_DATA_TABLE = "CREATE TABLE IF NOT EXISTS " +  USER_DATA_TABLE +
 //                                                            " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 //                                                            "" + FNAME + " TEXT NOT NULL, " +

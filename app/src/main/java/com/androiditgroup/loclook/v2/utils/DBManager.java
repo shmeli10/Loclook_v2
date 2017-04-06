@@ -46,6 +46,7 @@ public class DBManager {
                     createTable(sqLiteDatabase, Constants.DataBase.QUIZ_ANSWER_TABLE, Constants.DataBase.QUIZ_ANSWER_TABLE_COLUMNS);
                     createTable(sqLiteDatabase, Constants.DataBase.PHOTOS_TABLE, Constants.DataBase.PHOTOS_TABLE_COLUMNS);
                     createTable(sqLiteDatabase, Constants.DataBase.USER_QUIZ_ANSWER_TABLE, Constants.DataBase.USER_QUIZ_ANSWER_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.FAVORITES_TABLE, Constants.DataBase.FAVORITES_TABLE_COLUMNS);
 
                     populateTables(sqLiteDatabase);
                 } catch (Exception e) {
@@ -124,9 +125,14 @@ public class DBManager {
      * @param columns Масив строк с именами нужных столбцов
      * @return Возвращает Cursor
      */
+
     // public Cursor queryColumns(String table, String... columns) {
     public Cursor queryColumns(SQLiteDatabase db, String table, String... columns) {
         return db.query(table, columns, null, null, null, null, null);
+    }
+
+    public Cursor queryColumns(SQLiteDatabase db, String table, String[] column, String requestColumn, String where, String orderBy) {
+        return db.query(table, column, requestColumn + "='" + where + "'", null, null, null, orderBy);
     }
 
     // public Cursor queryColumns(String table, String[] column, String requestColumn, String where) {
@@ -145,6 +151,19 @@ public class DBManager {
 
         return db.rawQuery(query, answersIdsArr);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public boolean deleteRows(SQLiteDatabase db, String table, String requestColumn, String where, boolean withUserId) {
+        StringBuilder sb = new StringBuilder(requestColumn + "='" + where + "'");
+
+        if(withUserId)
+            sb.append(" AND USER_ID = '" +LocLookApp.appUserId+ "'");
+
+        return db.delete(table, sb.toString(), null) > 0;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Запрос на создание пользователя
@@ -536,4 +555,16 @@ public class DBManager {
         return insertData(getDataBase(), Constants.DataBase.USER_QUIZ_ANSWER_TABLE, columnsArr, dataArr);
     }
 
+    public Cursor addPublicationToFavorites(String publicationId) {
+
+        String[] columnsArr = {"PUBLICATION_ID", "USER_ID"};
+        String[] dataArr    = {publicationId, LocLookApp.appUserId};
+
+        return insertData(getDataBase(), Constants.DataBase.FAVORITES_TABLE, columnsArr, dataArr);
+    }
+
+    public boolean deletePublicationFromFavorites(String publicationId) {
+
+        return deleteRows(getDataBase(), Constants.DataBase.FAVORITES_TABLE, "PUBLICATION_ID", publicationId, true);
+    }
 }

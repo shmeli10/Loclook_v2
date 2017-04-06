@@ -8,7 +8,7 @@
         android:name="triableGroup">
         <path
             android:name="triangle"
-            android:fillColor="@color/dark_grey"
+            android:fillColor="@color/medium_dark_grey"
             android:pathData="m 50,80 l 50,-50 -100,0 z" />
     </group>
 </vector>

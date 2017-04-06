@@ -91,6 +91,9 @@ public class UserGenerator {
             if((streetName != null) && (!streetName.equals("")))
                 mUserBuilder.streetName(streetName);
 
+            // добавляем список избранного
+            mUserBuilder.favoriteslist(FavoritesUtility.getUserFavorites());
+
             // возвращаем пользователя
             return mUserBuilder.build();
 

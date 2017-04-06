@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -19,6 +21,7 @@ import com.androiditgroup.loclook.v2.models.Quiz;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
+import com.androiditgroup.loclook.v2.utils.FavoritesUtility;
 import com.androiditgroup.loclook.v2.utils.ImageDelivery;
 import com.androiditgroup.loclook.v2.utils.QuizUtility;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
@@ -34,6 +37,10 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
 
     private MainActivity mMainActivity;
     private ArrayList<Publication> mPublications;
+
+    private User user = LocLookApp.usersMap.get(LocLookApp.appUserId);
+
+    private ArrayList<String> userFavoritesList = user.getFavoritesList();
 
     // public PublicationsListAdapter(ArrayList<Publication> publicationsList) {
     public PublicationsListAdapter(MainActivity mainActivity, ArrayList<Publication> publicationsList) {
@@ -51,7 +58,7 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
     public void onBindViewHolder(final PublicationsListAdapter.ViewHolder holder, int position) {
 //        LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): publication(" +position+ ")");
 
-        Publication publication = mPublications.get(position);
+        final Publication publication = mPublications.get(position);
 
         // текст публикации
         holder.mText.setText(publication.getText());
@@ -115,9 +122,9 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                            LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): answer was not selected: click on answer(" +quiz.getAnswersList().get(position).getId()+ "): " +quiz.getAnswersList().get(position).getText());
 
-                            boolean answerSaved = QuizUtility.saveUserAnswer(quiz.getAnswersList().get(position).getId());
+                            boolean saveResult = QuizUtility.saveUserAnswer(quiz.getAnswersList().get(position).getId());
 
-                            if(answerSaved) {
+                            if(saveResult) {
 //                                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): user answer saved successfully");
 
                                 // получаем из БД обновленные данные и задаем их опросу
@@ -144,6 +151,56 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
                 holder.mQuizAnswersSum.setText("" +quiz.getAllVotesSum());
             }
         }
+
+        // если публикация уже добавлена в избранное
+        if(userFavoritesList.contains(publication.getId())) {
+            // помечаем значок как активный
+            holder.mFavoritesIV.setColorFilter(null);
+            holder.mFavoritesIV.setColorFilter(R.color.colorPrimary);
+        }
+        // если публикация еще не добавлена в избранное
+        else {
+            // помечаем значок как неактивный
+            holder.mFavoritesIV.setColorFilter(null);
+//            holder.mFavoritesIV.setColorFilter(R.color.medium_dark_grey);
+        }
+
+        holder.mFavoritesBlock.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: favorites click in publication(" +publication.getId()+ ")");
+
+                // если публикация уже добавлена в избранное
+                if(userFavoritesList.contains(publication.getId())) {
+                    LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: delete from favorites");
+
+                    // boolean deleteResult = FavoritesUtility.deletePublicationFromUserFavorites(publication.getId());
+
+                    // помечаем значок как активный
+                    holder.mFavoritesIV.setColorFilter(null);
+                    holder.mFavoritesIV.setColorFilter(R.color.medium_dark_grey);
+
+                    userFavoritesList.remove(publication.getId());
+                }
+                // если публикация еще не добавлена в избранное
+                else {
+                    LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: add to favorites");
+
+                    // boolean addResult = FavoritesUtility.addPublicationToUserFavorites(publication.getId());
+
+//                    if (addResult) {
+//                        LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): add publication to favorites is successful");
+
+                        // помечаем значок как активный
+                        holder.mFavoritesIV.setColorFilter(null);
+                        holder.mFavoritesIV.setColorFilter(R.color.colorPrimary);
+
+                        userFavoritesList.add(publication.getId());
+//                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -172,6 +229,9 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
 
         TextView mQuizAnswersSum;
 
+        FrameLayout mFavoritesBlock;
+        ImageView   mFavoritesIV;
+
         public ViewHolder(View itemView) {
             super(itemView);
 //            itemView.setOnClickListener(this);
@@ -189,6 +249,10 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             mQuizAnswersList.setExpanded(true);
 
             mQuizAnswersSum     = UiUtils.findView(itemView, R.id.Publication_LI_AnswersSum);
+
+            mFavoritesBlock     = UiUtils.findView(itemView, R.id.Publication_LI_FavoritesBlock);
+
+            mFavoritesIV        = UiUtils.findView(itemView, R.id.Publication_LI_Favorites_IV);
         }
 
 //        @Override

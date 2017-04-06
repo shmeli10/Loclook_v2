@@ -43,7 +43,7 @@
             android:layout_below="@+id/Publication_PublicationTextET"
             android:layout_toRightOf="@+id/Publication_LeftCharactersHead"
             android:layout_marginLeft="3dp"
-            android:textColor="@color/deep_blue"
+            android:textColor="@color/dark_grey"
             android:textStyle="bold"
             android:textSize="14sp"
             android:text="0"/>
@@ -70,7 +70,7 @@
             <TextView
                 android:id="@+id/Publication_AnonymousTV"
                 style="@style/WW"
-                android:textColor="@color/deep_blue"
+                android:textColor="@color/dark_grey"
                 android:textSize="16sp"
                 android:text="@string/publication_anonymous_text"/>
             <TextView
@@ -117,7 +117,7 @@
             <TextView
                 android:id="@+id/Publication_QuizTV"
                 style="@style/WW"
-                android:textColor="@color/deep_blue"
+                android:textColor="@color/dark_grey"
                 android:textSize="16sp"
                 android:text="@string/publication_quiz_text"
                 android:layout_alignParentTop="true"
@@ -172,7 +172,7 @@
             <TextView
                 android:id="@+id/Publication_BadgeTV"
                 style="@style/WW"
-                android:textColor="@color/deep_blue"
+                android:textColor="@color/dark_grey"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="0dp"
@@ -231,7 +231,7 @@
             <TextView
                 android:id="@+id/Publication_PhotoTV"
                 style="@style/WW"
-                android:textColor="@color/deep_blue"
+                android:textColor="@color/dark_grey"
                 android:textSize="16sp"
                 android:layout_marginTop="0dp"
                 android:text="@string/photo_text"/>

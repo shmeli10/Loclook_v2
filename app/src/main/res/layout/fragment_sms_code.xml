@@ -46,9 +46,19 @@
 
         <RelativeLayout style="@style/MW">
 
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/SMSCodeFragment_Back_IV"
-                style="@style/Auth_BackButton"/>
+                style="@style/WW"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp">
+
+                <ImageView style="@style/Auth_BackButton"/>
+                <ImageView style="@style/Auth_BackButton_Arrow"/>
+
+            </RelativeLayout>
+            <!--<ImageView-->
+                <!--android:id="@+id/SMSCodeFragment_Back_IV"-->
+                <!--style="@style/Auth_BackButton"/>-->
             <TextView
                 style="@style/Auth_BackText"
                 android:layout_centerInParent="true"

@@ -14,6 +14,8 @@
 
     <color name="light_grey">#dfeaee</color>
     <color name="dark_grey">#4e7883</color>
+    <color name="medium_dark_grey">#9eb1b4</color>
+    <color name="tint_active">#FFC107</color>
 
     <color name="white">#fdfdfe</color>
 

@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+
 /**
  * Created by sostrovschi on 09.01.2017.
  */
@@ -29,6 +31,8 @@ public class User {
     private String mStreetName;
     private Location mLocation;
 
+    private ArrayList<String> mFavoritesList = new ArrayList<>();
+
     private User() { }
 
     public String getId() {
@@ -44,6 +48,12 @@ public class User {
     public String getRegionName(){ return mRegionName; }
 
     public String getStreetName(){ return mStreetName; }
+
+    public ArrayList<String> getFavoritesList() { return mFavoritesList; }
+
+    public void addItemToFavorites(String value) {
+        mFavoritesList.add(value);
+    }
 
     public void setLocation(Location value) {
         if(value != null)
@@ -78,6 +88,7 @@ public class User {
         private int mRadius;
         private String mRegionName;
         private String mStreetName;
+        private ArrayList<String> mFavoritesList = new ArrayList<>();
 
         public Builder userId(String value) {
             mUserId = value;
@@ -154,6 +165,11 @@ public class User {
             return this;
         }
 
+        public Builder favoriteslist(ArrayList<String> list) {
+            mFavoritesList.addAll(list);
+            return this;
+        }
+
         public User build() {
             User user = new User();
             user.mUserId = this.mUserId;
@@ -171,6 +187,7 @@ public class User {
             user.mRadius = this.mRadius;
             user.mRegionName = this.mRegionName;
             user.mStreetName = this.mStreetName;
+            user.mFavoritesList = this.mFavoritesList;
             return user;
         }
     }
