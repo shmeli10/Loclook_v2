@@ -94,6 +94,9 @@ public class UserGenerator {
             // добавляем список избранного
             mUserBuilder.favoriteslist(FavoritesUtility.getUserFavorites());
 
+            // добавляем список понравившегося
+            mUserBuilder.likeslist(LikesUtility.getUserLikes());
+
             // возвращаем пользователя
             return mUserBuilder.build();
 

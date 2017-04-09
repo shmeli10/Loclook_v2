@@ -147,23 +147,23 @@
                 android:id="@+id/Publication_LI_Favorites_IV"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@drawable/star_icon"/>
+                android:layout_gravity="center"
+                android:src="@drawable/star_simple"/>
 
         </FrameLayout>
         <RelativeLayout
             android:id="@+id/Publication_LI_AnswersBlock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/Publication_LI_AnswersSumIV"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_centerInParent="true"
-                android:tint="@color/medium_dark_grey"
-                android:src="@drawable/comments_icon"/>
+                android:src="@drawable/comments_simple"/>
             <TextView
                 android:id="@+id/Publication_LI_AnswersSumTV"
                 style="@style/WW"
@@ -179,16 +179,15 @@
             android:id="@+id/Publication_LI_LikesBlock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/Publication_LI_LikesSumIV"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_centerInParent="true"
-                android:tint="@color/medium_dark_grey"
-                android:src="@drawable/like_icon"/>
+                android:src="@drawable/likes_simple"/>
             <TextView
                 android:id="@+id/Publication_LI_LikesSumTV"
                 style="@style/WW"
@@ -210,9 +209,8 @@
             <ImageView
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:layout_gravity="right"
-                android:tint="@color/medium_dark_grey"
-                android:src="@drawable/publication_info_icon"/>
+                android:layout_gravity="center"
+                android:src="@drawable/publication_info_simple"/>
 
         </FrameLayout>
 

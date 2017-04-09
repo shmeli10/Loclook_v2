@@ -2,6 +2,7 @@ package com.androiditgroup.loclook.v2.utils;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
@@ -14,39 +15,62 @@ import java.util.ArrayList;
 
 public class FavoritesUtility {
 
-    public static boolean addPublicationToUserFavorites(String publicationId) {
+    // public static boolean addPublicationToUserFavorites(final String publicationId) {
+    public static void addPublicationToUserFavorites(final ArrayList<String> userFavoritesList, final String publicationId) {
 
-        Cursor cursor = DBManager.getInstance().addPublicationToFavorites(publicationId);
+        Thread addFavoritesThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        if((cursor != null) && (cursor.getCount() > 0)) {
+                Cursor cursor = DBManager.getInstance().addPublicationToFavorites(publicationId);
 
-            try {
-                cursor.moveToFirst();
+                if((cursor != null) && (cursor.getCount() > 0)) {
 
-                String favoritesRowId = cursor.getString(cursor.getColumnIndex("_ID"));
+                    try {
+                        cursor.moveToFirst();
 
-                if(!TextUtils.isEmpty(favoritesRowId)) {
-                    LocLookApp.showLog("FavoritesUtility: addPublicationToUsersFavorites(): Saved successfully. Id= " +favoritesRowId);
-                    return true;
+                        String favoritesRowId = cursor.getString(cursor.getColumnIndex("_ID"));
+
+                        if(!TextUtils.isEmpty(favoritesRowId)) {
+                            LocLookApp.showLog("FavoritesUtility: addPublicationToUsersFavorites(): Saved successfully. Id= " +favoritesRowId);
+                            // result[0] = true;
+                            // handler.sendEmptyMessage(1);
+                            userFavoritesList.add(publicationId);
+                        }
+                        else {
+                            LocLookApp.showLog("FavoritesUtility: addPublicationToUsersFavorites(): Save error(0)");
+                        }
+                    } catch(Exception exc) {
+                        LocLookApp.showLog("FavoritesUtility: addPublicationToUsersFavorites(): Save error: " +exc.toString());
+                    } finally {
+                        cursor.close();
+                    }
                 }
                 else {
-                    LocLookApp.showLog("FavoritesUtility: addPublicationToUsersFavorites(): Save error(0)");
+                    LocLookApp.showLog("FavoritesUtility: addPublicationToUsersFavorites(): Save error(1)");
                 }
-            } catch(Exception exc) {
-                LocLookApp.showLog("FavoritesUtility: addPublicationToUsersFavorites(): Save error: " +exc.toString());
-            } finally {
-                cursor.close();
             }
-        }
-        else {
-            LocLookApp.showLog("FavoritesUtility: addPublicationToUsersFavorites(): Save error(1)");
-        }
+        });
 
-        return false;
+        addFavoritesThread.start();
     }
 
-    public static boolean deletePublicationFromUserFavorites(String publicationId) {
-        return DBManager.getInstance().deletePublicationFromFavorites(publicationId);
+    // public static boolean deletePublicationFromUserFavorites(String publicationId) {
+    public static void deletePublicationFromUserFavorites(final ArrayList<String> userFavoritesList, final String publicationId) {
+        Thread deleteFromFavoritesThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                boolean result = DBManager.getInstance().deletePublicationFromFavorites(publicationId);
+
+                if(result) {
+                    LocLookApp.showLog("FavoritesUtility: deletePublicationFromUserFavorites(): Deleted successfully.");
+                    userFavoritesList.remove(publicationId);
+                }
+            }
+        });
+
+        deleteFromFavoritesThread.start();
     }
 
     public static ArrayList<String> getUserFavorites() {

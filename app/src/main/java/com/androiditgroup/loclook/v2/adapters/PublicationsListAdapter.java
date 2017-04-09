@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
@@ -23,6 +24,7 @@ import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
 import com.androiditgroup.loclook.v2.utils.FavoritesUtility;
 import com.androiditgroup.loclook.v2.utils.ImageDelivery;
+import com.androiditgroup.loclook.v2.utils.LikesUtility;
 import com.androiditgroup.loclook.v2.utils.QuizUtility;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -41,6 +43,7 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
     private User user = LocLookApp.usersMap.get(LocLookApp.appUserId);
 
     private ArrayList<String> userFavoritesList = user.getFavoritesList();
+    private ArrayList<String> userLikesList = user.getLikesList();
 
     // public PublicationsListAdapter(ArrayList<Publication> publicationsList) {
     public PublicationsListAdapter(MainActivity mainActivity, ArrayList<Publication> publicationsList) {
@@ -152,17 +155,17 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             }
         }
 
+        // --------------------------------- FAVORITES ---------------------------------------- //
+
         // если публикация уже добавлена в избранное
         if(userFavoritesList.contains(publication.getId())) {
             // помечаем значок как активный
-            holder.mFavoritesIV.setColorFilter(null);
-            holder.mFavoritesIV.setColorFilter(R.color.colorPrimary);
+            holder.mFavoritesIV.setImageResource(R.drawable.star_active);
         }
         // если публикация еще не добавлена в избранное
         else {
             // помечаем значок как неактивный
-            holder.mFavoritesIV.setColorFilter(null);
-//            holder.mFavoritesIV.setColorFilter(R.color.medium_dark_grey);
+            holder.mFavoritesIV.setImageResource(R.drawable.star_simple);
         }
 
         holder.mFavoritesBlock.setOnClickListener(new View.OnClickListener() {
@@ -171,33 +174,81 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             public void onClick(View v) {
                 LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: favorites click in publication(" +publication.getId()+ ")");
 
+                // помечаем значок как не активный
+                holder.mFavoritesIV.setImageResource(R.drawable.star_simple);
+
                 // если публикация уже добавлена в избранное
                 if(userFavoritesList.contains(publication.getId())) {
                     LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: delete from favorites");
 
-                    // boolean deleteResult = FavoritesUtility.deletePublicationFromUserFavorites(publication.getId());
-
-                    // помечаем значок как активный
-                    holder.mFavoritesIV.setColorFilter(null);
-                    holder.mFavoritesIV.setColorFilter(R.color.medium_dark_grey);
-
-                    userFavoritesList.remove(publication.getId());
+                    FavoritesUtility.deletePublicationFromUserFavorites(userFavoritesList, publication.getId());
                 }
                 // если публикация еще не добавлена в избранное
                 else {
                     LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: add to favorites");
 
-                    // boolean addResult = FavoritesUtility.addPublicationToUserFavorites(publication.getId());
+                    // помечаем значок как активный
+                    holder.mFavoritesIV.setImageResource(R.drawable.star_active);
 
-//                    if (addResult) {
-//                        LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): add publication to favorites is successful");
+                    FavoritesUtility.addPublicationToUserFavorites(userFavoritesList, publication.getId());
+                }
+            }
+        });
 
-                        // помечаем значок как активный
-                        holder.mFavoritesIV.setColorFilter(null);
-                        holder.mFavoritesIV.setColorFilter(R.color.colorPrimary);
+        // --------------------------------- LIKES --------------------------------------------- //
 
-                        userFavoritesList.add(publication.getId());
-//                    }
+        final int likeColorActive = LocLookApp.getColorResId("colorPrimary");
+        final int likeColorSimple = LocLookApp.getColorResId("dark_grey");
+
+        // если публикация уже добавлена в понравившиеся
+        if(userLikesList.contains(publication.getId())) {
+            // помечаем значок как активный
+            holder.mLikesIV.setImageResource(R.drawable.likes_active);
+            holder.mLikesTV.setTextColor(likeColorActive);
+        }
+        // если публикация еще не добавлена в понравившиеся
+        else {
+            // помечаем значок как неактивный
+            holder.mLikesIV.setImageResource(R.drawable.likes_simple);
+            holder.mLikesTV.setTextColor(likeColorSimple);
+        }
+
+        // задаем кол-во пользователей, который понравилась данная публикация
+        holder.mLikesTV.setText(String.valueOf(publication.getLikesSum()));
+
+        holder.mLikesBlock.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: likes click in publication(" +publication.getId()+ ")");
+
+                // помечаем значок как не активный
+                holder.mLikesIV.setImageResource(R.drawable.likes_simple);
+
+                // задаем прежнее значение
+                holder.mLikesTV.setText(String.valueOf(publication.getLikesSum()));
+
+                // меняем цвет текста с кол-вом пользователей, которым понравилась публикация
+                holder.mLikesTV.setTextColor(likeColorSimple);
+
+                // если публикация уже добавлена в понравившиеся
+                if(userLikesList.contains(publication.getId())) {
+                    LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: delete from likes");
+                    LikesUtility.deletePublicationFromUserLikes(userLikesList, publication.getId());
+                }
+                // если публикация еще не добавлена в понравившиеся
+                else {
+                    LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: add to likes");
+                    // помечаем значок как активный
+                    holder.mLikesIV.setImageResource(R.drawable.likes_active);
+
+                    // задаем новое значение
+                    holder.mLikesTV.setText(String.valueOf(publication.getLikesSum() + 1));
+
+                    // меняем цвет текста с кол-вом пользователей, которым понравилась публикация
+                    holder.mLikesTV.setTextColor(likeColorActive);
+
+                    LikesUtility.addPublicationToUserLikes(userLikesList, publication.getId());
                 }
             }
         });
@@ -229,8 +280,12 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
 
         TextView mQuizAnswersSum;
 
-        FrameLayout mFavoritesBlock;
-        ImageView   mFavoritesIV;
+        FrameLayout     mFavoritesBlock;
+        ImageView       mFavoritesIV;
+
+        RelativeLayout  mLikesBlock;
+        ImageView       mLikesIV;
+        TextView        mLikesTV;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -251,8 +306,11 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             mQuizAnswersSum     = UiUtils.findView(itemView, R.id.Publication_LI_AnswersSum);
 
             mFavoritesBlock     = UiUtils.findView(itemView, R.id.Publication_LI_FavoritesBlock);
-
             mFavoritesIV        = UiUtils.findView(itemView, R.id.Publication_LI_Favorites_IV);
+
+            mLikesBlock         = UiUtils.findView(itemView, R.id.Publication_LI_LikesBlock);
+            mLikesIV            = UiUtils.findView(itemView, R.id.Publication_LI_LikesSumIV);
+            mLikesTV            = UiUtils.findView(itemView, R.id.Publication_LI_LikesSumTV);
         }
 
 //        @Override

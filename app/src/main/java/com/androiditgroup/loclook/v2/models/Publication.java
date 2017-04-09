@@ -27,6 +27,7 @@ public class Publication {
     //    private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
     private ArrayList<String> mPhotosIdsList = new ArrayList<>();
     private boolean mIsAnonymous;
+    private int mLikesSum;
 
     public String getId() { return mId; }
 
@@ -50,6 +51,8 @@ public class Publication {
 
     public boolean isAnonymous() { return mIsAnonymous; }
 
+    public int getLikesSum() { return mLikesSum; }
+
     public static class Builder {
         private String mId;
         private String mText;
@@ -69,6 +72,7 @@ public class Publication {
         //        private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
         private ArrayList<String> mPhotosIdsList = new ArrayList<>();
         private boolean mIsAnonymous;
+        private int mLikesSum;
 
         public Builder id(String value) {
             mId = value;
@@ -156,6 +160,11 @@ public class Publication {
             return this;
         }
 
+        public Builder likesSum(int value) {
+            mLikesSum = value;
+            return this;
+        }
+
         public Publication build() {
             Publication publication = new Publication();
             publication.mId = this.mId;
@@ -172,6 +181,7 @@ public class Publication {
             publication.mHasImages = this.mHasImages;
             publication.mPhotosIdsList = this.mPhotosIdsList;
             publication.mIsAnonymous = this.mIsAnonymous;
+            publication.mLikesSum = this.mLikesSum;
 
             return publication;
         }

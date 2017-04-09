@@ -47,6 +47,7 @@ public class DBManager {
                     createTable(sqLiteDatabase, Constants.DataBase.PHOTOS_TABLE, Constants.DataBase.PHOTOS_TABLE_COLUMNS);
                     createTable(sqLiteDatabase, Constants.DataBase.USER_QUIZ_ANSWER_TABLE, Constants.DataBase.USER_QUIZ_ANSWER_TABLE_COLUMNS);
                     createTable(sqLiteDatabase, Constants.DataBase.FAVORITES_TABLE, Constants.DataBase.FAVORITES_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.LIKES_TABLE, Constants.DataBase.LIKES_TABLE_COLUMNS);
 
                     populateTables(sqLiteDatabase);
                 } catch (Exception e) {
@@ -539,7 +540,7 @@ public class DBManager {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // --------------------------------- QUIZ ---- ---------------------------------------- //
 
     /**
      * Запрос на сохранение выбранного пользователем ответа в опросе
@@ -555,6 +556,8 @@ public class DBManager {
         return insertData(getDataBase(), Constants.DataBase.USER_QUIZ_ANSWER_TABLE, columnsArr, dataArr);
     }
 
+    // --------------------------------- FAVORITES ---------------------------------------- //
+
     public Cursor addPublicationToFavorites(String publicationId) {
 
         String[] columnsArr = {"PUBLICATION_ID", "USER_ID"};
@@ -564,7 +567,32 @@ public class DBManager {
     }
 
     public boolean deletePublicationFromFavorites(String publicationId) {
-
         return deleteRows(getDataBase(), Constants.DataBase.FAVORITES_TABLE, "PUBLICATION_ID", publicationId, true);
+    }
+
+    // --------------------------------- LIKES --------------------------------------------- //
+
+    public Cursor addPublicationToLikes(String publicationId) {
+
+        String[] columnsArr = {"PUBLICATION_ID", "USER_ID"};
+        String[] dataArr    = {publicationId, LocLookApp.appUserId};
+
+        return insertData(getDataBase(), Constants.DataBase.LIKES_TABLE, columnsArr, dataArr);
+    }
+
+    public boolean deletePublicationFromLikes(String publicationId) {
+        return deleteRows(getDataBase(), Constants.DataBase.LIKES_TABLE, "PUBLICATION_ID", publicationId, true);
+    }
+
+    /**
+     * Запрос для получения количества пользователей, который понравилась заданная публикация
+     * @return
+     */
+    public Cursor getPublicationLikesSum(SQLiteDatabase db, String publicationId) {
+        // String[] publicationIdArr = new String[]{publicationId};
+
+        String query = "SELECT COUNT(*) LIKES_SUM FROM " +Constants.DataBase.LIKES_TABLE+ " WHERE PUBLICATION_ID = " +publicationId;
+
+        return db.rawQuery(query, null);
     }
 }

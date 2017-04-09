@@ -73,6 +73,9 @@ public class Constants {
         public static final String FAVORITES_TABLE = "FAVORITES_DATA";
         public static final String FAVORITES_TABLE_COLUMNS = "PUBLICATION_ID INTEGER NOT NULL, USER_ID INTEGER NOT NULL";
 
+        public static final String LIKES_TABLE = "LIKES_DATA";
+        public static final String LIKES_TABLE_COLUMNS = "PUBLICATION_ID INTEGER NOT NULL, USER_ID INTEGER NOT NULL";
+
 //        public static final String CREATE_USER_DATA_TABLE = "CREATE TABLE IF NOT EXISTS " +  USER_DATA_TABLE +
 //                                                            " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 //                                                            "" + FNAME + " TEXT NOT NULL, " +
