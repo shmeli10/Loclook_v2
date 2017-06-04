@@ -185,6 +185,9 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             public void onClick(View v) {
                 LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: favorites click in publication(" +publication.getId()+ ")");
 
+                // помечаем значок как не активный
+                holder.mFavoritesIV.setImageResource(R.drawable.star_simple);
+
                 // если публикация уже добавлена в избранное
                 if(userFavoritesList.contains(publication.getId())) {
                     LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: delete from favorites");
