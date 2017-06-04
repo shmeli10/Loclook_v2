@@ -16,7 +16,6 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -149,7 +148,7 @@ public class PublicationFragment    extends     ParentFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mMainActivity = (MainActivity) getActivity();
 
-        View view = inflater.inflate(R.layout.fragment_publication, container, false);
+        View view = inflater.inflate(R.layout.fragment_send_publication, container, false);
 
         if(!LocLookApp.badgesMap.isEmpty()) {
 

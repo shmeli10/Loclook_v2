@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MM"
+    android:orientation="vertical">
+    <!--android:weightSum="20">-->
+
+    <ScrollView
+        android:id="@+id/Comments_ScrollView"
+        style="@style/Base"
+        android:layout_weight="1">
+
+        <include layout="@layout/publication_item" />
+
+    </ScrollView>
+    <RelativeLayout style="@style/MW">
+
+        <View
+            android:id="@+id/Comments_SendBlock_TopLine"
+            style="@style/HLine_Grey"/>
+        <FrameLayout
+            android:id="@+id/Comments_Send_Wrap"
+            style="@style/WW"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/Comments_SendBlock_TopLine"
+            android:background="@color/colorPrimary"
+            android:paddingLeft="30dp"
+            android:paddingTop="13dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="13dp">
+
+            <ImageView
+                android:id="@+id/Comments_Send_Btn"
+                style="@style/WW"
+                android:src="@drawable/send_icon"/>
+
+        </FrameLayout>
+        <EditText
+            android:id="@+id/Comments_Text_ET"
+            style="@style/Comments_Text_ET"
+            android:layout_toLeftOf="@+id/Comments_Send_Wrap"
+            android:layout_below="@+id/Comments_SendBlock_TopLine"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

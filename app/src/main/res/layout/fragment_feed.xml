@@ -1,26 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MM"
-    android:paddingLeft="10dp"
-    android:paddingTop="40dp"
-    android:paddingRight="10dp"
-    android:paddingBottom="10dp"
-    android:gravity="center"
-    android:background="@color/white">
+    style="@style/Base"
+    android:gravity="center">
 
     <com.androiditgroup.loclook.v2.utils.EmptyRecyclerView
         android:id="@+id/Feed_PublicationsRV"
-        style="@style/MM"
-        android:layout_marginTop="20dp"/>
+        style="@style/MM"/>
 
     <!-- Added an empty view which will be shown when the EmptyRecyclerView is empty -->
     <LinearLayout
         android:id="@+id/Feed_EmptyView"
         style='@style/MM'
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
         android:textAlignment="center">
 
         <TextView
@@ -30,7 +22,7 @@
         <TextView
             android:id="@+id/Feed_AddPublicationTV"
             style="@style/MW"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             android:gravity="center_horizontal"
             android:padding="10dp"
             android:textColor="@color/white"

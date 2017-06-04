@@ -209,7 +209,7 @@ public class PublicationGenerator {
                     else
                         return null;
 
-                    //////////////////////////////////////////////////////////////////////////////////////////
+                    // -------------------------------- QUIZ ---------------------------------- //
 
                     Quiz pQuiz = null;
 
@@ -240,7 +240,7 @@ public class PublicationGenerator {
                         }
                     }
 
-                    //////////////////////////////////////////////////////////////////////////////////////////
+                    // ------------------------------ PHOTOS ---------------------------------- //
 
                     ArrayList<String> photosIdsList = new ArrayList<>();
 
@@ -281,7 +281,45 @@ public class PublicationGenerator {
                         }
                     }
 
-                    //////////////////////////////////////////////////////////////////////////////////////////
+                    // ------------------------------ COMMENTS -------------------------------- //
+
+                    int pCommentsSum = 0;
+
+                    Cursor commentsCursor = DBManager.getInstance().getPublicationCommentsSum(DBManager.getInstance().getDataBase(), pId);
+
+                    try {
+
+                        if(commentsCursor.getCount() > 0) {
+                            while (commentsCursor.moveToNext()) {
+                                pCommentsSum = commentsCursor.getInt(commentsCursor.getColumnIndex("COMMENTS_SUM"));
+                            }
+                        }
+                    } catch(Exception exc) {
+                        LocLookApp.showLog("PublicationGenerator: getPublicationsList(): error: " +exc.toString());
+                    } finally {
+                        commentsCursor.close();
+                    }
+
+                    // -------------------------------- LIKES --------------------------------- //
+
+                    int pLikesSum = 0;
+
+                    Cursor likesCursor = DBManager.getInstance().getPublicationLikesSum(DBManager.getInstance().getDataBase(), pId);
+
+                    try {
+
+                        if(likesCursor.getCount() > 0) {
+                            while (likesCursor.moveToNext()) {
+                                pLikesSum = likesCursor.getInt(likesCursor.getColumnIndex("LIKES_SUM"));
+                            }
+                        }
+                    } catch(Exception exc) {
+                        LocLookApp.showLog("PublicationGenerator: getPublicationsList(): error: " +exc.toString());
+                    } finally {
+                        likesCursor.close();
+                    }
+
+                    // ------------------------------------------------------------------------ //
 
                     mPublicationBuilder.text(pText);
                     mPublicationBuilder.dateAndTime(getFormattedDate(pCreatedAt));
@@ -294,6 +332,8 @@ public class PublicationGenerator {
                     mPublicationBuilder.isAnonymous(pIsAnonymous);
                     mPublicationBuilder.quiz(pQuiz);
                     mPublicationBuilder.photosList(photosIdsList);
+                    mPublicationBuilder.commentsSum(pCommentsSum);
+                    mPublicationBuilder.likesSum(pLikesSum);
 
                     result.add(mPublicationBuilder.build());
 

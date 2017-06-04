@@ -39,6 +39,8 @@
     <string name="state_on_text">(вкл.)</string>
     <string name="state_off_text">(выкл.)</string>
 
+    <string name="сomments_text">Комментарии</string>
+
     <string name="answers_text">Ответы:</string>
     <string name="answers_sum_text">Ответов: </string>
     <string name="add_answer_text">Добавить вариант ответа</string>
@@ -57,6 +59,8 @@
     <string name="add_publication_text">Добавить публикацию</string>
 
     <string name="photo_gallery_text">Фото Галерея</string>
+
+    <string name="likes_text">Нравится</string>
 
     <!--<string name="sending_publication_text">Отправка публикации</string>-->
     <!--<string name="action_publication_text">Действие</string>-->
@@ -94,5 +98,7 @@
     <string name="publication_send_error_text">Отправить публикацию не удалось</string>
 
     <string name="all_answered_sum_text">Всего проголосовало:</string>
+
+    <string name="write_comment_text_hint">Напишите свой комментарий</string>
 
 </resources>

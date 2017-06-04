@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:id="@+id/Publication_LI_FavoritesBlock"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="5dp">
+
+        <ImageView
+            android:id="@+id/Publication_LI_Favorites_IV"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:src="@drawable/star_simple"/>
+
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/Publication_LI_InfoBlock"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingRight="5dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:src="@drawable/publication_info_simple"/>
+
+    </FrameLayout>
+    <RelativeLayout
+        android:id="@+id/Publication_LI_LikesBlock"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:background="@drawable/rounded_rect_with_blue_stroke">
+
+        <ImageView
+            android:id="@+id/Publication_LI_LikesSumIV"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/likes_simple"/>
+        <TextView
+            android:id="@+id/Publication_LI_LikesSumTV"
+            style="@style/WW"
+            android:paddingRight="3dp"
+            android:layout_toLeftOf="@+id/Publication_LI_LikesSumIV"
+            android:layout_centerInParent="true"
+            android:textSize="10dp"
+            android:textColor="@color/dark_grey"
+            android:text="0"/>
+        <TextView
+            android:id="@+id/Publication_LI_LikesTextTV"
+            style="@style/WW"
+            android:paddingRight="3dp"
+            android:layout_toLeftOf="@+id/Publication_LI_LikesSumTV"
+            android:layout_centerInParent="false"
+            android:textSize="10dp"
+            android:textColor="@color/dark_grey"
+            android:text="@string/likes_text"/>
+
+    </RelativeLayout>
+
+</merge>

@@ -1,7 +1,6 @@
 package com.androiditgroup.loclook.v2.utils;
 
 import android.database.Cursor;
-import android.util.Log;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.models.User;
@@ -93,6 +92,12 @@ public class UserGenerator {
 
             // добавляем список избранного
             mUserBuilder.favoriteslist(FavoritesUtility.getUserFavorites());
+
+            // добавляем список публикаций, в которых пользователь оставлял комментарии
+            mUserBuilder.commentedPublicationsList(CommentsUtility.getUserCommentedPublicationsList());
+
+            // добавляем список понравившегося
+            mUserBuilder.likeslist(LikesUtility.getUserLikes());
 
             // возвращаем пользователя
             return mUserBuilder.build();

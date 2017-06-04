@@ -67,7 +67,7 @@ public class MainActivity   extends     ParentActivity
     private ProgressDialog              mProgressDialog;
 
     public enum SelectedFragment {
-        feed, send_publication, favorites, notifications, badges, geolocation, photo_gallery
+        feed, send_publication, favorites, notifications, badges, geolocation, photo_gallery, comments
     }
 
     private static final int leftMenuFeedBlockResId             = R.id.Drawer_FeedBlock;
@@ -353,6 +353,7 @@ public class MainActivity   extends     ParentActivity
         switch(selectedFragment) {
 
             case send_publication:
+            case comments:
             case photo_gallery:
                 mNavigationBtn.setOnClickListener(mBackClickListener);
                 mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);

@@ -32,6 +32,8 @@ public class User {
     private Location mLocation;
 
     private ArrayList<String> mFavoritesList = new ArrayList<>();
+    private ArrayList<String> mCommentedPublicationsList = new ArrayList<>();
+    private ArrayList<String> mLikesList = new ArrayList<>();
 
     private User() { }
 
@@ -51,9 +53,9 @@ public class User {
 
     public ArrayList<String> getFavoritesList() { return mFavoritesList; }
 
-    public void addItemToFavorites(String value) {
-        mFavoritesList.add(value);
-    }
+    public ArrayList<String> getCommentedPublicationsList() { return mCommentedPublicationsList; }
+
+    public ArrayList<String> getLikesList() { return mLikesList; }
 
     public void setLocation(Location value) {
         if(value != null)
@@ -89,6 +91,8 @@ public class User {
         private String mRegionName;
         private String mStreetName;
         private ArrayList<String> mFavoritesList = new ArrayList<>();
+        private ArrayList<String> mCommentedPublicationsList = new ArrayList<>();
+        private ArrayList<String> mLikesList = new ArrayList<>();
 
         public Builder userId(String value) {
             mUserId = value;
@@ -170,6 +174,16 @@ public class User {
             return this;
         }
 
+        public Builder commentedPublicationsList(ArrayList<String> list) {
+            mCommentedPublicationsList.addAll(list);
+            return this;
+        }
+
+        public Builder likeslist(ArrayList<String> list) {
+            mLikesList.addAll(list);
+            return this;
+        }
+
         public User build() {
             User user = new User();
             user.mUserId = this.mUserId;
@@ -188,6 +202,8 @@ public class User {
             user.mRegionName = this.mRegionName;
             user.mStreetName = this.mStreetName;
             user.mFavoritesList = this.mFavoritesList;
+            user.mCommentedPublicationsList = this.mCommentedPublicationsList;
+            user.mLikesList = this.mLikesList;
             return user;
         }
     }

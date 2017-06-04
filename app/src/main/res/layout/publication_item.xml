@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="10dp"
+    style="@style/WW">
+
+    <RelativeLayout
+        android:id="@+id/Publication_LI_HeaderBlock"
+        style="@style/MW">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/Publication_LI_UserAvatarIV"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/userpic_holder"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="0dp"/>
+        <TextView
+            android:id="@+id/Publication_LI_UserNameTV"
+            style="@style/WW"
+            android:layout_toRightOf="@+id/Publication_LI_UserAvatarIV"
+            android:paddingLeft="10dp"
+            android:paddingTop="3dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/dark_grey"
+            android:text="@string/user_name_hint"/>
+        <TextView
+            android:id="@+id/Publication_LI_DateAndTimeTV"
+            style="@style/WW"
+            android:layout_toRightOf="@+id/Publication_LI_UserAvatarIV"
+            android:layout_below="@+id/Publication_LI_UserNameTV"
+            android:paddingLeft="10dp"
+            android:textSize="12sp"
+            android:textColor="@color/dark_grey"
+            android:text="@string/default_date"/>
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/Publication_LI_BadgeImageIV"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/badge_1"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="0dp"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/Publication_LI_BodyBlock"
+        style="@style/MW"
+        android:layout_below="@+id/Publication_LI_HeaderBlock"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="0dp">
+
+        <TextView
+            android:id="@+id/Publication_LI_TextTV"
+            style="@style/MW"
+            android:paddingRight="12dp"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:textColor="@color/dark_grey"
+            tools:text="@string/default_publication_text"/>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/Publication_LI_PhotoBlock"
+        style="@style/MW"
+        android:orientation="horizontal"
+        android:layout_below="@+id/Publication_LI_BodyBlock"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/Publication_LI_GalleryRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/Publication_LI_QuizBlock"
+        style="@style/MW"
+        android:layout_below="@+id/Publication_LI_PhotoBlock"
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:visibility="gone">
+
+        <com.androiditgroup.loclook.v2.utils.ExpandableHeightListView
+            android:id="@+id/Publication_LI_AnswersList"
+            style="@style/MW"
+            android:cacheColorHint="#00000000"
+            android:fadingEdge="none"
+            android:focusable="false"
+            android:scrollbars="none"
+            android:divider="@color/white"
+            android:dividerHeight="2dp"/>
+        <RelativeLayout style="@style/MW">
+
+            <TextView
+                style="@style/WW"
+                android:layout_toLeftOf="@+id/Publication_LI_AnswersSum"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/dark_grey"
+                android:text="@string/all_answered_sum_text" />
+            <TextView
+                android:id="@+id/Publication_LI_AnswersSum"
+                style="@style/WW"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/dark_grey"
+                android:textStyle="bold"
+                android:text="0" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/Publication_LI_FooterBlock"
+        style="@style/MW"
+        android:orientation="horizontal"
+        android:layout_below="@+id/Publication_LI_QuizBlock"
+        android:layout_marginTop="10dp"/>
+    <View
+        android:id="@+id/Publication_LI_BottomLine"
+        style="@style/HLine_Grey"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/Publication_LI_FooterBlock"
+        android:visibility="gone"/>
+
+</RelativeLayout>

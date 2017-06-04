@@ -138,6 +138,10 @@ public class LocLookApp extends Application {
         return context.getResources().getIdentifier("@drawable/" +resource, null, context.getPackageName());
     }
 
+    public static int getColorResId(String resource) {
+        return context.getResources().getColor(context.getResources().getIdentifier("@color/" +resource, null, context.getPackageName()));
+    }
+
 //    public static int getStringResId(String resource) {
 //        return context.getResources().getIdentifier("@string/" +resource, null, context.getPackageName());
 //    }

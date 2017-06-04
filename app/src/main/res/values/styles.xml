@@ -78,6 +78,15 @@
 
     //////////////////////////////////////////////////////////////////
 
+    <style name="Base" parent="@style/MM">
+        <item name="android:layout_marginTop">40dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
     <style name="HLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
@@ -205,6 +214,27 @@
         <!--<item name="android:textStyle">bold</item>-->
         <item name="android:textSize">18dp</item>
         <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
+    //////////////////////////////////////////////////////////////////
+
+    <style name="Comments_Text_ET" parent="@style/MW">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:lines">2</item>
+        <item name="android:maxLength">400</item>
+        <item name="android:ems">16</item>
+        <item name="android:gravity">top|left</item>
+        <item name="android:selectAllOnFocus">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:hint">@string/write_comment_text_hint</item>
+        <item name="android:textColorHint">@color/dark_grey</item>
+        <item name="android:layout_weight">0.23</item>
     </style>
 
 </resources>
