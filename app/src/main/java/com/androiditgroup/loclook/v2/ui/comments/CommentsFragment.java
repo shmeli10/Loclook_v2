@@ -1,6 +1,7 @@
 package com.androiditgroup.loclook.v2.ui.comments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,12 +30,15 @@ import java.util.ArrayList;
  * Created by sostrovschi on 1/25/17.
  */
 
-public class CommentsFragment extends ParentFragment {
+public class CommentsFragment   extends ParentFragment
+                                implements View.OnClickListener {
 
     private static Publication mPublication;
 
     private User user;
     private ArrayList<String> userFavoritesList;
+
+    private FrameLayout sendCommentLayout;
 
     public CommentsFragment() {
         // Required empty public constructor
@@ -67,6 +71,10 @@ public class CommentsFragment extends ParentFragment {
         setHasOptionsMenu(true);
 
         setPublicationData(view);
+
+        // find "send comment layout"
+        sendCommentLayout = (FrameLayout) view.findViewById(R.id.Comments_Send_Wrap);
+        sendCommentLayout.setOnClickListener(this);
 
         return view;
     }
@@ -243,5 +251,16 @@ public class CommentsFragment extends ParentFragment {
         mBottomLine.setVisibility(View.VISIBLE);
 
 
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch(view.getId()) {
+
+            case R.id.Comments_Send_Wrap:
+                LocLookApp.showLog("CommentsFragment: onClick(): on send comment click");
+                break;
+        }
     }
 }
