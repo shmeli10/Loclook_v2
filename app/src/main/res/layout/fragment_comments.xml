@@ -10,7 +10,37 @@
         style="@style/Base"
         android:layout_weight="1">
 
-        <include layout="@layout/publication_item" />
+        <RelativeLayout
+            style="@style/MW">
+
+            <include layout="@layout/publication_item" />
+
+            <TextView
+                android:id="@+id/Comments_SumText_TextView"
+                style="@style/WW"
+                android:layout_below="@+id/Publication_LI_Container"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/dark_grey"
+                android:textSize="10sp"
+                android:text="@string/comments_sum_text"/>
+            <TextView
+                android:id="@+id/Comments_SumValue_TextView"
+                style="@style/WW"
+                android:layout_below="@+id/Publication_LI_Container"
+                android:layout_toRightOf="@+id/Comments_SumText_TextView"
+                android:layout_marginTop="11dp"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold"
+                android:textColor="@color/dark_grey"
+                android:textSize="10sp"
+                android:text="0"/>
+            <ListView
+                android:id="@+id/Comments_ListView"
+                style="@style/MW"
+                android:layout_below="@+id/Comments_SumText_TextView"
+                android:layout_marginBottom="10dp" />
+
+        </RelativeLayout>
 
     </ScrollView>
     <RelativeLayout style="@style/MW">

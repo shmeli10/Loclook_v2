@@ -101,4 +101,6 @@
 
     <string name="write_comment_text_hint">Напишите свой комментарий</string>
 
+    <string name="comments_sum_text">Комментариев:</string>
+
 </resources>

@@ -24,7 +24,18 @@ public class DefineUserLocationName {
 
     public DefineUserLocationName(LocationManager locationManager) {
         mLocationManager = locationManager;
-        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.LOCATION_REQUEST_INTERVAL, 10, mLocationListener);
+
+//        if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER))
+//            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.LOCATION_REQUEST_INTERVAL, 10, mLocationListener);
+
+        if(locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)
+                &&
+           locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.LOCATION_REQUEST_INTERVAL, 10, mLocationListener);
+        }
+
+        //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.LOCATION_REQUEST_INTERVAL, 10, mLocationListener);
     }
 
     private LocationListener mLocationListener = new LocationListener() {
