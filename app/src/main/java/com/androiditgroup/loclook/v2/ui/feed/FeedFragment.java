@@ -13,6 +13,7 @@ import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter;
 import com.androiditgroup.loclook.v2.adapters.PublicationsListAdapter;
+import com.androiditgroup.loclook.v2.controllers.CommentsController;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
+import com.androiditgroup.loclook.v2.controllers.CommentsController;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.User;
@@ -40,8 +41,12 @@ public class CommentsFragment   extends ParentFragment
 
     private FrameLayout sendCommentLayout;
 
+    private TextView    commentsSumValueTextView;
+
     public CommentsFragment() {
         // Required empty public constructor
+
+        CommentsController.getCommentsControllerInstance().populateAllCommentsList();
     }
 
     // public static CommentsFragment newInstance(LayoutInflater inflater) {
@@ -62,6 +67,9 @@ public class CommentsFragment   extends ParentFragment
         userFavoritesList = user.getFavoritesList();
 
         View view = inflater.inflate(R.layout.fragment_comments, container, false);
+
+        commentsSumValueTextView = UiUtils.findView(view, R.id.Comments_SumValue_TextView);
+        commentsSumValueTextView.setText("" +CommentsController.getCommentsControllerInstance().getCommentsSum(mPublication.getId()));
 
         LinearLayout footerBlock = UiUtils.findView(view, R.id.Publication_LI_FooterBlock);
         footerBlock.setWeightSum(3f);
