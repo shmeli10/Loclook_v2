@@ -3,7 +3,7 @@ package com.androiditgroup.loclook.v2.utils;
 import android.database.Cursor;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
-import com.androiditgroup.loclook.v2.controllers.CommentsController;
+import com.androiditgroup.loclook.v2.controllers.CommentController;
 import com.androiditgroup.loclook.v2.models.User;
 
 /**
@@ -95,8 +95,8 @@ public class UserGenerator {
             mUserBuilder.favoriteslist(FavoritesUtility.getUserFavorites());
 
             // добавляем список публикаций, в которых пользователь оставлял комментарии
-            // mUserBuilder.commentedPublicationsList(CommentsController.getUserCommentedPublicationsList());
-            mUserBuilder.commentedPublicationsList(CommentsController.getCommentsControllerInstance().getUserCommentedPublicationsList());
+            // mUserBuilder.commentedPublicationsList(CommentController.getUserCommentedPublicationsList());
+            mUserBuilder.commentedPublicationsList(CommentController.getCommentsControllerInstance().getUserCommentedPublicationsList());
 
             // добавляем список понравившегося
             mUserBuilder.likeslist(LikesUtility.getUserLikes());

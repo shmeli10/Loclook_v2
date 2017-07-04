@@ -36,15 +36,15 @@ public class DBManager {
 
                     LocLookApp.showLog("DBManager: onCreate()");
 
-                    createTable(sqLiteDatabase, Constants.DataBase.USER_TABLE, Constants.DataBase.USER_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.BADGE_TABLE, Constants.DataBase.BADGE_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.PUBLICATION_TABLE, Constants.DataBase.PUBLICATION_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.QUIZ_ANSWER_TABLE, Constants.DataBase.QUIZ_ANSWER_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.PHOTOS_TABLE, Constants.DataBase.PHOTOS_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.USER_QUIZ_ANSWER_TABLE, Constants.DataBase.USER_QUIZ_ANSWER_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.FAVORITES_TABLE, Constants.DataBase.FAVORITES_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.COMMENTS_TABLE, Constants.DataBase.COMMENTS_TABLE_COLUMNS);
-                    createTable(sqLiteDatabase, Constants.DataBase.LIKES_TABLE, Constants.DataBase.LIKES_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.USER_TABLE,              Constants.DataBase.USER_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.BADGE_TABLE,             Constants.DataBase.BADGE_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.PUBLICATION_TABLE,       Constants.DataBase.PUBLICATION_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.QUIZ_ANSWER_TABLE,       Constants.DataBase.QUIZ_ANSWER_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.PHOTOS_TABLE,            Constants.DataBase.PHOTOS_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.USER_QUIZ_ANSWER_TABLE,  Constants.DataBase.USER_QUIZ_ANSWER_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.FAVORITES_TABLE,         Constants.DataBase.FAVORITES_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.COMMENTS_TABLE,          Constants.DataBase.COMMENTS_TABLE_COLUMNS);
+                    createTable(sqLiteDatabase, Constants.DataBase.LIKES_TABLE,             Constants.DataBase.LIKES_TABLE_COLUMNS);
 
                     populateTables(sqLiteDatabase);
                 } catch (Exception e) {

@@ -193,6 +193,6 @@ public class LocLookApp extends Application {
 //    }
 
     public static void showLog(String msg) {
-        Log.e("ABC", msg);
+        Log.e("LOG", msg);
     }
 }

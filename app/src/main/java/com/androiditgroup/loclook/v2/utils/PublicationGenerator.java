@@ -53,7 +53,7 @@ public class PublicationGenerator {
 
             //////////////////////////////////////////////////////////////////////////////////////
 
-            Publication.Builder mPublicationBuilder = new Publication.Builder();
+/*            Publication.Builder mPublicationBuilder = new Publication.Builder();
 
             if((pId != null) && (!pId.equals("")))
                 mPublicationBuilder.id(pId);
@@ -70,7 +70,7 @@ public class PublicationGenerator {
                 }
             }
             else
-                return null;
+                return null;*/
 
             //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -127,7 +127,7 @@ public class PublicationGenerator {
 
             //////////////////////////////////////////////////////////////////////////////////////////
 
-            mPublicationBuilder.text(pText);
+/*            mPublicationBuilder.text(pText);
             mPublicationBuilder.dateAndTime(getFormattedDate(pCreatedAt));
             mPublicationBuilder.location(pLocation);
             mPublicationBuilder.regionName(pRegionName);
@@ -137,10 +137,11 @@ public class PublicationGenerator {
             mPublicationBuilder.hasImages(pHasImages);
             mPublicationBuilder.isAnonymous(pIsAnonymous);
             // mPublicationBuilder.quizAnswerList(pQuizAnswersIdsList);
-            mPublicationBuilder.photosList(photosIdsList);
+            mPublicationBuilder.photosList(photosIdsList);*/
 
             // возвращаем публикацию
-            return mPublicationBuilder.build();
+//            return mPublicationBuilder.build();
+            return null;
 
         } catch(Exception exc) {
             LocLookApp.showLog("PublicationGenerator: getPublicationFromCursor(): error: " +exc.toString());
@@ -190,7 +191,7 @@ public class PublicationGenerator {
 
                     //////////////////////////////////////////////////////////////////////////////////////
 
-                    Publication.Builder mPublicationBuilder = new Publication.Builder();
+/*                    Publication.Builder mPublicationBuilder = new Publication.Builder();
 
                     if((pId != null) && (!pId.equals("")))
                         mPublicationBuilder.id(pId);
@@ -207,7 +208,7 @@ public class PublicationGenerator {
                         }
                     }
                     else
-                        return null;
+                        return null;*/
 
                     // -------------------------------- QUIZ ---------------------------------- //
 
@@ -218,7 +219,7 @@ public class PublicationGenerator {
                     // если публикация содержит опрос
                     if(pHasQuiz){
 
-                        // получаем курсор с вариантами ответа опраса из БД
+                        // получаем курсор с вариантами ответа опроса из БД
                         Cursor cursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.QUIZ_ANSWER_TABLE, null, "PUBLICATION_ID", pId);
 
 //                        LocLookApp.showLog("PublicationGenerator: getPublicationsList(): publication: " +pId+ ", cursor is null: " +(cursor == null));
@@ -321,7 +322,7 @@ public class PublicationGenerator {
 
                     // ------------------------------------------------------------------------ //
 
-                    mPublicationBuilder.text(pText);
+                    /*mPublicationBuilder.text(pText);
                     mPublicationBuilder.dateAndTime(getFormattedDate(pCreatedAt));
                     mPublicationBuilder.location(pLocation);
                     mPublicationBuilder.regionName(pRegionName);
@@ -335,7 +336,7 @@ public class PublicationGenerator {
                     mPublicationBuilder.commentsSum(pCommentsSum);
                     mPublicationBuilder.likesSum(pLikesSum);
 
-                    result.add(mPublicationBuilder.build());
+                    result.add(mPublicationBuilder.build());*/
 
                 } while (pCursor.moveToNext());
 
