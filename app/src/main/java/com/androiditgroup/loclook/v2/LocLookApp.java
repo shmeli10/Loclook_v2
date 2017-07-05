@@ -13,6 +13,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.androiditgroup.loclook.v2.controllers.SettingsManager;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.utils.BadgeGenerator;
@@ -46,27 +47,23 @@ public class LocLookApp extends Application {
 
     protected static final String APP_PREFERENCES = "loclook_preferences";
 
-    public static LocLookApp getInstance() {
-        return instance;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
-        context = getApplicationContext();
-        preferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        instance        = this;
+        context         = getApplicationContext();
+        preferences     = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
 
-        bold = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Bold.ttf");
-        boldItalic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-BoldItalic.ttf");
-        extraBold = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-ExtraBold.ttf");
+        bold            = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Bold.ttf");
+        boldItalic      = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-BoldItalic.ttf");
+        extraBold       = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-ExtraBold.ttf");
         extraBoldItalic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-ExtraBoldItalic.ttf");
-        italic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Italic.ttf");
-        light = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Light.ttf");
-        lightItalic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-LightItalic.ttf");
-        regular = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
-        semiBold = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Semibold.ttf");
-        semiBoldItalic = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-SemiboldItalic.ttf");
+        italic          = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Italic.ttf");
+        light           = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Light.ttf");
+        lightItalic     = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-LightItalic.ttf");
+        regular         = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
+        semiBold        = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Semibold.ttf");
+        semiBoldItalic  = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-SemiboldItalic.ttf");
 
         if (isFirstLaunch()) {
             String language = Locale.getDefault().getDisplayLanguage();
@@ -78,6 +75,14 @@ public class LocLookApp extends Application {
             preferences.edit().putBoolean("isFirstLaunch", false).apply();
         }
     }
+
+    // ------------------------------------- GETTERS ----------------------------------------- //
+
+    public static LocLookApp getInstance() {
+        return instance;
+    }
+
+    // ------------------------------------- SETTERS ----------------------------------------- //
 
     private boolean isFirstLaunch() {
         return preferences.getBoolean("isFirstLaunch", true);

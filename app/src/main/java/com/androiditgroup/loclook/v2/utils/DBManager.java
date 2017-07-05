@@ -125,7 +125,8 @@ public class DBManager {
      */
 
     // public Cursor queryColumns(String table, String... columns) {
-    public Cursor queryColumns(SQLiteDatabase db, String table, String... columns) {
+    //public Cursor queryColumns(SQLiteDatabase db, String table, String... columns) {
+    public Cursor queryColumns(SQLiteDatabase db, String table, String[] columns) {
         return db.query(table, columns, null, null, null, null, null);
     }
 

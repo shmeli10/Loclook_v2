@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 
 /**
- * Created by sostrovschi on 09.01.2017.
+ * Created by sostrovschi on 09.01.2016.
  */
 
 public class User {

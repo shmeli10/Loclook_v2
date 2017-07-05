@@ -75,14 +75,14 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         final Publication publication = mPublications.get(position);
 
         // текст публикации
-        holder.mText.setText(publication.getText());
+        holder.mText.setText(publication.getPublicationText());
 
         // если публикация написана публично
-        if(!publication.isAnonymous()){
+        if(!publication.isPublicationAnonymous()){
             // если в коллекции уже есть нужный пользователь
-            if(LocLookApp.usersMap.containsKey(publication.getAuthorId())) {
+            if(LocLookApp.usersMap.containsKey(publication.getPublicationAuthorId())) {
                 // получить его и показать его имя
-                User author = LocLookApp.usersMap.get(publication.getAuthorId());
+                User author = LocLookApp.usersMap.get(publication.getPublicationAuthorId());
 
                 if(author != null)
                     holder.mAuthorNameTV.setText(author.getName());
@@ -94,20 +94,20 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         }
 
         // установить изображение бейджика
-        Badge badge = LocLookApp.badgesMap.get(publication.getBadgeId());
+        Badge badge = LocLookApp.badgesMap.get(publication.getPublicationBadgeId());
         if(badge != null)
             holder.mBadgeImageIV.setImageResource(badge.getIconResId());
 
         // дата и время публикации
-        holder.mDateAndTimeTV.setText(publication.getDateAndTime());
+        holder.mDateAndTimeTV.setText(publication.getPublicationCreatedAt());
 
         // если есть изображения
-        if(publication.hasImages()) {
+        if(publication.hasPublicationImages()) {
             // отобразить фото-блок
             holder.mPhotoBlock.setVisibility(View.VISIBLE);
 
             ArrayList<Bitmap> photosList = new ArrayList<>();
-            photosList.addAll(ImageDelivery.getPhotosListById(publication.getPhotosIdsList()));
+            photosList.addAll(ImageDelivery.getPhotosListById(publication.getPublicationPhotosIdsList()));
 
             // LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): photosList size= " +photosList.size()+ ", tumbnailsList size= " +tumbnailsList.size());
 
@@ -116,12 +116,12 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         }
 
         // если есть опрос
-        if(publication.hasQuiz()) {
+        if(publication.hasPublicationQuiz()) {
             // отобразить блок с опросом
             holder.mQuizBlock.setVisibility(View.VISIBLE);
 
             // получаем опрос
-            final Quiz quiz = publication.getQuiz();
+            final Quiz quiz = publication.getPublicationQuiz();
 
             if(quiz != null) {
                 final ShowPublicationQuizAnswersAdapter quizAnswersAdapter = new ShowPublicationQuizAnswersAdapter(mMainActivity.getLayoutInflater(), quiz, quiz.getAnswersList());
@@ -169,7 +169,7 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         // --------------------------------- FAVORITES ---------------------------------------- //
 
         // если публикация уже добавлена в избранное
-        if(userFavoritesList.contains(publication.getId())) {
+        if(userFavoritesList.contains(publication.getPublicationId())) {
             // помечаем значок как активный
             holder.mFavoritesIV.setImageResource(R.drawable.star_active);
         }
@@ -183,19 +183,20 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
 
             @Override
             public void onClick(View v) {
-                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: favorites click in publication(" +publication.getId()+ ")");
+                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: favorites click in publication(" +publication.getPublicationId()+ ")");
 
                 // помечаем значок как не активный
                 holder.mFavoritesIV.setImageResource(R.drawable.star_simple);
 
                 // если публикация уже добавлена в избранное
-                if(userFavoritesList.contains(publication.getId())) {
+                if(userFavoritesList.contains(publication.getPublicationId())) {
                     LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: delete from favorites");
 
                     // помечаем значок как не активный
                     holder.mFavoritesIV.setImageResource(R.drawable.star_simple);
 
-                    FavoritesUtility.deletePublicationFromUserFavorites(userFavoritesList, publication.getId());
+                    //FavoritesUtility.deletePublicationFromUserFavorites(userFavoritesList, publication.getId());
+                    FavoritesUtility.deletePublicationFromUserFavorites(userFavoritesList, "" +publication.getPublicationId());
                 }
                 // если публикация еще не добавлена в избранное
                 else {
@@ -204,7 +205,8 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
                     // помечаем значок как активный
                     holder.mFavoritesIV.setImageResource(R.drawable.star_active);
 
-                    FavoritesUtility.addPublicationToUserFavorites(userFavoritesList, publication.getId());
+                    //FavoritesUtility.addPublicationToUserFavorites(userFavoritesList, publication.getId());
+                    FavoritesUtility.addPublicationToUserFavorites(userFavoritesList, "" +publication.getPublicationId());
                 }
             }
         });
@@ -212,7 +214,7 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         // --------------------------------- COMMENTS ----------------------------------------- //
 
         // если пользователь оставил хоть один комментарий в данной публикации
-        if(userCommentedPublicationsList.contains(publication.getId())) {
+        if(userCommentedPublicationsList.contains(publication.getPublicationId())) {
             // помечаем значок как активный
             holder.mCommentsIV.setImageResource(R.drawable.comments_active);
             holder.mCommentsTV.setTextColor(textColorActive);
@@ -225,14 +227,14 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         }
 
         // задаем кол-во комментариев оставленных пользователями к данной публикации
-        holder.mCommentsTV.setText(String.valueOf(publication.getLikesSum()));
+        holder.mCommentsTV.setText(String.valueOf(publication.getPublicationLikesSum()));
 
         // задаем обработчик клика по блоку
         holder.mCommentsBlock.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: comments click in publication(" +publication.getId()+ ")");
+                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: comments click in publication(" +publication.getPublicationId()+ ")");
                 MainActivity.selectedFragment = MainActivity.SelectedFragment.comments;
                 // mMainActivity.setFragment(CommentsFragment.newInstance(MainActivity.mInflater), false, true);
                 mMainActivity.setFragment(CommentsFragment.newInstance(publication), false, true);
@@ -242,7 +244,7 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         // --------------------------------- LIKES --------------------------------------------- //
 
         // если публикация уже добавлена в понравившиеся
-        if(userLikesList.contains(publication.getId())) {
+        if(userLikesList.contains(publication.getPublicationId())) {
             // помечаем значок как активный
             holder.mLikesIV.setImageResource(R.drawable.likes_active);
             holder.mLikesTV.setTextColor(textColorActive);
@@ -255,29 +257,30 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
         }
 
         // задаем кол-во пользователей, которым понравилась данная публикация
-        holder.mLikesTV.setText(String.valueOf(publication.getLikesSum()));
+        holder.mLikesTV.setText(String.valueOf(publication.getPublicationLikesSum()));
 
         // задаем обработчик клика по блоку
         holder.mLikesBlock.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: likes click in publication(" +publication.getId()+ ")");
+                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: likes click in publication(" +publication.getPublicationId()+ ")");
 
                 // если публикация уже добавлена в понравившиеся
-                if(userLikesList.contains(publication.getId())) {
+                if(userLikesList.contains(publication.getPublicationId())) {
                     LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder: delete from likes");
 
                     // помечаем значок как не активный
                     holder.mLikesIV.setImageResource(R.drawable.likes_simple);
 
                     // задаем прежнее значение
-                    holder.mLikesTV.setText(String.valueOf(publication.getLikesSum()));
+                    holder.mLikesTV.setText(String.valueOf(publication.getPublicationLikesSum()));
 
                     // меняем цвет текста с кол-вом пользователей, которым понравилась публикация
                     holder.mLikesTV.setTextColor(textColorSimple);
 
-                    LikesUtility.deletePublicationFromUserLikes(userLikesList, publication.getId());
+                    //LikesUtility.deletePublicationFromUserLikes(userLikesList, publication.getId());
+                    LikesUtility.deletePublicationFromUserLikes(userLikesList, "" +publication.getPublicationId());
                 }
                 // если публикация еще не добавлена в понравившиеся
                 else {
@@ -286,12 +289,13 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
                     holder.mLikesIV.setImageResource(R.drawable.likes_active);
 
                     // задаем новое значение
-                    holder.mLikesTV.setText(String.valueOf(publication.getLikesSum() + 1));
+                    holder.mLikesTV.setText(String.valueOf(publication.getPublicationLikesSum() + 1));
 
                     // меняем цвет текста с кол-вом пользователей, которым понравилась публикация
                     holder.mLikesTV.setTextColor(textColorActive);
 
-                    LikesUtility.addPublicationToUserLikes(userLikesList, publication.getId());
+                    //LikesUtility.addPublicationToUserLikes(userLikesList, publication.getId());
+                    LikesUtility.addPublicationToUserLikes(userLikesList, "" +publication.getPublicationId());
                 }
             }
         });

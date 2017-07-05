@@ -6,6 +6,7 @@ import android.content.Intent;
 import java.util.concurrent.TimeUnit;
 import android.support.v7.app.AppCompatActivity;
 import com.androiditgroup.loclook.v2.ui.auth.AuthActivity;
+import com.androiditgroup.loclook.v2.ui.auth.AuthActivity_NEW;
 
 /**
  * Created by sostrovschi on 10.01.2017.
@@ -39,7 +40,8 @@ public class SplashActivity extends AppCompatActivity {
                 TimeUnit.SECONDS.sleep(3);
 
                 // переходим вперед
-                startActivity(new Intent(SplashActivity.this, AuthActivity.class));
+                //startActivity(new Intent(SplashActivity.this, AuthActivity.class));
+                startActivity(new Intent(SplashActivity.this, AuthActivity_NEW.class));
 
             } catch (InterruptedException e) {
                 e.printStackTrace();

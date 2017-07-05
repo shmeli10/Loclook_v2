@@ -68,7 +68,7 @@ public class CommentsFragment   extends ParentFragment
         View view = inflater.inflate(R.layout.fragment_comments, container, false);
 
         commentsSumValueTextView = UiUtils.findView(view, R.id.Comments_SumValue_TextView);
-        commentsSumValueTextView.setText("" + CommentController.getCommentsControllerInstance().getPublicationCommentsSum(mPublication.getId()));
+        commentsSumValueTextView.setText("" + CommentController.getCommentsControllerInstance().getPublicationCommentsSum(mPublication.getPublicationId()));
 
         LinearLayout footerBlock = UiUtils.findView(view, R.id.Publication_LI_FooterBlock);
         footerBlock.setWeightSum(3f);
@@ -107,11 +107,11 @@ public class CommentsFragment   extends ParentFragment
             TextView mUserNameTV = UiUtils.findView(rootView, R.id.Publication_LI_UserNameTV);
 
             // если публикация написана публично
-            if(!mPublication.isAnonymous()){
+            if(!mPublication.isPublicationAnonymous()){
                 // если в коллекции уже есть нужный пользователь
-                if(LocLookApp.usersMap.containsKey(mPublication.getAuthorId())) {
+                if(LocLookApp.usersMap.containsKey(mPublication.getPublicationAuthorId())) {
                     // получить его и показать его имя
-                    User author = LocLookApp.usersMap.get(mPublication.getAuthorId());
+                    User author = LocLookApp.usersMap.get(mPublication.getPublicationAuthorId());
 
                     if(author != null)
                         mUserNameTV.setText(author.getName());
@@ -127,7 +127,7 @@ public class CommentsFragment   extends ParentFragment
             CircularImageView mBadgeImageIV = UiUtils.findView(rootView, R.id.Publication_LI_BadgeImageIV);
 
             // установить изображение бейджика
-            Badge badge = LocLookApp.badgesMap.get(mPublication.getBadgeId());
+            Badge badge = LocLookApp.badgesMap.get(mPublication.getPublicationBadgeId());
             if(badge != null)
                 mBadgeImageIV.setImageResource(badge.getIconResId());
 
@@ -136,14 +136,14 @@ public class CommentsFragment   extends ParentFragment
             TextView mDateAndTimeTV = UiUtils.findView(rootView, R.id.Publication_LI_DateAndTimeTV);
 
             // дата и время публикации
-            mDateAndTimeTV.setText(mPublication.getDateAndTime());
+            mDateAndTimeTV.setText(mPublication.getPublicationCreatedAt());
 
             // ------------------------------------------------------------------------------- //
 
             TextView mText = UiUtils.findView(rootView, R.id.Publication_LI_TextTV);
 
             // текст публикации
-            mText.setText(mPublication.getText());
+            mText.setText(mPublication.getPublicationText());
 
             // --------------------------------- FAVORITES ----------------------------------- //
 
@@ -151,7 +151,7 @@ public class CommentsFragment   extends ParentFragment
             final ImageView mFavoritesIV = UiUtils.findView(rootView, R.id.Publication_LI_Favorites_IV);
 
             // если публикация уже добавлена в избранное
-            if(userFavoritesList.contains(mPublication.getId())) {
+            if(userFavoritesList.contains(mPublication.getPublicationId())) {
                 // помечаем значок как активный
                 mFavoritesIV.setImageResource(R.drawable.star_active);
             }
@@ -165,16 +165,17 @@ public class CommentsFragment   extends ParentFragment
 
                 @Override
                 public void onClick(View v) {
-                LocLookApp.showLog("CommentsFragment: setPublicationData(): favorites click in publication(" +mPublication.getId()+ ")");
+                LocLookApp.showLog("CommentsFragment: setPublicationData(): favorites click in publication(" +mPublication.getPublicationId()+ ")");
 
                 // если публикация уже добавлена в избранное
-                if(userFavoritesList.contains(mPublication.getId())) {
+                if(userFavoritesList.contains(mPublication.getPublicationId())) {
                     LocLookApp.showLog("CommentsFragment: setPublicationData(): delete from favorites");
 
                     // помечаем значок как не активный
                     mFavoritesIV.setImageResource(R.drawable.star_simple);
 
-                    FavoritesUtility.deletePublicationFromUserFavorites(userFavoritesList, mPublication.getId());
+                    //FavoritesUtility.deletePublicationFromUserFavorites(userFavoritesList, mPublication.getId());
+                    FavoritesUtility.deletePublicationFromUserFavorites(userFavoritesList, "" +mPublication.getPublicationId());
                 }
                 // если публикация еще не добавлена в избранное
                 else {
@@ -183,7 +184,8 @@ public class CommentsFragment   extends ParentFragment
                     // помечаем значок как активный
                     mFavoritesIV.setImageResource(R.drawable.star_active);
 
-                    FavoritesUtility.addPublicationToUserFavorites(userFavoritesList, mPublication.getId());
+                    //FavoritesUtility.addPublicationToUserFavorites(userFavoritesList, mPublication.getId());
+                    FavoritesUtility.addPublicationToUserFavorites(userFavoritesList, "" +mPublication.getPublicationId());
                 }
                 }
             });
@@ -197,7 +199,7 @@ public class CommentsFragment   extends ParentFragment
             final ArrayList<String> userLikesList = user.getLikesList();
 
             // если публикация уже добавлена в понравившиеся
-            if(userLikesList.contains(mPublication.getId())) {
+            if(userLikesList.contains(mPublication.getPublicationId())) {
                 // помечаем значок как активный
                 mLikesIV.setImageResource(R.drawable.likes_active);
                 mLikesTV.setTextColor(textColorActive);
@@ -210,29 +212,30 @@ public class CommentsFragment   extends ParentFragment
             }
 
             // задаем кол-во пользователей, которым понравилась данная публикация
-            mLikesTV.setText(String.valueOf(mPublication.getLikesSum()));
+            mLikesTV.setText(String.valueOf(mPublication.getPublicationLikesSum()));
 
             // задаем обработчик клика по блоку
             mLikesBlock.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    LocLookApp.showLog("CommentsFragment: setPublicationData(): likes click in publication(" +mPublication.getId()+ ")");
+                    LocLookApp.showLog("CommentsFragment: setPublicationData(): likes click in publication(" +mPublication.getPublicationId()+ ")");
 
                     // если публикация уже добавлена в понравившиеся
-                    if(userLikesList.contains(mPublication.getId())) {
+                    if(userLikesList.contains(mPublication.getPublicationId())) {
                         LocLookApp.showLog("CommentsFragment: setPublicationData(): delete from likes");
 
                         // помечаем значок как не активный
                         mLikesIV.setImageResource(R.drawable.likes_simple);
 
                         // задаем прежнее значение
-                        mLikesTV.setText(String.valueOf(mPublication.getLikesSum()));
+                        mLikesTV.setText(String.valueOf(mPublication.getPublicationLikesSum()));
 
                         // меняем цвет текста с кол-вом пользователей, которым понравилась публикация
                         mLikesTV.setTextColor(textColorSimple);
 
-                        LikesUtility.deletePublicationFromUserLikes(userLikesList, mPublication.getId());
+                        //LikesUtility.deletePublicationFromUserLikes(userLikesList, mPublication.getId());
+                        LikesUtility.deletePublicationFromUserLikes(userLikesList, "" +mPublication.getPublicationId());
                     }
                     // если публикация еще не добавлена в понравившиеся
                     else {
@@ -241,12 +244,13 @@ public class CommentsFragment   extends ParentFragment
                         mLikesIV.setImageResource(R.drawable.likes_active);
 
                         // задаем новое значение
-                        mLikesTV.setText(String.valueOf(mPublication.getLikesSum() + 1));
+                        mLikesTV.setText(String.valueOf(mPublication.getPublicationLikesSum() + 1));
 
                         // меняем цвет текста с кол-вом пользователей, которым понравилась публикация
                         mLikesTV.setTextColor(textColorActive);
 
-                        LikesUtility.addPublicationToUserLikes(userLikesList, mPublication.getId());
+                        //LikesUtility.addPublicationToUserLikes(userLikesList, mPublication.getId());
+                        LikesUtility.addPublicationToUserLikes(userLikesList, "" +mPublication.getPublicationId());
                     }
                 }
             });
