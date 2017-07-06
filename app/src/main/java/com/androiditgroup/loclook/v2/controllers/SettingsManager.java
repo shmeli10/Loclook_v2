@@ -1,6 +1,7 @@
 package com.androiditgroup.loclook.v2.controllers;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
@@ -12,7 +13,8 @@ import com.androiditgroup.loclook.v2.data.DatabaseHandler;
 
 public class SettingsManager {
 
-    private DatabaseHandler databaseHandler;
+    private DatabaseHandler             databaseHandler;
+    private SQLiteDatabase              sqLiteDatabase;
 
     private SharedPreferencesController sharedPreferencesController;
     private InitAppController           initAppController;
@@ -27,6 +29,7 @@ public class SettingsManager {
         LocLookApp.showLog("SettingsManager: constructor.");
 
         this.databaseHandler        = new DatabaseHandler(context);
+        sqLiteDatabase              = databaseHandler.getWritableDatabase();
 
         sharedPreferencesController = new SharedPreferencesController(context);
 
