@@ -26,7 +26,7 @@ public class DatabaseConstants {
                                                                         "REGION_NAME        TEXT,              " +
                                                                         "STREET_NAME        TEXT";
 
-    protected static final String BADGE_TABLE                       =   "BADGE_DATA";
+    public static final String BADGE_TABLE                          =   "BADGE_DATA";
     protected static final String BADGE_TABLE_COLUMNS               =   "NAME               TEXT NOT NULL";
 
     protected static final String PUBLICATION_TABLE                 =   "PUBLICATION_DATA";

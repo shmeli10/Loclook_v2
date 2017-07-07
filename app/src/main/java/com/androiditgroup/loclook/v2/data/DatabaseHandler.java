@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
+import com.androiditgroup.loclook.v2.constants.ErrorConstants;
+import com.androiditgroup.loclook.v2.interfaces.DatabaseCreateInterface;
 
 /**
  * Created by Serghei Ostrovschi on 7/5/16.
@@ -14,12 +16,16 @@ import com.androiditgroup.loclook.v2.LocLookApp;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
+    private DatabaseCreateInterface databaseCreateListener;
+
+    private boolean createDataBaseSuccess = false;
+
     /**
      * DatabaseHandler constructor.
      *
      * @param context	application context.
      */
-    public DatabaseHandler(Context context) {
+    public DatabaseHandler(Context context, DatabaseCreateInterface databaseCreateListener) throws Exception {
         super(context,
               DatabaseConstants.DATABASE_NAME,
               null,
@@ -27,6 +33,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         LocLookApp.showLog("-------------------------------------");
         LocLookApp.showLog("DatabaseHandler: constructor.");
+
+        if(databaseCreateListener == null)
+            throw new Exception(ErrorConstants.DATABASE_CREATE_INTERFACE_NULL_ERROR);
+
+        this.databaseCreateListener = databaseCreateListener;
     }
 
     // ---------------------------------- QUERY ------------------------------------------- //
@@ -125,7 +136,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         createTable(sqLiteDatabase, DatabaseConstants.COMMENTS_TABLE,          DatabaseConstants.COMMENTS_TABLE_COLUMNS);
         createTable(sqLiteDatabase, DatabaseConstants.LIKES_TABLE,             DatabaseConstants.LIKES_TABLE_COLUMNS);
 
-        LocLookApp.showLog("TABLES CREATED");
+        // LocLookApp.showLog("TABLES CREATED");
+
+        if(createDataBaseSuccess)
+            databaseCreateListener.onDatabaseCreateSuccess();
     }
 
     /**
@@ -160,19 +174,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private void createTable(SQLiteDatabase sqLiteDatabase,
                              String         tableName,
                              String         columns) {
-
         LocLookApp.showLog("-------------------------------------");
         LocLookApp.showLog("DatabaseHandler:  createTable(): table: " + tableName);
 
-        StringBuilder sqlQuery = new StringBuilder();
-        sqlQuery.append("CREATE TABLE IF NOT EXISTS ");
-        sqlQuery.append(tableName);
-        sqlQuery.append(" (_ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
-        sqlQuery.append(columns);
-        sqlQuery.append(");");
+        try {
+            StringBuilder sqlQuery = new StringBuilder();
+            sqlQuery.append("CREATE TABLE IF NOT EXISTS ");
+            sqlQuery.append(tableName);
+            sqlQuery.append(" (_ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
+            sqlQuery.append(columns);
+            sqlQuery.append(");");
 
-        // создаем таблицу с полями
-        sqLiteDatabase.execSQL(sqlQuery.toString());
+            // создаем таблицу с полями
+            sqLiteDatabase.execSQL(sqlQuery.toString());
+
+            createDataBaseSuccess = true;
+        }
+        catch(Exception exc) {
+            databaseCreateListener.onDatabaseCreateError(exc.getMessage() + ", table: " +tableName);
+            createDataBaseSuccess = false;
+        }
     }
 
     /**

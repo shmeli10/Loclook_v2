@@ -21,5 +21,9 @@ public class ErrorConstants {
     public static final String USER_STREET_NAME_NULL_ERROR                  = "User street name is null";
 
 
+    public static final String DATABASE_CREATE_INTERFACE_NULL_ERROR         = "DatabaseCreateInterface is null";
+    public static final String DATABASE_HANDLER_NULL_ERROR                  = "DatabaseHandler is null";
     public static final String SHARED_PREFERENCES_CONTROLLER_NULL_ERROR     = "SharedPreferencesController is null";
+    public static final String SQLITE_DATABASE_NULL_ERROR                   = "SQLiteDatabase is null";
+
 }
