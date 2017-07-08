@@ -2,7 +2,6 @@ package com.androiditgroup.loclook.v2.controllers;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;
@@ -23,6 +22,8 @@ public class SettingsManager implements DatabaseCreateInterface {
     private InitAppController           initAppController;
     private SharedPreferencesController sharedPreferencesController;
 
+    private boolean databaseIsCreated   = false;
+
     /**
      * SettingsManager constructor
      *
@@ -35,16 +36,16 @@ public class SettingsManager implements DatabaseCreateInterface {
         this.context = context;
 
         try {
-            this.databaseHandler = new DatabaseHandler(context, this);
+            databaseHandler = new DatabaseHandler(context, this);
 
-            if(databaseHandler != null) {
+            /*if(databaseHandler != null) {
                 sqLiteDatabase = databaseHandler.getWritableDatabase();
                 LocLookApp.showLog("SettingsManager: constructor: sqLiteDatabase is null: " +(sqLiteDatabase == null));
             }
             else {
                 LocLookApp.showLog("SettingsManager: constructor: databaseHandler is null");
                 //throw new Exception(ErrorConstants.DATABASE_HANDLER_NULL_ERROR);
-            }
+            }*/
         } catch (Exception exc) {
             LocLookApp.showLog("SettingsManager: constructor: get DatabaseHandler instance error: " +exc.getMessage());
         }
@@ -57,6 +58,21 @@ public class SettingsManager implements DatabaseCreateInterface {
 
 //        if(databaseHandler != null)
 //            sqLiteDatabase = databaseHandler.getWritableDatabase();
+
+        if(databaseHandler != null) {
+            LocLookApp.showLog("SettingsManager: constructor: databaseHandler is not null");
+
+            sqLiteDatabase = databaseHandler.getWritableDatabase();
+            LocLookApp.showLog("SettingsManager: constructor: sqLiteDatabase is null: " +(sqLiteDatabase == null));
+
+            if(databaseIsCreated) {
+                populateDatabase();
+            }
+        }
+        else {
+            LocLookApp.showLog("SettingsManager: constructor: databaseHandler is null");
+            //throw new Exception(ErrorConstants.DATABASE_HANDLER_NULL_ERROR);
+        }
 
         sharedPreferencesController = new SharedPreferencesController(context);
 
@@ -129,18 +145,19 @@ public class SettingsManager implements DatabaseCreateInterface {
         return initAppController;
     }
 
+    private void populateDatabase() {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp.showLog("SettingsManager: populateDatabase()");
+
+        getBadgeController().populateBadgesTable();
+    }
+
     @Override
     public void onDatabaseCreateSuccess() {
         LocLookApp.showLog("-------------------------------------");
         LocLookApp.showLog("SettingsManager: onDatabaseCreateSuccess()");
 
-        /*try {
-            getSQLiteDatabase();
-        } catch (Exception exc) {
-            LocLookApp.showLog("SettingsManager: onDatabaseCreateSuccess: getSQLiteDatabase error: " +exc.getMessage());
-        }*/
-
-        getBadgeController().populateBadgesTable();
+        databaseIsCreated = true;
     }
 
     @Override
