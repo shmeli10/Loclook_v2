@@ -51,7 +51,7 @@ public class SharedPreferencesController {
             addStringParam("ui_language",                   SettingsConstants.ENGLISH);
 
             // phone
-            addStringParam("user_phone)number",             "");
+            addStringParam("user_phone_number",             "");
             addStringParam("user_name",                     "");
         }
         else {

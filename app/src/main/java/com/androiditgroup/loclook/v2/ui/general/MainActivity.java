@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.controllers.SettingsManager;
+import com.androiditgroup.loclook.v2.controllers.AppManager;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.SplashActivity;
 import com.androiditgroup.loclook.v2.ui.badges.BadgesFragment;
@@ -49,9 +49,6 @@ import static com.androiditgroup.loclook.v2.ui.general.MainActivity.SelectedFrag
 
 public class MainActivity   extends     ParentActivity
                             implements  FragmentManager.OnBackStackChangedListener {
-
-    private LocLookApp      locLookApp;
-    private SettingsManager settingsManager;
 
     private TextView mToolbarTitle;
     private ImageButton mNavigationBtn;

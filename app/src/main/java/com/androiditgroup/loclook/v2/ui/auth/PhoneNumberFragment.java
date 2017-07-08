@@ -22,7 +22,7 @@ public class PhoneNumberFragment extends Fragment {
     private EditText     phoneBodyET;
     private Button       enterButton;
     //private AuthActivity mAuthActivity;
-    private AuthActivity_NEW mAuthActivity;
+    private AuthActivity mAuthActivity;
 
     public PhoneNumberFragment() {
         // Required empty public constructor
@@ -39,7 +39,7 @@ public class PhoneNumberFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_phone_number, container, false);
         //mAuthActivity = (AuthActivity) getActivity();
-        mAuthActivity = (AuthActivity_NEW) getActivity();
+        mAuthActivity = (AuthActivity) getActivity();
 
         // поле "Номер телефона"
         phoneBodyET = (EditText) view.findViewById(R.id.PhoneNumberFragment_PhoneTail_ET);

@@ -181,7 +181,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             StringBuilder sqlQuery = new StringBuilder();
             sqlQuery.append("CREATE TABLE IF NOT EXISTS ");
             sqlQuery.append(tableName);
-            sqlQuery.append(" (_ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
+            // sqlQuery.append(" (_ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
+            sqlQuery.append(" (" +DatabaseConstants.ROW_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT, ");
             sqlQuery.append(columns);
             sqlQuery.append(");");
 

@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.controllers.SettingsManager;
+import com.androiditgroup.loclook.v2.controllers.AppManager;
 import com.androiditgroup.loclook.v2.controllers.SharedPreferencesController;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.SplashActivity;
@@ -50,7 +50,7 @@ public class MainActivity_NEW   extends     ParentActivity
                                 implements  FragmentManager.OnBackStackChangedListener {
 
     private LocLookApp_NEW              locLookApp_NEW;
-    private SettingsManager             settingsManager;
+    private AppManager appManager;
     private SharedPreferencesController sharedPreferencesController;
 
     private TextView                    mToolbarTitle;
@@ -96,10 +96,10 @@ public class MainActivity_NEW   extends     ParentActivity
         LocLookApp_NEW.showLog("MainActivity_NEW: onCreate()");
 
         locLookApp_NEW  =  ((LocLookApp_NEW) this.getApplication());
-        settingsManager = locLookApp_NEW.getSettingsManager();
+        appManager      = locLookApp_NEW.getAppManager();
 
         try {
-            settingsManager.getInitAppController().init();
+            appManager.getInitAppController().init();
         } catch (Exception exc) {
             exc.printStackTrace();
         }
@@ -171,43 +171,45 @@ public class MainActivity_NEW   extends     ParentActivity
         mLocationDefiner = new DefineUserLocationName((LocationManager) getSystemService(LOCATION_SERVICE));
 
 
-        sharedPreferencesController = settingsManager.getSharedPreferencesController();
+        sharedPreferencesController = appManager.getSharedPreferencesController();
 
-        // if user is not logged in
-        if (!sharedPreferencesController.containsParam("is_undefined_user_mode")) {
-            LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): is_undefined_user_mode");
+        showStartFragment();
 
-            Intent loginIntent = new Intent(this, SplashActivity.class);
-            startActivity(loginIntent);
-            finish();
-            return;
-        }
-        // if user enter without logation
-        else {
+//        // if user is not logged in
+//        if (!sharedPreferencesController.containsParam("is_undefined_user_mode")) {
+//            LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): is_undefined_user_mode");
+//
+//            Intent loginIntent = new Intent(this, SplashActivity.class);
+//            startActivity(loginIntent);
+//            finish();
+//            return;
+//        }
+//        // if user enter without logation
+//        else {
+//
+//            boolean isUndefinedUserMode = sharedPreferencesController.isUserUndefinedMode();
+//
+//            LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): is_undefined_user_mode: " +isUndefinedUserMode);
+//
+//            /*String phoneNumber = LocLookApp.getInstance().getPhoneNumber();
+//
+//            if (phoneNumber != null) {
+//
+//                Cursor cursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
+//
+//                // если данные получены
+//                if (cursor.getCount() > 0) {
+//                    // формируем пользователя приложения
+//                    if (setUserData(cursor))
+//                        setLeftMenuUserData();
+//                }
+//            }*/
+//        }
 
-            boolean isUndefinedUserMode = sharedPreferencesController.isUserUndefinedMode();
-
-            LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): is_undefined_user_mode: " +isUndefinedUserMode);
-
-            /*String phoneNumber = LocLookApp.getInstance().getPhoneNumber();
-
-            if (phoneNumber != null) {
-
-                Cursor cursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(), Constants.DataBase.USER_TABLE, null, "PHONE_NUMBER", phoneNumber);
-
-                // если данные получены
-                if (cursor.getCount() > 0) {
-                    // формируем пользователя приложения
-                    if (setUserData(cursor))
-                        setLeftMenuUserData();
-                }
-            }*/
-        }
-
-        setFragment(FeedFragment.newInstance(), false, false);
+        //setFragment(FeedFragment.newInstance(), false, false);
 
         // формируем список бейджей
-        LocLookApp.setBadgesList();
+        //LocLookApp.setBadgesList();
 
         selectedFragment = newSelectedFragment = feedFragment;
     }
@@ -397,6 +399,46 @@ public class MainActivity_NEW   extends     ParentActivity
 //            mNavigationBtn.setOnClickListener(mBackClickListener);
 //            mNavigationBtn.setImageResource(R.drawable.arrow_back_icon);
 //        }
+    }
+
+    private void showStartFragment() {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("MainActivity_NEW: showStartFragment()");
+
+
+        // if this is not a first application start
+//        if (sharedPreferencesController.containsParam("is_undefined_user_mode")) {
+//            LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): this is not a first application start");
+
+            boolean isUndefinedUserMode = sharedPreferencesController.isUserUndefinedMode();
+
+            // if user is logged in
+            if(!isUndefinedUserMode) {
+                LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): user is logged in");
+            }
+            // if user is not logged in
+            else {
+                LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): user is not logged in");
+
+                showSplashScreen();
+            }
+//        }
+//        // if this is a first application start
+//        else {
+//            LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): this is a first application start");
+//
+//            showSplashScreen();
+//        }
+    }
+
+    private void showSplashScreen() {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("MainActivity_NEW: showSplashScreen()");
+
+        Intent loginIntent = new Intent(this, SplashActivity.class);
+        startActivity(loginIntent);
+        finish();
+        return;
     }
 
     public void showPD() {

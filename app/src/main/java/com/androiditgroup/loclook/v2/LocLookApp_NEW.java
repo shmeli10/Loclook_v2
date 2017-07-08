@@ -4,7 +4,7 @@ import android.app.Application;
 import android.graphics.Typeface;
 import android.util.Log;
 
-import com.androiditgroup.loclook.v2.controllers.SettingsManager;
+import com.androiditgroup.loclook.v2.controllers.AppManager;
 
 /**
  * Created by Serghei Ostrovschi on on 7/5/16.
@@ -12,7 +12,7 @@ import com.androiditgroup.loclook.v2.controllers.SettingsManager;
 
 public class LocLookApp_NEW extends Application {
 
-    private SettingsManager   settingsManager;
+    private AppManager appManager;
 
     public static Typeface  fontBold,
                             fontBoldItalic,
@@ -34,14 +34,14 @@ public class LocLookApp_NEW extends Application {
 
     // ------------------------------------- GETTERS ----------------------------------------- //
 
-    public SettingsManager getSettingsManager() {
+    public AppManager getAppManager() {
         LocLookApp_NEW.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("LocLookApp_NEW: getSettingsManager(): settingsManager is null: " +(settingsManager == null));
+        LocLookApp_NEW.showLog("LocLookApp_NEW: getAppManager(): appManager is null: " +(appManager == null));
 
-        if(settingsManager == null) {
-            settingsManager = new SettingsManager(this);
+        if(appManager == null) {
+            appManager = new AppManager(this);
         }
-        return settingsManager;
+        return appManager;
     }
 
 

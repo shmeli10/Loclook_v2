@@ -29,11 +29,12 @@ public class AuthActivity_NEW extends ParentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
+        LocLookApp.showLog("-------------------------------------");
         LocLookApp_NEW.showLog("AuthActivity_NEW: onCreate()");
 
 //        getFragmentManager().addOnBackStackChangedListener(this);
         mProgressBar = (ProgressBar) findViewById(R.id.AuthActivity_ProgressBar);
-        setFragment(PhoneNumberFragment.newInstance(), false, false);
+        setFragment(PhoneNumberFragment_NEW.newInstance(), false, false);
     }
 
     @Override

@@ -10,9 +10,13 @@ public class DatabaseConstants {
 
     protected static final String DATABASE_NAME 	                =   "LOCLOOK_DATABASE";
 
-    protected static final String USER_TABLE                        =   "USER_DATA";
-    protected static final String USER_TABLE_COLUMNS                =   "NAME               TEXT NOT NULL,     " +
-                                                                        "PHONE_NUMBER       TEXT NOT NULL,     " +
+    public static final String ROW_ID                               =   "_ID";
+
+    public static final String USER_TABLE                           =   "USER_DATA";
+    public static final String USER_NAME                            =   "NAME";
+    public static final String USER_PHONE_NUMBER                    =   "PHONE_NUMBER";
+    protected static final String USER_TABLE_COLUMNS                =   USER_NAME         + " TEXT NOT NULL,     " +
+                                                                        USER_PHONE_NUMBER + " TEXT NOT NULL,     " +
                                                                         "RATE               INTEGER DEFAULT 0, " +
                                                                         "BG_PHOTO_ID        INTEGER DEFAULT 0, " +
                                                                         "AVATAR_PHOTO_ID    INTEGER DEFAULT 0, " +

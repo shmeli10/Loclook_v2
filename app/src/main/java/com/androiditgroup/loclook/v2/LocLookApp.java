@@ -13,7 +13,6 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.androiditgroup.loclook.v2.controllers.SettingsManager;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.utils.BadgeGenerator;
