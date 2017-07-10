@@ -22,8 +22,8 @@ public class SharedPreferencesController {
      * @param context   application context.
      */
     public SharedPreferencesController(Context context) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: constructor.");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: constructor.");
 
         sharedPreferences       = context.getSharedPreferences("user_data", context.MODE_PRIVATE);
         sharedPreferencesEditor = sharedPreferences.edit();
@@ -45,10 +45,10 @@ public class SharedPreferencesController {
             addBooleanParam("is_undefined_user_mode",       true);
 
             // login status
-            addBooleanParam("is_use_logged",                false);
+            addBooleanParam("is_user_logged",               false);
 
             // language
-            addStringParam("ui_language",                   SettingsConstants.ENGLISH);
+            addStringParam("ui_language",                   SettingsConstants.RUSSIAN);
 
             // phone
             addStringParam("user_phone_number",             "");
@@ -65,8 +65,8 @@ public class SharedPreferencesController {
      * @return  answer is it a "undefined user mode" (user is not registered/authenticated) or not
      */
     public boolean isUserUndefinedMode() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: isUserUndefinedMode()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: isUserUndefinedMode()");
 
         return getBooleanValue("is_undefined_user_mode");
     }
@@ -96,8 +96,8 @@ public class SharedPreferencesController {
      * @param paramValue    parameter value
      */
     public void addStringParam(String paramName, String paramValue) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: addStringParam(): paramName= " +paramName+ ",  paramValue= " +paramValue);
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: addStringParam(): paramName= " +paramName+ ",  paramValue= " +paramValue);
 
         sharedPreferencesEditor.putString(paramName, paramValue);
         sharedPreferencesEditor.apply();
@@ -110,8 +110,8 @@ public class SharedPreferencesController {
      * @param paramValue    parameter value
      */
     public void addBooleanParam(String paramName, boolean paramValue) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: addBooleanParam(): paramName= " +paramName+ ",  paramValue= " +paramValue);
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: addBooleanParam(): paramName= " +paramName+ ",  paramValue= " +paramValue);
 
         sharedPreferencesEditor.putBoolean(paramName, paramValue);
         sharedPreferencesEditor.apply();
@@ -124,8 +124,8 @@ public class SharedPreferencesController {
      * @param paramValue    parameter value
      */
     public void addIntParam(String paramName, int paramValue) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: addIntParam(): paramName= " +paramName+ ",  paramValue= " +paramValue);
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: addIntParam(): paramName= " +paramName+ ",  paramValue= " +paramValue);
 
         sharedPreferencesEditor.putInt(paramName, paramValue);
         sharedPreferencesEditor.apply();
@@ -138,8 +138,8 @@ public class SharedPreferencesController {
      * @return  answer whether SharedPreferences contains specified parameter
      */
     public boolean containsParam(String paramName) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: containsParam(): paramName= " +paramName+ ": " +sharedPreferences.contains(paramName));
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: containsParam(): paramName= " +paramName+ ": " +sharedPreferences.contains(paramName));
 
         return sharedPreferences.contains(paramName);
     }
@@ -151,8 +151,8 @@ public class SharedPreferencesController {
      * @return  value of specified parameter
      */
     public String getStringValue(String paramName) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: getStringValue(): paramName= " +paramName);
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: getStringValue(): paramName= " +paramName);
 
         return sharedPreferences.getString(paramName, "");
     }
@@ -164,8 +164,8 @@ public class SharedPreferencesController {
      * @return  value of specified parameter
      */
     public boolean getBooleanValue(String paramName) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: getBooleanValue(): paramName= " +paramName);
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: getBooleanValue(): paramName= " +paramName);
 
         return sharedPreferences.getBoolean(paramName, true);
     }
@@ -177,8 +177,8 @@ public class SharedPreferencesController {
      * @return  value of specified parameter
      */
     public int getIntValue(String paramName) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: getIntValue(): paramName= " +paramName);
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: getIntValue(): paramName= " +paramName);
 
         return sharedPreferences.getInt(paramName, -1);
     }
@@ -190,8 +190,8 @@ public class SharedPreferencesController {
      * @param paramNewValue new parameter value
      */
     public void setNewStringValue(String paramName, String paramNewValue) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: setNewStringValue(): paramName= " +paramName+ ", paramNewValue= " +paramNewValue);
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: setNewStringValue(): paramName= " +paramName+ ", paramNewValue= " +paramNewValue);
 
         addStringParam(paramName, paramNewValue);
     }
@@ -203,8 +203,8 @@ public class SharedPreferencesController {
      * @param paramNewValue new parameter value
      */
     public void setNewBooleanValue(String paramName, boolean paramNewValue) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: setNewBooleanValue(): paramName= " +paramName+ ", paramNewValue= " +paramNewValue);
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: setNewBooleanValue(): paramName= " +paramName+ ", paramNewValue= " +paramNewValue);
 
         addBooleanParam(paramName, paramNewValue);
     }
@@ -216,8 +216,8 @@ public class SharedPreferencesController {
      * @param paramNewValue new parameter value
      */
     public void setNewIntValue(String paramName, int paramNewValue) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: setNewIntValue(): paramName= " +paramName+ ", paramNewValue= " +paramNewValue);
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: setNewIntValue(): paramName= " +paramName+ ", paramNewValue= " +paramNewValue);
 
         addIntParam(paramName, paramNewValue);
     }
@@ -226,8 +226,8 @@ public class SharedPreferencesController {
      * Methods leaves parameters but clears there values
      */
     public void clear() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("SharedPreferencesController: clear()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("SharedPreferencesController: clear()");
 
         sharedPreferencesEditor.clear();
         sharedPreferencesEditor.apply();

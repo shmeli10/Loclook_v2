@@ -49,8 +49,8 @@ public class SMSCodeFragment_NEW extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sms_code, container, false);
 
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("SMSCodeFragment_NEW: onCreateView()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp_NEW.showLog("SMSCodeFragment_NEW: onCreateView()");
 
         mAuthActivity   = (AuthActivity_NEW) getActivity();
         locLookApp_NEW  = ((LocLookApp_NEW) mAuthActivity.getApplication());
@@ -158,7 +158,7 @@ public class SMSCodeFragment_NEW extends Fragment {
         @Override
         public void onClick(View view) {
 
-            LocLookApp_NEW.showLog("SMSCodeFragment_NEW: backButtonClickListener: onClick()");
+            //LocLookApp_NEW.showLog("SMSCodeFragment_NEW: backButtonClickListener: onClick()");
             mAuthActivity.onBackPressed();
         }
     };
@@ -167,7 +167,7 @@ public class SMSCodeFragment_NEW extends Fragment {
         @Override
         public void onClick(View view) {
 
-            LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener: onClick()");
+            //LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener: onClick()");
 
             // если введенный код авторизации не совпадает с ожидаемым системой
             if((!smsCodeET.getText().toString().equals(authCode)))

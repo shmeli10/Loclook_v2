@@ -35,8 +35,8 @@ public class LocLookApp_NEW extends Application {
     // ------------------------------------- GETTERS ----------------------------------------- //
 
     public AppManager getAppManager() {
-        LocLookApp_NEW.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("LocLookApp_NEW: getAppManager(): appManager is null: " +(appManager == null));
+        //LocLookApp_NEW.showLog("-------------------------------------");
+        //LocLookApp_NEW.showLog("LocLookApp_NEW: getAppManager(): appManager is null: " +(appManager == null));
 
         if(appManager == null) {
             appManager = new AppManager(this);

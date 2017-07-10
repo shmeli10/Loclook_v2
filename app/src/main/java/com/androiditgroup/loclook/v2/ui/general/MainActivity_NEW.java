@@ -98,11 +98,11 @@ public class MainActivity_NEW   extends     ParentActivity
         locLookApp_NEW  =  ((LocLookApp_NEW) this.getApplication());
         appManager      = locLookApp_NEW.getAppManager();
 
-        try {
-            appManager.getInitAppController().init();
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
+//        try {
+//            appManager.getInitAppController().init();
+//        } catch (Exception exc) {
+//            exc.printStackTrace();
+//        }
 
         // initialize toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.MainActivity_Toolbar);
@@ -418,7 +418,7 @@ public class MainActivity_NEW   extends     ParentActivity
             }
             // if user is not logged in
             else {
-                LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): user is not logged in");
+                LocLookApp_NEW.showLog("MainActivity_NEW: showStartFragment(): user is not logged in");
 
                 showSplashScreen();
             }

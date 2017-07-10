@@ -42,8 +42,8 @@ public class UserController {
 
     public UserController(DatabaseHandler databaseHandler,
                           SQLiteDatabase sqLiteDatabase) throws Exception {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("UserController: constructor.");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("UserController: constructor.");
 
         if(databaseHandler == null)
             throw new Exception(ErrorConstants.DATABASE_HANDLER_NULL_ERROR);
@@ -247,8 +247,8 @@ public class UserController {
     }
 
     public boolean isUserRegistered(String phoneNumber) throws Exception {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("UserController: isUserRegistered()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("UserController: isUserRegistered()");
 
         if(TextUtils.isEmpty(phoneNumber))
             throw new Exception(ErrorConstants.USER_PHONE_NUMBER_NULL_ERROR);

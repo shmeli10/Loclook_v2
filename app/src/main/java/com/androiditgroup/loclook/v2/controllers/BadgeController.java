@@ -23,8 +23,8 @@ public class BadgeController {
     public BadgeController(Context          context,
                            DatabaseHandler  databaseHandler,
                            SQLiteDatabase   sqLiteDatabase) throws Exception {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("BadgeController: constructor.");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("BadgeController: constructor.");
 
         if(databaseHandler == null)
             throw new Exception(ErrorConstants.DATABASE_HANDLER_NULL_ERROR);

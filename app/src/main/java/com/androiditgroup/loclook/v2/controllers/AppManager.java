@@ -30,8 +30,8 @@ public class AppManager implements DatabaseCreateInterface {
      * @param context   application context.
      */
     public AppManager(Context context) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("AppManager: constructor.");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("AppManager: constructor.");
 
         this.context = context;
 
@@ -72,7 +72,7 @@ public class AppManager implements DatabaseCreateInterface {
         sharedPreferencesController = new SharedPreferencesController(context);
         sharedPreferencesController.init();
 
-        try {
+        /*try {
             initAppController = new InitAppController(sharedPreferencesController);
 
 //            settingsInitAppController = new SettingsInitAppController(sharedPreferencesController,
@@ -82,12 +82,12 @@ public class AppManager implements DatabaseCreateInterface {
         } catch (Exception exc) {
             LocLookApp.showLog("AppManager: Create InitAppController instance error: " +exc.getMessage());
             return;
-        }
+        }*/
     }
 
     public BadgeController getBadgeController() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("AppManager: getBadgeController() badgeController is null: " +(badgeController == null));
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("AppManager: getBadgeController() badgeController is null: " +(badgeController == null));
 
 //        if(badgeController == null) {
 //            try {
@@ -100,8 +100,8 @@ public class AppManager implements DatabaseCreateInterface {
     }
 
     public UserController getUserController() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("AppManager: getUserController()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("AppManager: getUserController()");
 
         return userController;
     }
@@ -112,8 +112,8 @@ public class AppManager implements DatabaseCreateInterface {
      * @return  link on existing instance of {@link SharedPreferencesController} class
      */
     public SharedPreferencesController getSharedPreferencesController() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("AppManager: getSharedPreferencesController()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("AppManager: getSharedPreferencesController()");
 
         return sharedPreferencesController;
     }
@@ -123,12 +123,12 @@ public class AppManager implements DatabaseCreateInterface {
      *
      * @return  link on existing instance of {@link InitAppController} class
      */
-    public InitAppController getInitAppController() {
+    /*public InitAppController getInitAppController() {
         LocLookApp.showLog("-------------------------------------");
         LocLookApp.showLog("AppManager: getInitAppController()");
 
         return initAppController;
-    }
+    }*/
 
     private void populateDatabase() {
         LocLookApp.showLog("-------------------------------------");

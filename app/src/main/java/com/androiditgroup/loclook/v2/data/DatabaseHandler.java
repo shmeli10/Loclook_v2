@@ -31,8 +31,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
               null,
               DatabaseConstants.DATABASE_VERSION);
 
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("DatabaseHandler: constructor.");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("DatabaseHandler: constructor.");
 
         if(databaseCreateListener == null)
             throw new Exception(ErrorConstants.DATABASE_CREATE_INTERFACE_NULL_ERROR);

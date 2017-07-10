@@ -49,8 +49,8 @@ public class UserNameFragment_NEW extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_name, container, false);
 
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("UserNameFragment_NEW: onCreateView()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp_NEW.showLog("UserNameFragment_NEW: onCreateView()");
 
         mAuthActivity   = (AuthActivity_NEW) getActivity();
         locLookApp_NEW  = ((LocLookApp_NEW) mAuthActivity.getApplication());
@@ -128,7 +128,7 @@ public class UserNameFragment_NEW extends Fragment {
         @Override
         public void onClick(View view) {
 
-            LocLookApp_NEW.showLog("UserNameFragment_NEW: backButtonClickListener: onClick()");
+            //LocLookApp_NEW.showLog("UserNameFragment_NEW: backButtonClickListener: onClick()");
 
             //LocLookApp.getInstance().saveEnteredUserName(userNameET.getText().toString());
             sharedPreferencesController.setNewStringValue("user_name", userNameET.getText().toString());
@@ -140,7 +140,7 @@ public class UserNameFragment_NEW extends Fragment {
         @Override
         public void onClick(View view) {
 
-            LocLookApp_NEW.showLog("UserNameFragment_NEW: forwardButtonClickListener: onClick()");
+            //LocLookApp_NEW.showLog("UserNameFragment_NEW: forwardButtonClickListener: onClick()");
 
             String typedUserName = userNameET.getText().toString();
 

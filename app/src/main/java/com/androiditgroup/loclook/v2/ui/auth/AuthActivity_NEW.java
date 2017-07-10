@@ -29,8 +29,8 @@ public class AuthActivity_NEW extends ParentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("AuthActivity_NEW: onCreate()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp_NEW.showLog("AuthActivity_NEW: onCreate()");
 
 //        getFragmentManager().addOnBackStackChangedListener(this);
         mProgressBar = (ProgressBar) findViewById(R.id.AuthActivity_ProgressBar);
@@ -94,7 +94,7 @@ public class AuthActivity_NEW extends ParentActivity {
 
     @Override
     public void onBackPressed() {
-        LocLookApp_NEW.showLog("AuthActivity_NEW: onBackPressed()");
+        //LocLookApp_NEW.showLog("AuthActivity_NEW: onBackPressed()");
 
         FragmentManager fragmentManager = getFragmentManager();
 
@@ -104,7 +104,7 @@ public class AuthActivity_NEW extends ParentActivity {
 
     // двигаемся к следующему окну приложения
     public void moveForward() {
-        LocLookApp_NEW.showLog("AuthActivity_NEW: moveForward()");
+        //LocLookApp_NEW.showLog("AuthActivity_NEW: moveForward()");
 
         startActivity(new Intent(getApplicationContext(), MainActivity_NEW.class));
     }
