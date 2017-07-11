@@ -33,7 +33,7 @@ public class DatabaseConstants {
     public static final String BADGE_TABLE                          =   "BADGE_DATA";
     protected static final String BADGE_TABLE_COLUMNS               =   "NAME               TEXT NOT NULL";
 
-    protected static final String PUBLICATION_TABLE                 =   "PUBLICATION_DATA";
+    public static final String PUBLICATION_TABLE                    =   "PUBLICATION_DATA";
     protected static final String PUBLICATION_TABLE_COLUMNS         =   "TEXT               TEXT NOT NULL,     " +
                                                                         "AUTHOR_ID          INTEGER NOT NULL,  " +
                                                                         "BADGE_ID           INTEGER NOT NULL,  " +

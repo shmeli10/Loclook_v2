@@ -18,7 +18,8 @@ public class AppManager implements DatabaseCreateInterface {
     private SQLiteDatabase              sqLiteDatabase;
 
     private BadgeController             badgeController;
-    private InitAppController           initAppController;
+    //private InitAppController           initAppController;
+    private PublicationController       publicationController;
     private SharedPreferencesController sharedPreferencesController;
     private UserController              userController;
 
@@ -116,6 +117,24 @@ public class AppManager implements DatabaseCreateInterface {
         //LocLookApp.showLog("AppManager: getSharedPreferencesController()");
 
         return sharedPreferencesController;
+    }
+
+    /**
+     * Method gets link on instance of {@link PublicationController} class
+     *
+     * @return  link on instance of {@link PublicationController} class
+     */
+    public PublicationController getPublicationController() {
+
+        if(publicationController == null) {
+            try {
+                publicationController = new PublicationController(databaseHandler, sqLiteDatabase);
+            } catch (Exception exc) {
+                LocLookApp.showLog("AppManager: get PublicationController instance error: " +exc.getMessage());
+            }
+        }
+
+        return publicationController;
     }
 
     /**

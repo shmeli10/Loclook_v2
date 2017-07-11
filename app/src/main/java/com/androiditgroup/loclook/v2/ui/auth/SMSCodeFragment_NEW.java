@@ -16,15 +16,19 @@ import android.widget.Toast;
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
+import com.androiditgroup.loclook.v2.controllers.PublicationController;
 import com.androiditgroup.loclook.v2.controllers.SharedPreferencesController;
+import com.androiditgroup.loclook.v2.interfaces.PublicationsPopulateInterface;
 
 /**
  * Created by sostrovschi on 19.01.2017.
  */
 
-public class SMSCodeFragment_NEW extends Fragment {
+public class SMSCodeFragment_NEW    extends     Fragment
+                                    implements  PublicationsPopulateInterface {
 
     private LocLookApp_NEW              locLookApp_NEW;
+    private PublicationController       publicationController;
     private SharedPreferencesController sharedPreferencesController;
 
     private AuthActivity_NEW    mAuthActivity;
@@ -167,7 +171,7 @@ public class SMSCodeFragment_NEW extends Fragment {
         @Override
         public void onClick(View view) {
 
-            //LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener: onClick()");
+            LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener: onClick()");
 
             // если введенный код авторизации не совпадает с ожидаемым системой
             if((!smsCodeET.getText().toString().equals(authCode)))
@@ -178,8 +182,28 @@ public class SMSCodeFragment_NEW extends Fragment {
             // LocLookApp.getInstance().setLoginStatus(true);
             sharedPreferencesController.setNewBooleanValue("is_undefined_user_mode", false);
 
-            // двигаемся к следующему окну приложения
-            mAuthActivity.moveForward();
+            publicationController = locLookApp_NEW.getAppManager().getPublicationController();
+            try {
+                publicationController.setPublicationsPopulateListener(SMSCodeFragment_NEW.this);
+                publicationController.populatePublicationMap();
+            } catch (Exception exc) {
+                LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener(): setPublicationsPopulateListener error: " +exc.getMessage());
+            }
         }
     };
+
+    @Override
+    public void onPublicationsPopulateSuccess() {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("SMSCodeFragment_NEW: onPublicationsPopulateSuccess()");
+
+        // двигаемся к следующему окну приложения
+        mAuthActivity.moveForward();
+    }
+
+    @Override
+    public void onPublicationsPopulateError(String error) {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("SMSCodeFragment_NEW: onPublicationsPopulateError(): error: " +error);
+    }
 }
