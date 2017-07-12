@@ -1,4 +1,4 @@
-package com.androiditgroup.loclook.v2.controllers;
+package com.androiditgroup.loclook.v2.data;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;

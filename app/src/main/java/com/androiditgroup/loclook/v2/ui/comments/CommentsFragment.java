@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.controllers.CommentController;
+import com.androiditgroup.loclook.v2.data.CommentController;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.User;

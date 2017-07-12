@@ -1,4 +1,4 @@
-package com.androiditgroup.loclook.v2.controllers;
+package com.androiditgroup.loclook.v2.data;
 
 import android.database.Cursor;
 import android.text.TextUtils;

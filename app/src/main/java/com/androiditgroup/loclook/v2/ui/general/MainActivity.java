@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.controllers.AppManager;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.SplashActivity;
 import com.androiditgroup.loclook.v2.ui.badges.BadgesFragment;

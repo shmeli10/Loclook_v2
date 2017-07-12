@@ -2,7 +2,6 @@ package com.androiditgroup.loclook.v2.ui.auth;
 
 
 import android.app.Fragment;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,12 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.controllers.SharedPreferencesController;
-import com.androiditgroup.loclook.v2.controllers.UserController;
-import com.androiditgroup.loclook.v2.utils.DBManager;
+import com.androiditgroup.loclook.v2.data.SharedPreferencesController;
+import com.androiditgroup.loclook.v2.data.UserController;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
 
 /**

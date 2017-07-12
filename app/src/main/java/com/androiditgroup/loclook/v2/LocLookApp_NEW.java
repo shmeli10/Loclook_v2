@@ -4,7 +4,7 @@ import android.app.Application;
 import android.graphics.Typeface;
 import android.util.Log;
 
-import com.androiditgroup.loclook.v2.controllers.AppManager;
+import com.androiditgroup.loclook.v2.data.AppManager;
 
 /**
  * Created by Serghei Ostrovschi on on 7/5/16.

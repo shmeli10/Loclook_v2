@@ -1,4 +1,4 @@
-package com.androiditgroup.loclook.v2.controllers;
+package com.androiditgroup.loclook.v2.data;
 
 
 import android.database.Cursor;
@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;
-import com.androiditgroup.loclook.v2.data.DatabaseConstants;
-import com.androiditgroup.loclook.v2.data.DatabaseHandler;
 import com.androiditgroup.loclook.v2.interfaces.PublicationsPopulateInterface;
 import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.PublicationModel;
@@ -66,84 +64,84 @@ public class PublicationController {
         PublicationModel publication = new PublicationModel();
 
         try {
-            publication.setPublicationId(cursor.getInt(cursor.getColumnIndex("_ID")));
+            publication.setPublicationId(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.ROW_ID)));
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: addPublicationToMap(): set publication id error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationAuthorId(cursor.getInt(cursor.getColumnIndex("AUTHOR_ID")));
+            publication.setPublicationAuthorId(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_AUTHOR_ID)));
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: addPublicationToMap(): set publication author id error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationBadgeId(cursor.getInt(cursor.getColumnIndex("BADGE_ID")));
+            publication.setPublicationBadgeId(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_BADGE_ID)));
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: addPublicationToMap(): set publication badge id error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationCreatedAt(cursor.getString(cursor.getColumnIndex("CREATED_AT")));
+            publication.setPublicationCreatedAt(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_CREATED_AT)));
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: PublicationController(): set publication created at error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationLatitude(cursor.getString(cursor.getColumnIndex("LATITUDE")));
+            publication.setPublicationLatitude(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_LATITUDE)));
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: PublicationController(): set publication latitude error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationLongitude(cursor.getString(cursor.getColumnIndex("LONGITUDE")));
+            publication.setPublicationLongitude(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_LONGITUDE)));
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: PublicationController(): set publication longitude error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationRegionName(cursor.getString(cursor.getColumnIndex("REGION_NAME")));
+            publication.setPublicationRegionName(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_REGION_NAME)));
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: PublicationController(): set publication region name error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationStreetName(cursor.getString(cursor.getColumnIndex("STREET_NAME")));
+            publication.setPublicationStreetName(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_STREET_NAME)));
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: PublicationController(): set publication street name error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationText(cursor.getString(cursor.getColumnIndex("TEXT")));
+            publication.setPublicationText(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_TEXT)));
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: PublicationController(): set publication text error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationHasQuiz(cursor.getInt(cursor.getColumnIndex("HAS_QUIZ")) > 0);
+            publication.setPublicationHasQuiz(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_HAS_QUIZ)) > 0);
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: addPublicationToMap(): set publication has quiz error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationHasImages(cursor.getInt(cursor.getColumnIndex("HAS_IMAGES")) > 0);
+            publication.setPublicationHasImages(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_HAS_IMAGES)) > 0);
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: addPublicationToMap(): set publication has images error: " +exc.getMessage());
         }
 
         try {
-            publication.setPublicationIsAnonymous(cursor.getInt(cursor.getColumnIndex("IS_ANONYMOUS")) > 0);
+            publication.setPublicationIsAnonymous(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_IS_ANONYMOUS)) > 0);
         } catch (Exception exc) {
             noErrors = false;
             LocLookApp.showLog("PublicationController: addPublicationToMap(): set publication is anonymous error: " +exc.getMessage());

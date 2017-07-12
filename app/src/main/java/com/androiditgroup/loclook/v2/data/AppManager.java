@@ -1,10 +1,9 @@
-package com.androiditgroup.loclook.v2.controllers;
+package com.androiditgroup.loclook.v2.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
-import com.androiditgroup.loclook.v2.data.DatabaseHandler;
 import com.androiditgroup.loclook.v2.interfaces.DatabaseCreateInterface;
 
 /**
@@ -14,7 +13,7 @@ import com.androiditgroup.loclook.v2.interfaces.DatabaseCreateInterface;
 public class AppManager implements DatabaseCreateInterface {
 
     private Context                     context;
-    private DatabaseHandler             databaseHandler;
+    private DatabaseHandler databaseHandler;
     private SQLiteDatabase              sqLiteDatabase;
 
     private BadgeController             badgeController;

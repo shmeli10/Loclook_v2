@@ -3,7 +3,7 @@ package com.androiditgroup.loclook.v2.utils;
 import android.database.Cursor;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
-import com.androiditgroup.loclook.v2.controllers.CommentController;
+import com.androiditgroup.loclook.v2.data.CommentController;
 import com.androiditgroup.loclook.v2.models.User;
 
 /**

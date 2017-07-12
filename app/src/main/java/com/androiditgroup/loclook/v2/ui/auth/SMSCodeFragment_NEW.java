@@ -16,8 +16,8 @@ import android.widget.Toast;
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.controllers.PublicationController;
-import com.androiditgroup.loclook.v2.controllers.SharedPreferencesController;
+import com.androiditgroup.loclook.v2.data.PublicationController;
+import com.androiditgroup.loclook.v2.data.SharedPreferencesController;
 import com.androiditgroup.loclook.v2.interfaces.PublicationsPopulateInterface;
 
 /**

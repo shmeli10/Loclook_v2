@@ -1,6 +1,5 @@
-package com.androiditgroup.loclook.v2.controllers;
+package com.androiditgroup.loclook.v2.data;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
@@ -10,7 +9,6 @@ import com.androiditgroup.loclook.v2.constants.ErrorConstants;
 import com.androiditgroup.loclook.v2.data.DatabaseConstants;
 import com.androiditgroup.loclook.v2.data.DatabaseHandler;
 import com.androiditgroup.loclook.v2.models.UserModel;
-import com.androiditgroup.loclook.v2.utils.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
