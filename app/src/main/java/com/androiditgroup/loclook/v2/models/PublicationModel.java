@@ -70,7 +70,7 @@ public class PublicationModel {
         return publicationHasImages;
     }
 
-    public boolean isPublicationIsAnonymous() {
+    public boolean isPublicationAnonymous() {
         return publicationIsAnonymous;
     }
 

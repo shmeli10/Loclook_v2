@@ -185,7 +185,7 @@ public class SMSCodeFragment_NEW    extends     Fragment
             publicationController = locLookApp_NEW.getAppManager().getPublicationController();
             try {
                 publicationController.setPublicationsPopulateListener(SMSCodeFragment_NEW.this);
-                publicationController.populatePublicationMap();
+                publicationController.populateAllPublicationCollections();
             } catch (Exception exc) {
                 LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener(): setPublicationsPopulateListener error: " +exc.getMessage());
             }

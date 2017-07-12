@@ -28,6 +28,7 @@ import com.androiditgroup.loclook.v2.ui.SplashActivity;
 import com.androiditgroup.loclook.v2.ui.badges.BadgesFragment;
 import com.androiditgroup.loclook.v2.ui.favorites.FavoritesFragment;
 import com.androiditgroup.loclook.v2.ui.feed.FeedFragment;
+import com.androiditgroup.loclook.v2.ui.feed.FeedFragment_NEW;
 import com.androiditgroup.loclook.v2.ui.geolocation.GeolocationFragment;
 import com.androiditgroup.loclook.v2.ui.notifications.NotificationsFragment;
 import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
@@ -123,7 +124,9 @@ public class MainActivity_NEW   extends     ParentActivity
         mNavigationBtn.setOnClickListener(mMenuClickListener);
 
         mLeftMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mLeftMenu.addDrawerListener(new DrawerLayout.DrawerListener() {
+        mLeftMenu.addDrawerListener(drawerListener);
+
+        /*mLeftMenu.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) { }
 
@@ -159,7 +162,7 @@ public class MainActivity_NEW   extends     ParentActivity
 
             @Override
             public void onDrawerStateChanged(int newState) { }
-        });
+        });*/
 
         mLeftMenuUserAvatar       = (CircularImageView) findViewById(R.id.Drawer_UserAvatar);
         mLeftMenuUserName         = (TextView) findViewById(R.id.Drawer_UserName);
@@ -169,7 +172,6 @@ public class MainActivity_NEW   extends     ParentActivity
         mLeftMenuUserLocationName.setTypeface(LocLookApp.light);
 
         mLocationDefiner = new DefineUserLocationName((LocationManager) getSystemService(LOCATION_SERVICE));
-
 
         sharedPreferencesController = appManager.getSharedPreferencesController();
 
@@ -207,6 +209,7 @@ public class MainActivity_NEW   extends     ParentActivity
 //        }
 
         //setFragment(FeedFragment.newInstance(), false, false);
+        setFragment(FeedFragment_NEW.newInstance(), false, false);
 
         // формируем список бейджей
         //LocLookApp.setBadgesList();
@@ -440,6 +443,45 @@ public class MainActivity_NEW   extends     ParentActivity
         finish();
         return;
     }
+
+
+    DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) { }
+
+        @Override
+        public void onDrawerOpened(View drawerView) { }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            if(selectedFragment != newSelectedFragment) {
+                switch(newSelectedFragment) {
+
+                    case feedFragment:
+                        setFragment(FeedFragment.newInstance(), false, false);
+                        break;
+                    case favoritesFragment:
+                        setFragment(FavoritesFragment.newInstance(), false, true);
+                        break;
+                    case notificationsFragment:
+                        setFragment(NotificationsFragment.newInstance(), false, true);
+                        break;
+                    case badgesFragment:
+                        setFragment(BadgesFragment.newInstance(), false, true);
+                        break;
+                    case geolocationFragment:
+                        setFragment(GeolocationFragment.newInstance(), false, true);
+                        break;
+                    default:
+                        break;
+                }
+                selectedFragment = newSelectedFragment;
+            }
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) { }
+    };
 
     public void showPD() {
         if(mProgressDialog == null) {
