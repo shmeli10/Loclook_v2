@@ -27,9 +27,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/PublicationController.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/PublicationController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/models/PublicationModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/models/PublicationModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/auth/SMSCodeFragment_NEW.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/auth/SMSCodeFragment_NEW.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/adapters/PublicationsListAdapter_NEW.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/adapters/PublicationsListAdapter_NEW.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/constants/SettingsConstants.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/constants/SettingsConstants.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/feed/FeedFragment_NEW.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/feed/FeedFragment_NEW.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/general/MainActivity_NEW.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/general/MainActivity_NEW.java" />
     </list>
     <ignored path="Loclook_v2.iws" />
@@ -62,12 +63,42 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MainActivity_NEW.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainActivity_NEW.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/general/MainActivity_NEW.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="211" column="36" selection-start-line="211" selection-start-column="36" selection-end-line="211" selection-end-column="36" />
+            <state relative-caret-position="156">
+              <caret line="382" column="38" selection-start-line="382" selection-start-column="38" selection-end-line="382" selection-end-column="38" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PublicationFragment_NEW.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/publication/PublicationFragment_NEW.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="119" column="93" selection-start-line="119" selection-start-column="93" selection-end-line="119" selection-end-column="93" />
+              <folding>
+                <element signature="method#onCreateView#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="e#7040#7535#0" expanded="true" />
+                <element signature="e#7534#7535#0" expanded="true" />
+                <element signature="method#onCreateOptionsMenu#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="method#onOptionsItemSelected#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="method#onTextChanged#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="method#onCheckedChanged#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="method#onClick#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="method#onDelete#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="e#17347#17791#0" expanded="true" />
+                <element signature="e#17790#17791#0" expanded="true" />
+                <element signature="method#sendPublication#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="method#onActivityResult#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="method#getFile#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="e#24632#24633#0" expanded="true" />
+                <element signature="e#24663#24664#0" expanded="true" />
+                <element signature="method#setSmoothOn#0;class#PublicationFragment_NEW#0" expanded="false" />
+                <element signature="e#24739#24812#0" expanded="true" />
+                <marker date="1499875112384" expanded="false" signature="5363:5439" ph="10" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -75,90 +106,43 @@
       <file leaf-file-name="FeedFragment_NEW.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/feed/FeedFragment_NEW.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="95" column="86" selection-start-line="95" selection-start-column="86" selection-end-line="95" selection-end-column="86" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PublicationsListAdapter_NEW.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/adapters/PublicationsListAdapter_NEW.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="44" column="6" selection-start-line="44" selection-start-column="6" selection-end-line="44" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FeedFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/feed/FeedFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="96" column="9" selection-start-line="93" selection-start-column="8" selection-end-line="96" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/general/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="180" column="54" selection-start-line="175" selection-start-column="8" selection-end-line="180" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PublicationModel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/models/PublicationModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="72" column="38" selection-start-line="72" selection-start-column="38" selection-end-line="72" selection-end-column="38" />
+            <state relative-caret-position="446">
+              <caret line="105" column="33" selection-start-line="105" selection-start-column="33" selection-end-line="105" selection-end-column="33" />
               <folding>
-                <element signature="e#1766#1767#0" expanded="true" />
-                <element signature="e#1811#1812#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#3674#3967#0" expanded="true" />
+                <element signature="e#3966#3967#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SMSCodeFragment_NEW.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/auth/SMSCodeFragment_NEW.java">
+      <file leaf-file-name="dimens.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="76" />
-              <folding>
-                <element signature="class#5403:6046" expanded="false" />
-              </folding>
+            <state relative-caret-position="108">
+              <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AppManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/AppManager.java">
+      <file leaf-file-name="integer.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/integer.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-              <folding>
-                <element signature="method#populateDatabase#0;class#AppManager#0" expanded="false" />
-                <element signature="method#onDatabaseCreateSuccess#0;class#AppManager#0" expanded="false" />
-                <element signature="method#onDatabaseCreateError#0;class#AppManager#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="54">
+              <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PublicationController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/PublicationController.java">
+      <file leaf-file-name="SettingsConstants.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/constants/SettingsConstants.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="189" column="72" selection-start-line="189" selection-start-column="72" selection-end-line="189" selection-end-column="72" />
-              <folding>
-                <element signature="method#addPublication#0;class#PublicationController#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="90">
+              <caret line="5" column="32" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="32" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -1939,7 +1923,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/controllers/LikeController.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/controllers/CommentsController.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/controllers/QuizController.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/utils/PublicationGenerator.java" />
@@ -1953,7 +1936,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/SplashActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/controllers/InitAppController.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/LocLookApp.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/constants/SettingsConstants.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/adapters/PublicationsListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/comments/CommentsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/utils/DBManager.java" />
@@ -1984,12 +1966,14 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/controllers/DatabaseConstants.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/DatabaseConstants.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/UserController.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/general/MainActivity_NEW.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/adapters/GalleryListAdapter_NEW.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/PublicationController.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/models/PublicationModel.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/feed/FeedFragment_NEW.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/adapters/PublicationsListAdapter_NEW.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/constants/SettingsConstants.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/publication/PublicationFragment_NEW.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/feed/FeedFragment_NEW.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/general/MainActivity_NEW.java" />
       </list>
     </option>
   </component>
@@ -2024,6 +2008,11 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView">
+        <subPane />
+      </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -2194,6 +2183,44 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="publication" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Loclook_v2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Loclook_v2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="v2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="general" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -2233,44 +2260,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="feed" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Loclook_v2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Loclook_v2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="v2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="auth" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2446,12 +2435,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="AndroidView">
-        <subPane />
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2461,7 +2445,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Android_Projects/starclub-client-android" />
     <property name="UI_DESIGNER_EDITOR_MODE.NlPaletteManager-NlPreviewForm.SHOW" value="false" />
     <property name="device.picker.selection" value="192.168.56.101:5555" />
     <property name="show.do.not.ask.upgrade.gradle.plugin" value="2.2.3" />
@@ -2475,11 +2459,11 @@
       <recent name="com.androiditgroup.loclook.v2" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.androiditgroup.loclook.v2.ui.publication" />
       <recent name="com.androiditgroup.loclook.v2.adapters" />
       <recent name="com.androiditgroup.loclook.v2.ui.feed" />
       <recent name="com.androiditgroup.loclook.v2.ui.auth" />
       <recent name="com.androiditgroup.loclook.v2.ui.general" />
-      <recent name="com.androiditgroup.loclook.v2" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\android\AndroidStudioProjects\Loclook_v2\app\src\main\res\layout" />
@@ -2916,7 +2900,7 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.7892377" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.47309417" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295964" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2993,39 +2977,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="3" />
+      <option name="time" value="5" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/utils/PublicationGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="324" column="22" selection-start-line="324" selection-start-column="20" selection-end-line="338" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/models/Quiz.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="41" column="24" selection-start-line="41" selection-start-column="24" selection-end-line="41" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/utils/QuizUtility.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="48" column="37" selection-start-line="48" selection-start-column="37" selection-end-line="48" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/models/AccountModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="3" column="42" selection-start-line="3" selection-start-column="42" selection-end-line="3" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/utils/UserGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -3051,31 +3007,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="43" column="68" selection-start-line="43" selection-start-column="68" selection-end-line="43" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/LocLookApp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="65" column="101" selection-start-line="56" selection-start-column="8" selection-end-line="65" selection-end-column="101" />
-          <folding>
-            <element signature="e#3316#3317#0" expanded="false" />
-            <element signature="e#3347#3348#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/constants/SettingsConstants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -3147,14 +3078,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/LocLookApp_NEW.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="38" column="10" selection-start-line="38" selection-start-column="10" selection-end-line="38" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/auth/PhoneNumberFragment_NEW.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="750">
@@ -3203,7 +3126,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3262,7 +3184,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
           <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3278,7 +3199,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-9">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3286,7 +3206,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-9">
           <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3294,7 +3213,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-9">
           <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3310,26 +3228,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
           <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-          <folding>
-            <element signature="method#getCurrentUser#0;class#UserController#0" expanded="false" />
-            <element signature="method#setCurrentUser#0;class#UserController#0" expanded="false" />
-            <element signature="method#addUserToMap#0;class#UserController#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/general/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
+        <state relative-caret-position="2520">
           <caret line="180" column="54" selection-start-line="175" selection-start-column="8" selection-end-line="180" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/general/MainActivity_NEW.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="211" column="36" selection-start-line="211" selection-start-column="36" selection-end-line="211" selection-end-column="36" />
           <folding />
         </state>
       </provider>
@@ -3360,7 +3265,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/auth/SMSCodeFragment_NEW.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
+        <state relative-caret-position="738">
           <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="76" />
           <folding>
             <element signature="class#5403:6046" expanded="false" />
@@ -3370,8 +3275,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/feed/FeedFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
+        <state relative-caret-position="1350">
           <caret line="96" column="9" selection-start-line="93" selection-start-column="8" selection-end-line="96" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/PublicationController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1314">
+          <caret line="189" column="72" selection-start-line="189" selection-start-column="72" selection-end-line="189" selection-end-column="72" />
+          <folding>
+            <element signature="method#addPublication#0;class#PublicationController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/adapters/PublicationsListAdapter_NEW.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/LocLookApp_NEW.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="38" column="10" selection-start-line="38" selection-start-column="10" selection-end-line="38" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/LocLookApp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="181" column="54" selection-start-line="181" selection-start-column="45" selection-end-line="181" selection-end-column="54" />
           <folding />
         </state>
       </provider>
@@ -3387,28 +3326,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/data/PublicationController.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/integer.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="189" column="72" selection-start-line="189" selection-start-column="72" selection-end-line="189" selection-end-column="72" />
+        <state relative-caret-position="54">
+          <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/constants/SettingsConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="32" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="22" column="18" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/publication/PublicationFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
           <folding>
-            <element signature="method#addPublication#0;class#PublicationController#0" expanded="false" />
+            <element signature="e#4830#4910#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/feed/FeedFragment_NEW.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="95" column="86" selection-start-line="95" selection-start-column="86" selection-end-line="95" selection-end-column="86" />
-          <folding />
+        <state relative-caret-position="446">
+          <caret line="105" column="33" selection-start-line="105" selection-start-column="33" selection-end-line="105" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3674#3967#0" expanded="true" />
+            <element signature="e#3966#3967#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/adapters/PublicationsListAdapter_NEW.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/publication/PublicationFragment_NEW.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="44" column="6" selection-start-line="44" selection-start-column="6" selection-end-line="44" selection-end-column="6" />
+        <state relative-caret-position="180">
+          <caret line="119" column="93" selection-start-line="119" selection-start-column="93" selection-end-line="119" selection-end-column="93" />
+          <folding>
+            <element signature="method#onCreateView#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="e#7040#7535#0" expanded="true" />
+            <element signature="e#7534#7535#0" expanded="true" />
+            <element signature="method#onCreateOptionsMenu#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="method#onOptionsItemSelected#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="method#onTextChanged#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="method#onCheckedChanged#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="method#onClick#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="method#onDelete#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="e#17347#17791#0" expanded="true" />
+            <element signature="e#17790#17791#0" expanded="true" />
+            <element signature="method#sendPublication#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="method#onActivityResult#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="method#getFile#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="e#24632#24633#0" expanded="true" />
+            <element signature="e#24663#24664#0" expanded="true" />
+            <element signature="method#setSmoothOn#0;class#PublicationFragment_NEW#0" expanded="false" />
+            <element signature="e#24739#24812#0" expanded="true" />
+            <marker date="1499875112384" expanded="false" signature="5363:5439" ph="10" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/androiditgroup/loclook/v2/ui/general/MainActivity_NEW.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="382" column="38" selection-start-line="382" selection-start-column="38" selection-end-line="382" selection-end-column="38" />
           <folding />
         </state>
       </provider>

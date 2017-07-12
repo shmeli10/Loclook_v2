@@ -11,30 +11,22 @@ import android.widget.TextView;
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.adapters.PublicationsListAdapter;
 import com.androiditgroup.loclook.v2.adapters.PublicationsListAdapter_NEW;
 import com.androiditgroup.loclook.v2.data.PublicationController;
-import com.androiditgroup.loclook.v2.models.Publication;
 import com.androiditgroup.loclook.v2.models.PublicationModel;
-import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity_NEW;
-import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
-import com.androiditgroup.loclook.v2.utils.Constants;
-import com.androiditgroup.loclook.v2.utils.DBManager;
+import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment_NEW;
 import com.androiditgroup.loclook.v2.utils.EmptyRecyclerView;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
-import com.androiditgroup.loclook.v2.utils.PublicationGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by sostrovschi on 1/25/17.
  */
 
-public class FeedFragment_NEW   extends     ParentFragment
-                                implements  View.OnClickListener {
+public class FeedFragment_NEW extends ParentFragment {
 
     private MainActivity_NEW            mMainActivity;
     private EmptyRecyclerView           mPublicationRV;
@@ -84,7 +76,8 @@ public class FeedFragment_NEW   extends     ParentFragment
         mPublicationRV.setAdapter(mFeedAdapter);
 
         mAddPublicationTV = (TextView) view.findViewById(R.id.Feed_AddPublicationTV);
-        mAddPublicationTV.setOnClickListener(this);
+        mAddPublicationTV.setOnClickListener(addPublicationListener);
+        //mAddPublicationTV.setOnClickListener(this);
 
         refreshFeedData();
 
@@ -93,7 +86,7 @@ public class FeedFragment_NEW   extends     ParentFragment
 
     @Override
     public String getFragmentTitle() {
-        return "TEST FEED"; // LocLookApp.getInstance().getString(R.string.feed_text);
+        return "1111111"; // locLookApp_NEW.getString(R.string.feed_text);
     }
 
     private void refreshFeedData() {
@@ -107,7 +100,16 @@ public class FeedFragment_NEW   extends     ParentFragment
         }
     }
 
-    @Override
+    View.OnClickListener addPublicationListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mMainActivity.setFragment(PublicationFragment_NEW.newInstance(MainActivity_NEW.mInflater),
+                                      false,
+                                      true);
+        }
+    };
+
+    /*@Override
     public void onClick(View view) {
 
         switch(view.getId()) {
@@ -116,5 +118,5 @@ public class FeedFragment_NEW   extends     ParentFragment
                 mMainActivity.setFragment(PublicationFragment.newInstance(MainActivity.mInflater), false, true);
                 break;
         }
-    }
+    }*/
 }

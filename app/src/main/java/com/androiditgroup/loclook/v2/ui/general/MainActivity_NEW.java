@@ -32,6 +32,7 @@ import com.androiditgroup.loclook.v2.ui.feed.FeedFragment_NEW;
 import com.androiditgroup.loclook.v2.ui.geolocation.GeolocationFragment;
 import com.androiditgroup.loclook.v2.ui.notifications.NotificationsFragment;
 import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
+import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment_NEW;
 import com.androiditgroup.loclook.v2.utils.DefineUserLocationName;
 import com.androiditgroup.loclook.v2.utils.ParentActivity;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
@@ -229,7 +230,7 @@ public class MainActivity_NEW   extends     ParentActivity
             // добавить публикацию
             case R.id.action_write_publication:
                 selectedFragment = SelectedFragment.sendPublicationFragment;
-                setFragment(PublicationFragment.newInstance(mInflater), false, true);
+                setFragment(PublicationFragment_NEW.newInstance(mInflater), false, true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -378,7 +379,8 @@ public class MainActivity_NEW   extends     ParentActivity
         FragmentManager fragmentManager = getFragmentManager();
         int backStackSize = fragmentManager.getBackStackEntryCount();
         if (backStackSize == 0) {
-            setToolbarTitle(LocLookApp.getInstance().getResources().getString(R.string.feed_text));
+            //setToolbarTitle(LocLookApp.getInstance().getResources().getString(R.string.feed_text));
+            setToolbarTitle("111111");
             selectedFragment = SelectedFragment.feedFragment;
             return;
         }

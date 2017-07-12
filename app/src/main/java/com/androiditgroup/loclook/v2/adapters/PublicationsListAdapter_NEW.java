@@ -1,6 +1,5 @@
 package com.androiditgroup.loclook.v2.adapters;
 
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +18,10 @@ import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.PublicationModel;
 import com.androiditgroup.loclook.v2.models.Quiz;
 import com.androiditgroup.loclook.v2.models.User;
-import com.androiditgroup.loclook.v2.ui.comments.CommentsFragment;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity_NEW;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
 import com.androiditgroup.loclook.v2.utils.FavoritesUtility;
-import com.androiditgroup.loclook.v2.utils.ImageDelivery;
 import com.androiditgroup.loclook.v2.utils.LikesUtility;
 import com.androiditgroup.loclook.v2.utils.QuizUtility;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
