@@ -45,10 +45,10 @@ public class SharedPreferencesController {
             addBooleanParam("is_undefined_user_mode",       true);
 
             // login status
-            addBooleanParam("is_use_logged",                false);
+            addBooleanParam("is_user_logged",                false);
 
             // language
-            addStringParam("ui_language",                   SettingsConstants.ENGLISH);
+            addStringParam("ui_language",                   SettingsConstants.RUSSIAN);
 
             // phone
             addStringParam("user_phone_number",             "");
