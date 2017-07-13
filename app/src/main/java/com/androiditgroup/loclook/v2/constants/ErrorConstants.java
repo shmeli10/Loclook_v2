@@ -15,6 +15,7 @@ public class ErrorConstants {
     public static final String USER_AVATAR_PHOTO_ID_ERROR                   = "User avatar photo identifier is incorrect";
     public static final String USER_MAP_RADIUS_SIZE_ERROR                   = "User map radius size is incorrect";
 
+    public static final String BADGE_NAME_NULL_ERROR                        = "Badge name is null";
     public static final String CREATED_AT_NULL_ERROR                        = "Created at is null";
     public static final String LATITUDE_NULL_ERROR                          = "Latitude is null";
     public static final String LONGITUDE_NULL_ERROR                         = "Longitude is null";

@@ -11,6 +11,7 @@ import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -23,9 +24,11 @@ import android.widget.RelativeLayout;
 
 public class GalleryPagerAdapter extends PagerAdapter {
 
-    ArrayList<Bitmap> mPhotosList;
+    //ArrayList<Bitmap> mPhotosList;
+    List<Bitmap> mPhotosList;
 
-    public GalleryPagerAdapter(ArrayList<Bitmap> photosList) {
+    //public GalleryPagerAdapter(ArrayList<Bitmap> photosList) {
+    public GalleryPagerAdapter(List<Bitmap> photosList) {
         mPhotosList = photosList;
     }
 

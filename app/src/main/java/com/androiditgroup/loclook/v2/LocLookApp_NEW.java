@@ -1,6 +1,7 @@
 package com.androiditgroup.loclook.v2;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 
@@ -12,7 +13,7 @@ import com.androiditgroup.loclook.v2.data.AppManager;
 
 public class LocLookApp_NEW extends Application {
 
-    private AppManager appManager;
+    private AppManager  appManager;
 
     public static Typeface  fontBold,
                             fontBoldItalic,
@@ -43,7 +44,6 @@ public class LocLookApp_NEW extends Application {
         }
         return appManager;
     }
-
 
     // ------------------------------------- SETTERS ----------------------------------------- //
 

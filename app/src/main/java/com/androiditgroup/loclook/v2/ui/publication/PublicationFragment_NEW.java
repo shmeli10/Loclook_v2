@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -39,7 +40,9 @@ import com.androiditgroup.loclook.v2.adapters.BadgesAdapter;
 import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter;
 import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter_NEW;
 import com.androiditgroup.loclook.v2.constants.SettingsConstants;
+import com.androiditgroup.loclook.v2.data.BadgeController;
 import com.androiditgroup.loclook.v2.models.Badge;
+import com.androiditgroup.loclook.v2.models.BadgeModel;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity_NEW;
 import com.androiditgroup.loclook.v2.utils.Constants;
@@ -55,7 +58,10 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.VISIBLE;
@@ -65,55 +71,51 @@ import static android.view.View.VISIBLE;
  */
 
 public class PublicationFragment_NEW    extends     ParentFragment
-                                        implements  View.OnClickListener,
-                                                    TextWatcher,
+                                        implements  //View.OnClickListener,
+                                                    //TextWatcher,
                                                     CompoundButton.OnCheckedChangeListener,
                                                     AddPublicationQuizAnswersAdapter.QuizAnswerCallback {
 
-    private static LayoutInflater mInflater;
+    private static LayoutInflater               mInflater;
 
-    private LocLookApp_NEW      locLookApp_NEW;
-    private MainActivity_NEW    mMainActivity;
+    private LocLookApp_NEW                      locLookApp_NEW;
+    private MainActivity_NEW                    mMainActivity;
+    private Handler                             mHandler;
 
-    private RelativeLayout mBadgeBlock;
-    private RelativeLayout mQuizAnswersBlock;
-    private RelativeLayout mShowPhotoBlockRL;
-    private RelativeLayout mPhotoBlockRL;
+    private BadgeController                     badgeController;
 
-    private ScrollView mScroll;
-    private EditText mPublicationText;
-    private TextView mLeftCharactersBody;
-    private TextView mAnonymousStateTV;
-    private TextView mQuizStateTV;
-    private TextView mAddAnswerTV;
-    private TextView mSelectedBadgeTV;
-    private TextView mOpenGalleryTV;
-    private TextView mCreatePhotoTV;
-    private TextView mPhotosAddedSumTV;
+    private RelativeLayout                      mBadgeBlock;
+    private RelativeLayout                      mQuizAnswersBlock;
+    private RelativeLayout                      mShowPhotoBlockRL;
+    private RelativeLayout                      mPhotoBlockRL;
 
-    private SwitchCompat mAnonymousSwitch;
-    private SwitchCompat mQuizSwitch;
+    private ScrollView                          mScroll;
+    private EditText                            mPublicationText;
+    private TextView                            mLeftCharactersBody;
+    private TextView                            mAnonymousStateTV;
+    private TextView                            mQuizStateTV;
+    private TextView                            mAddAnswerTV;
+    private TextView                            mSelectedBadgeTV;
+    private TextView                            mOpenGalleryTV;
+    private TextView                            mCreatePhotoTV;
+    private TextView                            mPhotosAddedSumTV;
 
-    private ArrayList<String> mAnswersList = new ArrayList<>();
-    private ArrayList<Bitmap> mTumbnailsList = new ArrayList<>();
-    private ArrayList<Bitmap> mPhotosList = new ArrayList<>();
+    private SwitchCompat                        mAnonymousSwitch;
+    private SwitchCompat                        mQuizSwitch;
 
-    private ImageView mShowBadgesIV;
-    private ImageView mSelectedBadgeIV;
-    private ImageView mShowPhotoBlockIV;
-    private ImageView mGalleryLeftScrollIV;
-    private ImageView mGalleryRightScrollIV;
+    private ImageView                           mShowBadgesIV;
+    private ImageView                           mSelectedBadgeIV;
+    private ImageView                           mShowPhotoBlockIV;
+    private ImageView                           mGalleryLeftScrollIV;
+    private ImageView                           mGalleryRightScrollIV;
 
-    private ExpandableHeightListView mQuizAnswersList;
-    private ExpandableHeightGridView mChooseBadgeBlockGV;
-    private RecyclerView mGalleryPhotosRV;
+    private ExpandableHeightListView            mQuizAnswersList;
+    private ExpandableHeightGridView            mChooseBadgeBlockGV;
+    private RecyclerView                        mGalleryPhotosRV;
 
-    private AddPublicationQuizAnswersAdapter mQuizAnswersAdapter;
-    private BadgesAdapter mBadgesAdapter;
-    //private GalleryListAdapter mGalleryPhotosAdapter;
-    private GalleryListAdapter_NEW mGalleryPhotosAdapter;
-
-    private Handler mHandler;
+    private AddPublicationQuizAnswersAdapter    mQuizAnswersAdapter;
+    private BadgesAdapter                       mBadgesAdapter;
+    private GalleryListAdapter_NEW              mGalleryPhotosAdapter;
 
     private final int anonymousSwitchResId      = R.id.Publication_AnonymousSwitchBTN;
     private final int quizSwitchResId           = R.id.Publication_QuizSwitchBTN;
@@ -131,14 +133,22 @@ public class PublicationFragment_NEW    extends     ParentFragment
 //    private final int SMALL_PHOTO_WIDTH_LIMIT   = (int) LocLookApp.getInstance().getResources().getDimension(R.dimen.small_photo_max_width);
 //    private final int SMOOTH_ON                 = 2 * SMALL_PHOTO_WIDTH_LIMIT;
 
-    private boolean isAvailableToDelete;
-    private boolean isBadgesBlockHidden;
-    private boolean isPhotoBlockHidden;
+    private BadgeModel          selectedBadge;
 
-    private Badge selectedBadge;
+    private ArrayList<String>   mAnswersList    = new ArrayList<>();
+    private List<Bitmap>        mTumbnailsList  = new ArrayList<>();
+    private ArrayList<Bitmap>   mPhotosList     = new ArrayList<>();
+
+    private Map<Integer, BadgeModel>    badgeMap           = new LinkedHashMap<>();
+    private Map<Integer, Integer>       badgeImageResIdMap = new LinkedHashMap<>();
+
     private String mCreatedPhotoPath;
 
     private int smoothOn = 0;
+
+    private boolean isAvailableToDelete;
+    private boolean isBadgesBlockHidden;
+    private boolean isPhotoBlockHidden;
 
     public PublicationFragment_NEW() {
         // Required empty public constructor
@@ -159,16 +169,27 @@ public class PublicationFragment_NEW    extends     ParentFragment
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup      container,
                              Bundle         savedInstanceState) {
+
         mMainActivity   = (MainActivity_NEW) getActivity();
         locLookApp_NEW  = ((LocLookApp_NEW) mMainActivity.getApplication());
 
-        View view = inflater.inflate(R.layout.fragment_send_publication, container, false);
+        badgeController = locLookApp_NEW.getAppManager().getBadgeController();
 
-        if(!LocLookApp.badgesMap.isEmpty()) {
+        View view = inflater.inflate(R.layout.fragment_send_publication,
+                                     container,
+                                     false);
 
-            String key = LocLookApp.badgesMap.keySet().iterator().next();
-            selectedBadge = LocLookApp.badgesMap.get(key);
+
+        badgeMap = badgeController.getBadgeMap();
+
+        // if(!LocLookApp.badgesMap.isEmpty()) {
+        if((badgeMap != null) && (!badgeMap.isEmpty())) {
+
+            Integer mapKey  = badgeMap.keySet().iterator().next();
+            selectedBadge   = badgeMap.get(mapKey);
         }
+
+        badgeImageResIdMap = badgeController.getBadgeImageResIdMap();
 
         mHandler = new Handler() {
             public void handleMessage(android.os.Message msg) {
@@ -185,48 +206,54 @@ public class PublicationFragment_NEW    extends     ParentFragment
             }
         };
 
-        mScroll = (ScrollView) view.findViewById(R.id.Publication_ScrollView);
+        mScroll             = (ScrollView) view.findViewById(R.id.Publication_ScrollView);
 
-        mPublicationText = (EditText) view.findViewById(R.id.Publication_PublicationTextET);
-        mPublicationText.addTextChangedListener(this);
+        mPublicationText    = (EditText) view.findViewById(R.id.Publication_PublicationTextET);
+        //mPublicationText.addTextChangedListener(this);
+        mPublicationText.addTextChangedListener(onPublicationTextChangeListener);
 
-        mQuizAnswersBlock       = (RelativeLayout) view.findViewById(R.id.Publication_QuizAnswersBlock);
-        mPhotoBlockRL           = (RelativeLayout) view.findViewById(R.id.Publication_PhotoBlock);
+        mQuizAnswersBlock   = (RelativeLayout) view.findViewById(R.id.Publication_QuizAnswersBlock);
+        mPhotoBlockRL       = (RelativeLayout) view.findViewById(R.id.Publication_PhotoBlock);
 
-        mBadgeBlock = (RelativeLayout) view.findViewById(badgeBlockResId);
-        mBadgeBlock.setOnClickListener(this);
+        mBadgeBlock         = (RelativeLayout) view.findViewById(badgeBlockResId);
+        //mBadgeBlock.setOnClickListener(this);
+        mBadgeBlock.setOnClickListener(badgeBlockClickListener);
 
-        mShowPhotoBlockRL = (RelativeLayout) view.findViewById(showPhotoBlockResId);
-        mShowPhotoBlockRL.setOnClickListener(this);
+        mShowPhotoBlockRL   = (RelativeLayout) view.findViewById(showPhotoBlockResId);
+        // mShowPhotoBlockRL.setOnClickListener(this);
+        mShowPhotoBlockRL.setOnClickListener(photoBlockClickListener);
 
-        mAnonymousStateTV = (TextView) view.findViewById(R.id.Publication_AnonymousStateTV);
-        mQuizStateTV = (TextView) view.findViewById(R.id.Publication_QuizStateTV);
-        mPhotosAddedSumTV = (TextView) view.findViewById(R.id.Publication_PhotosAddedSumTV);
+        mAnonymousStateTV   = (TextView) view.findViewById(R.id.Publication_AnonymousStateTV);
+        mQuizStateTV        = (TextView) view.findViewById(R.id.Publication_QuizStateTV);
+        mPhotosAddedSumTV   = (TextView) view.findViewById(R.id.Publication_PhotosAddedSumTV);
 
         mLeftCharactersBody = (TextView) view.findViewById(R.id.Publication_LeftCharactersBodyTV);
         //mLeftCharactersBody.setText("" +PUBLICATION_TEXT_LIMIT);
         mLeftCharactersBody.setText("" +SettingsConstants.PUBLICATION_MAX_LENGTH);
 
-        mOpenGalleryTV = (TextView) view.findViewById(openGalleryResId);
-        mOpenGalleryTV.setOnClickListener(this);
+        mOpenGalleryTV      = (TextView) view.findViewById(openGalleryResId);
+        //mOpenGalleryTV.setOnClickListener(this);
+        mOpenGalleryTV.setOnClickListener(openGalleryClickListener);
 
-        mCreatePhotoTV = (TextView) view.findViewById(R.id.Publication_CreatePhoto);
-        mCreatePhotoTV.setOnClickListener(this);
+        mCreatePhotoTV      = (TextView) view.findViewById(R.id.Publication_CreatePhoto);
+        //mCreatePhotoTV.setOnClickListener(this);
+        mCreatePhotoTV.setOnClickListener(createPhotoClickListener);
 
-        mAnonymousSwitch = (SwitchCompat) view.findViewById(anonymousSwitchResId);
+        mAnonymousSwitch    = (SwitchCompat) view.findViewById(anonymousSwitchResId);
         mAnonymousSwitch.setOnCheckedChangeListener(this);
 
-        mQuizSwitch = (SwitchCompat) view.findViewById(R.id.Publication_QuizSwitchBTN);
+        mQuizSwitch         = (SwitchCompat) view.findViewById(R.id.Publication_QuizSwitchBTN);
         mQuizSwitch.setOnCheckedChangeListener(this);
 
-        mAddAnswerTV = (TextView) view.findViewById(addAnswerResId);
-        mAddAnswerTV.setOnClickListener(this);
+        mAddAnswerTV        = (TextView) view.findViewById(addAnswerResId);
+        //mAddAnswerTV.setOnClickListener(this);
+        mAddAnswerTV.setOnClickListener(addAnswerClickListener);
 
         for(int i=0; i<Constants.QUIZ_MIN_ANSWERS; i++)
             mAnswersList.add(null);
 
         mQuizAnswersAdapter = new AddPublicationQuizAnswersAdapter(mInflater, mAnswersList, this);
-        mQuizAnswersList = (ExpandableHeightListView) view.findViewById(R.id.Publication_QuizAnswersList);
+        mQuizAnswersList    = (ExpandableHeightListView) view.findViewById(R.id.Publication_QuizAnswersList);
         mQuizAnswersList.setExpanded(true);
         mQuizAnswersList.setAdapter(mQuizAnswersAdapter);
 
@@ -241,20 +268,22 @@ public class PublicationFragment_NEW    extends     ParentFragment
 
         mChooseBadgeBlockGV = (ExpandableHeightGridView) view.findViewById(R.id.Publication_ChooseBadgeBlockGV);
 
-        mBadgesAdapter = new BadgesAdapter(mInflater);
+        mBadgesAdapter      = new BadgesAdapter(mInflater);
         mChooseBadgeBlockGV.setAdapter(mBadgesAdapter);
         mChooseBadgeBlockGV.setOnItemClickListener(onBadgeClickListener);
 
         //mGalleryPhotosAdapter = new GalleryListAdapter(mMainActivity, mPhotosList);
-        mGalleryPhotosAdapter = new GalleryListAdapter_NEW(mMainActivity, mPhotosList);
-        mGalleryPhotosRV = (RecyclerView) view.findViewById(R.id.Publication_GalleryRecyclerView);
+        mGalleryPhotosAdapter   = new GalleryListAdapter_NEW(mMainActivity, mPhotosList);
+        mGalleryPhotosRV        = (RecyclerView) view.findViewById(R.id.Publication_GalleryRecyclerView);
         mGalleryPhotosRV.setAdapter(mGalleryPhotosAdapter);
 
-        mGalleryLeftScrollIV = (ImageView) view.findViewById(galleryLeftScrollResId);
-        mGalleryLeftScrollIV.setOnClickListener(this);
+        mGalleryLeftScrollIV    = (ImageView) view.findViewById(galleryLeftScrollResId);
+        //mGalleryLeftScrollIV.setOnClickListener(this);
+        mGalleryLeftScrollIV.setOnClickListener(galleryLeftScrollClickListener);
 
-        mGalleryRightScrollIV = (ImageView) view.findViewById(galleryRightScrollResId);
-        mGalleryRightScrollIV.setOnClickListener(this);
+        mGalleryRightScrollIV   = (ImageView) view.findViewById(galleryRightScrollResId);
+        //mGalleryRightScrollIV.setOnClickListener(this);
+        mGalleryRightScrollIV.setOnClickListener(galleryRightScrollClickListener);
 
         setHasOptionsMenu(true);
 
@@ -287,7 +316,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
         }
     }
 
-    @Override
+/*    @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
     @Override
@@ -298,7 +327,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
     }
 
     @Override
-    public void afterTextChanged(Editable editable) { }
+    public void afterTextChanged(Editable editable) { }*/
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -321,75 +350,6 @@ public class PublicationFragment_NEW    extends     ParentFragment
                     mQuizAnswersBlock.setVisibility(View.GONE);
                 }
 
-                break;
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-            // щелчок по "кнопке Добавить вариант ответа"
-            case addAnswerResId:
-                if(mAnswersList.size() < Constants.QUIZ_MAX_ANSWERS) {
-                    // добавляем поле с возможностью удаления
-                    mAnswersList.add(null);
-
-                    if (mAnswersList.size() == Constants.QUIZ_MAX_ANSWERS) {
-                        mAddAnswerTV.setBackgroundResource(R.color.light_grey);
-                        mAddAnswerTV.setClickable(false);
-                    }
-                    mQuizAnswersAdapter.notifyDataSetChanged();
-                    autoScrollDown();
-                }
-
-                break;
-            case badgeBlockResId:
-                if(isBadgesBlockHidden) {
-                    mShowBadgesIV.setImageResource(R.drawable.hide_data);
-                    mChooseBadgeBlockGV.setVisibility(VISIBLE);
-                    isBadgesBlockHidden = false;
-                    autoScrollDown();
-                }
-                else {
-                    mShowBadgesIV.setImageResource(R.drawable.show_data);
-                    mChooseBadgeBlockGV.setVisibility(View.GONE);
-                    isBadgesBlockHidden = true;
-                }
-                break;
-            case showPhotoBlockResId:
-                if(isPhotoBlockHidden) {
-                    mShowPhotoBlockIV.setImageResource(R.drawable.hide_data);
-                    mPhotoBlockRL.setVisibility(VISIBLE);
-                    isPhotoBlockHidden = false;
-                    autoScrollDown();
-                }
-                else {
-                    mShowPhotoBlockIV.setImageResource(R.drawable.show_data);
-                    mPhotoBlockRL.setVisibility(View.GONE);
-                    isPhotoBlockHidden = true;
-                }
-                break;
-            case openGalleryResId:
-                Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, Constants.PICK_FILE_RC);
-                break;
-            case createPhotoResId:
-                if (ActivityCompat.checkSelfPermission(LocLookApp.context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    getFile();
-                } else {
-                    String[] permissions = new String[]{Manifest.permission.CAMERA};
-                    ActivityCompat.requestPermissions(getActivity(), permissions, Constants.CAMERA_PERMISSION_CODE);
-                }
-                break;
-            case galleryLeftScrollResId:
-                //mGalleryPhotosRV.smoothScrollBy(-SMOOTH_ON, 0);
-                mGalleryPhotosRV.smoothScrollBy(-getSmoothOn(), 0);
-                break;
-            case galleryRightScrollResId:
-                //mGalleryPhotosRV.smoothScrollBy(SMOOTH_ON, 0);
-                mGalleryPhotosRV.smoothScrollBy(getSmoothOn(), 0);
                 break;
         }
     }
@@ -422,11 +382,14 @@ public class PublicationFragment_NEW    extends     ParentFragment
 
         @Override
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            selectedBadge = LocLookApp.badgesMap.get(String.valueOf(position+1));
+            selectedBadge = badgeMap.get(position+1);  // LocLookApp.badgesMap.get(String.valueOf(position+1));
 
             if(selectedBadge != null) {
-                mSelectedBadgeIV.setImageResource(selectedBadge.getIconResId());
-                mSelectedBadgeTV.setText(selectedBadge.getName());
+
+                if(badgeImageResIdMap.containsKey(selectedBadge.getBadgeId()))
+                    mSelectedBadgeIV.setImageResource(badgeImageResIdMap.get(position+1));
+
+                mSelectedBadgeTV.setText(selectedBadge.getBadgeName());
             }
         }
     };
@@ -441,11 +404,11 @@ public class PublicationFragment_NEW    extends     ParentFragment
     }
 
     private void sendPublication() {
-//        LocLookApp.showLog("PublicationFragment: sendPublication()");
+        LocLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication()");
 
         // если публикация без текста
         if (TextUtils.isEmpty(mPublicationText.getText())) {
-            LocLookApp.showSimpleSnakeBar(mScroll, "empty_publication_text");
+            showSimpleSnakeBar(mScroll, "empty_publication_text");
             return;
         }
 
@@ -462,17 +425,17 @@ public class PublicationFragment_NEW    extends     ParentFragment
                     }
 
                     if(realQuizAnswersList.size() < Constants.QUIZ_MIN_ANSWERS) {
-                        LocLookApp.showSimpleSnakeBar(mScroll, "need_more_answers_text");
+                        showSimpleSnakeBar(mScroll, "need_more_answers_text");
                         return;
                     }
                 }
 
-                boolean publicationCreated = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
+                // boolean publicationCreated = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
 
-                if(publicationCreated)
-                    mHandler.sendEmptyMessage(1);
-                else
-                    mHandler.sendEmptyMessage(-1);
+//                if(publicationCreated)
+//                    mHandler.sendEmptyMessage(1);
+//                else
+//                    mHandler.sendEmptyMessage(-1);
             }
         });
         t.start();
@@ -573,7 +536,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                LocLookApp.showSimpleSnakeBar(mScroll, "get_photo_error_text");
+                showSimpleSnakeBar(mScroll, "get_photo_error_text");
             }
         }
     }
@@ -589,4 +552,117 @@ public class PublicationFragment_NEW    extends     ParentFragment
         if(smallPhotoMaxWidth > 0)
             smoothOn = 2 * smallPhotoMaxWidth;
     }
+
+    private void showSimpleSnakeBar(View view, String resName) {
+        int resId   = getActivity().getResources().getIdentifier("@string/" +resName, null, getActivity().getPackageName());
+        String text = getActivity().getResources().getString(resId);
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
+    }
+
+    View.OnClickListener badgeBlockClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if(isBadgesBlockHidden) {
+                mShowBadgesIV.setImageResource(R.drawable.hide_data);
+                mChooseBadgeBlockGV.setVisibility(VISIBLE);
+                isBadgesBlockHidden = false;
+                autoScrollDown();
+            }
+            else {
+                mShowBadgesIV.setImageResource(R.drawable.show_data);
+                mChooseBadgeBlockGV.setVisibility(View.GONE);
+                isBadgesBlockHidden = true;
+            }
+        }
+    };
+
+    View.OnClickListener photoBlockClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if(isPhotoBlockHidden) {
+                mShowPhotoBlockIV.setImageResource(R.drawable.hide_data);
+                mPhotoBlockRL.setVisibility(VISIBLE);
+                isPhotoBlockHidden = false;
+                autoScrollDown();
+            }
+            else {
+                mShowPhotoBlockIV.setImageResource(R.drawable.show_data);
+                mPhotoBlockRL.setVisibility(View.GONE);
+                isPhotoBlockHidden = true;
+            }
+        }
+    };
+
+    View.OnClickListener createPhotoClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if (ActivityCompat.checkSelfPermission(LocLookApp.context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                getFile();
+            } else {
+                String[] permissions = new String[]{Manifest.permission.CAMERA};
+                ActivityCompat.requestPermissions(getActivity(), permissions, Constants.CAMERA_PERMISSION_CODE);
+            }
+        }
+    };
+
+    View.OnClickListener openGalleryClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, Constants.PICK_FILE_RC);
+        }
+    };
+
+    // щелчок по "кнопке Добавить вариант ответа"
+    View.OnClickListener addAnswerClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if(mAnswersList.size() < Constants.QUIZ_MAX_ANSWERS) {
+                // добавляем поле с возможностью удаления
+                mAnswersList.add(null);
+
+                if (mAnswersList.size() == Constants.QUIZ_MAX_ANSWERS) {
+                    mAddAnswerTV.setBackgroundResource(R.color.light_grey);
+                    mAddAnswerTV.setClickable(false);
+                }
+                mQuizAnswersAdapter.notifyDataSetChanged();
+                autoScrollDown();
+            }
+        }
+    };
+
+    View.OnClickListener galleryLeftScrollClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mGalleryPhotosRV.smoothScrollBy(-getSmoothOn(), 0);
+        }
+    };
+
+    View.OnClickListener galleryRightScrollClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mGalleryPhotosRV.smoothScrollBy(getSmoothOn(), 0);
+        }
+    };
+
+    TextWatcher onPublicationTextChangeListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            // вычисляем и отображаем кол-во символов, которые еще можно внести в поле
+            //mLeftCharactersBody.setText("" + (PUBLICATION_TEXT_LIMIT - mPublicationText.length()));
+            mLeftCharactersBody.setText("" + (SettingsConstants.PUBLICATION_MAX_LENGTH - mPublicationText.length()));
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
 }
