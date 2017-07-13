@@ -1,7 +1,6 @@
 package com.androiditgroup.loclook.v2.ui.auth;
 
 import android.app.Fragment;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.controllers.SharedPreferencesController;
-import com.androiditgroup.loclook.v2.controllers.UserController;
-import com.androiditgroup.loclook.v2.utils.Constants;
-import com.androiditgroup.loclook.v2.utils.DBManager;
+import com.androiditgroup.loclook.v2.data.SharedPreferencesController;
+import com.androiditgroup.loclook.v2.data.UserController;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
 
 /**
@@ -49,8 +45,8 @@ public class PhoneNumberFragment_NEW extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_phone_number, container, false);
 
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("PhoneNumberFragment_NEW: onCreateView()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp_NEW.showLog("PhoneNumberFragment_NEW: onCreateView()");
 
         mAuthActivity   = (AuthActivity_NEW) getActivity();
         locLookApp_NEW  = ((LocLookApp_NEW) mAuthActivity.getApplication());
@@ -85,8 +81,8 @@ public class PhoneNumberFragment_NEW extends Fragment {
     };
 
     private void moveForward(String typedPhoneNumber) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("PhoneNumberFragment_NEW: moveForward()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp_NEW.showLog("PhoneNumberFragment_NEW: moveForward()");
 
         sharedPreferencesController.setNewStringValue("user_phone_number", phoneBodyET.getText().toString());
 

@@ -21,16 +21,18 @@ import android.widget.TextView;
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.controllers.AppManager;
-import com.androiditgroup.loclook.v2.controllers.SharedPreferencesController;
+import com.androiditgroup.loclook.v2.data.AppManager;
+import com.androiditgroup.loclook.v2.data.SharedPreferencesController;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.ui.SplashActivity;
 import com.androiditgroup.loclook.v2.ui.badges.BadgesFragment;
 import com.androiditgroup.loclook.v2.ui.favorites.FavoritesFragment;
 import com.androiditgroup.loclook.v2.ui.feed.FeedFragment;
+import com.androiditgroup.loclook.v2.ui.feed.FeedFragment_NEW;
 import com.androiditgroup.loclook.v2.ui.geolocation.GeolocationFragment;
 import com.androiditgroup.loclook.v2.ui.notifications.NotificationsFragment;
 import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment;
+import com.androiditgroup.loclook.v2.ui.publication.PublicationFragment_NEW;
 import com.androiditgroup.loclook.v2.utils.DefineUserLocationName;
 import com.androiditgroup.loclook.v2.utils.ParentActivity;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
@@ -98,11 +100,11 @@ public class MainActivity_NEW   extends     ParentActivity
         locLookApp_NEW  =  ((LocLookApp_NEW) this.getApplication());
         appManager      = locLookApp_NEW.getAppManager();
 
-        try {
-            appManager.getInitAppController().init();
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
+//        try {
+//            appManager.getInitAppController().init();
+//        } catch (Exception exc) {
+//            exc.printStackTrace();
+//        }
 
         // initialize toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.MainActivity_Toolbar);
@@ -123,7 +125,9 @@ public class MainActivity_NEW   extends     ParentActivity
         mNavigationBtn.setOnClickListener(mMenuClickListener);
 
         mLeftMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mLeftMenu.addDrawerListener(new DrawerLayout.DrawerListener() {
+        mLeftMenu.addDrawerListener(drawerListener);
+
+        /*mLeftMenu.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) { }
 
@@ -159,7 +163,7 @@ public class MainActivity_NEW   extends     ParentActivity
 
             @Override
             public void onDrawerStateChanged(int newState) { }
-        });
+        });*/
 
         mLeftMenuUserAvatar       = (CircularImageView) findViewById(R.id.Drawer_UserAvatar);
         mLeftMenuUserName         = (TextView) findViewById(R.id.Drawer_UserName);
@@ -169,7 +173,6 @@ public class MainActivity_NEW   extends     ParentActivity
         mLeftMenuUserLocationName.setTypeface(LocLookApp.light);
 
         mLocationDefiner = new DefineUserLocationName((LocationManager) getSystemService(LOCATION_SERVICE));
-
 
         sharedPreferencesController = appManager.getSharedPreferencesController();
 
@@ -207,6 +210,7 @@ public class MainActivity_NEW   extends     ParentActivity
 //        }
 
         //setFragment(FeedFragment.newInstance(), false, false);
+        setFragment(FeedFragment_NEW.newInstance(), false, false);
 
         // формируем список бейджей
         //LocLookApp.setBadgesList();
@@ -226,7 +230,7 @@ public class MainActivity_NEW   extends     ParentActivity
             // добавить публикацию
             case R.id.action_write_publication:
                 selectedFragment = SelectedFragment.sendPublicationFragment;
-                setFragment(PublicationFragment.newInstance(mInflater), false, true);
+                setFragment(PublicationFragment_NEW.newInstance(mInflater), false, true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -375,7 +379,8 @@ public class MainActivity_NEW   extends     ParentActivity
         FragmentManager fragmentManager = getFragmentManager();
         int backStackSize = fragmentManager.getBackStackEntryCount();
         if (backStackSize == 0) {
-            setToolbarTitle(LocLookApp.getInstance().getResources().getString(R.string.feed_text));
+            //setToolbarTitle(LocLookApp.getInstance().getResources().getString(R.string.feed_text));
+            setToolbarTitle("111111");
             selectedFragment = SelectedFragment.feedFragment;
             return;
         }
@@ -418,7 +423,7 @@ public class MainActivity_NEW   extends     ParentActivity
             }
             // if user is not logged in
             else {
-                LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): user is not logged in");
+                LocLookApp_NEW.showLog("MainActivity_NEW: showStartFragment(): user is not logged in");
 
                 showSplashScreen();
             }
@@ -440,6 +445,45 @@ public class MainActivity_NEW   extends     ParentActivity
         finish();
         return;
     }
+
+
+    DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) { }
+
+        @Override
+        public void onDrawerOpened(View drawerView) { }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            if(selectedFragment != newSelectedFragment) {
+                switch(newSelectedFragment) {
+
+                    case feedFragment:
+                        setFragment(FeedFragment.newInstance(), false, false);
+                        break;
+                    case favoritesFragment:
+                        setFragment(FavoritesFragment.newInstance(), false, true);
+                        break;
+                    case notificationsFragment:
+                        setFragment(NotificationsFragment.newInstance(), false, true);
+                        break;
+                    case badgesFragment:
+                        setFragment(BadgesFragment.newInstance(), false, true);
+                        break;
+                    case geolocationFragment:
+                        setFragment(GeolocationFragment.newInstance(), false, true);
+                        break;
+                    default:
+                        break;
+                }
+                selectedFragment = newSelectedFragment;
+            }
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) { }
+    };
 
     public void showPD() {
         if(mProgressDialog == null) {

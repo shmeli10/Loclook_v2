@@ -31,8 +31,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
               null,
               DatabaseConstants.DATABASE_VERSION);
 
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("DatabaseHandler: constructor.");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("DatabaseHandler: constructor.");
 
         if(databaseCreateListener == null)
             throw new Exception(ErrorConstants.DATABASE_CREATE_INTERFACE_NULL_ERROR);
@@ -126,15 +126,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         LocLookApp.showLog("-------------------------------------");
         LocLookApp.showLog("DatabaseHandler: onCreate()");
 
-        createTable(sqLiteDatabase, DatabaseConstants.USER_TABLE,              DatabaseConstants.USER_TABLE_COLUMNS);
-        createTable(sqLiteDatabase, DatabaseConstants.BADGE_TABLE,             DatabaseConstants.BADGE_TABLE_COLUMNS);
-        createTable(sqLiteDatabase, DatabaseConstants.PUBLICATION_TABLE,       DatabaseConstants.PUBLICATION_TABLE_COLUMNS);
-        createTable(sqLiteDatabase, DatabaseConstants.QUIZ_ANSWER_TABLE,       DatabaseConstants.QUIZ_ANSWER_TABLE_COLUMNS);
-        createTable(sqLiteDatabase, DatabaseConstants.PHOTOS_TABLE,            DatabaseConstants.PHOTOS_TABLE_COLUMNS);
-        createTable(sqLiteDatabase, DatabaseConstants.USER_QUIZ_ANSWER_TABLE,  DatabaseConstants.USER_QUIZ_ANSWER_TABLE_COLUMNS);
-        createTable(sqLiteDatabase, DatabaseConstants.FAVORITES_TABLE,         DatabaseConstants.FAVORITES_TABLE_COLUMNS);
-        createTable(sqLiteDatabase, DatabaseConstants.COMMENTS_TABLE,          DatabaseConstants.COMMENTS_TABLE_COLUMNS);
-        createTable(sqLiteDatabase, DatabaseConstants.LIKES_TABLE,             DatabaseConstants.LIKES_TABLE_COLUMNS);
+        createTable(sqLiteDatabase, DatabaseConstants.USER_TABLE,                   DatabaseConstants.USER_TABLE_COLUMNS);
+        createTable(sqLiteDatabase, DatabaseConstants.BADGE_TABLE,                  DatabaseConstants.BADGE_TABLE_COLUMNS);
+        createTable(sqLiteDatabase, DatabaseConstants.PUBLICATION_TABLE,            DatabaseConstants.PUBLICATION_TABLE_COLUMNS);
+        createTable(sqLiteDatabase, DatabaseConstants.QUIZ_ANSWER_TABLE,            DatabaseConstants.QUIZ_ANSWER_TABLE_COLUMNS);
+        createTable(sqLiteDatabase, DatabaseConstants.PHOTO_TABLE,                  DatabaseConstants.PHOTOS_TABLE_COLUMNS);
+        createTable(sqLiteDatabase, DatabaseConstants.USER_QUIZ_ANSWER_TABLE,       DatabaseConstants.USER_QUIZ_ANSWER_TABLE_COLUMNS);
+        createTable(sqLiteDatabase, DatabaseConstants.FAVORITE_PUBLICATION_TABLE,   DatabaseConstants.FAVORITE_PUBLICATION_TABLE_COLUMNS);
+        createTable(sqLiteDatabase, DatabaseConstants.COMMENT_TABLE,                DatabaseConstants.COMMENT_TABLE_COLUMNS);
+        createTable(sqLiteDatabase, DatabaseConstants.LIKE_PUBLICATION_TABLE,       DatabaseConstants.LIKE_PUBLICATION_TABLE_COLUMNS);
 
         // LocLookApp.showLog("TABLES CREATED");
 

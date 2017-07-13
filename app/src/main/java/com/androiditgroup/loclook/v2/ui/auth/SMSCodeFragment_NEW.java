@@ -16,15 +16,21 @@ import android.widget.Toast;
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.controllers.SharedPreferencesController;
+import com.androiditgroup.loclook.v2.data.BadgeController;
+import com.androiditgroup.loclook.v2.data.PublicationController;
+import com.androiditgroup.loclook.v2.data.SharedPreferencesController;
+import com.androiditgroup.loclook.v2.interfaces.PublicationsPopulateInterface;
 
 /**
  * Created by sostrovschi on 19.01.2017.
  */
 
-public class SMSCodeFragment_NEW extends Fragment {
+public class SMSCodeFragment_NEW    extends     Fragment
+                                    implements  PublicationsPopulateInterface {
 
     private LocLookApp_NEW              locLookApp_NEW;
+    private BadgeController             badgeController;
+    private PublicationController       publicationController;
     private SharedPreferencesController sharedPreferencesController;
 
     private AuthActivity_NEW    mAuthActivity;
@@ -49,8 +55,8 @@ public class SMSCodeFragment_NEW extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sms_code, container, false);
 
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("SMSCodeFragment_NEW: onCreateView()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp_NEW.showLog("SMSCodeFragment_NEW: onCreateView()");
 
         mAuthActivity   = (AuthActivity_NEW) getActivity();
         locLookApp_NEW  = ((LocLookApp_NEW) mAuthActivity.getApplication());
@@ -158,7 +164,7 @@ public class SMSCodeFragment_NEW extends Fragment {
         @Override
         public void onClick(View view) {
 
-            LocLookApp_NEW.showLog("SMSCodeFragment_NEW: backButtonClickListener: onClick()");
+            //LocLookApp_NEW.showLog("SMSCodeFragment_NEW: backButtonClickListener: onClick()");
             mAuthActivity.onBackPressed();
         }
     };
@@ -178,8 +184,31 @@ public class SMSCodeFragment_NEW extends Fragment {
             // LocLookApp.getInstance().setLoginStatus(true);
             sharedPreferencesController.setNewBooleanValue("is_undefined_user_mode", false);
 
-            // двигаемся к следующему окну приложения
-            mAuthActivity.moveForward();
+            badgeController = locLookApp_NEW.getAppManager().getBadgeController();
+            badgeController.populateBadgeMap();
+
+            publicationController = locLookApp_NEW.getAppManager().getPublicationController();
+            try {
+                publicationController.setPublicationsPopulateListener(SMSCodeFragment_NEW.this);
+                publicationController.populateAllPublicationCollections();
+            } catch (Exception exc) {
+                LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener(): setPublicationsPopulateListener error: " +exc.getMessage());
+            }
         }
     };
+
+    @Override
+    public void onPublicationsPopulateSuccess() {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("SMSCodeFragment_NEW: onPublicationsPopulateSuccess()");
+
+        // двигаемся к следующему окну приложения
+        mAuthActivity.moveForward();
+    }
+
+    @Override
+    public void onPublicationsPopulateError(String error) {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("SMSCodeFragment_NEW: onPublicationsPopulateError(): error: " +error);
+    }
 }

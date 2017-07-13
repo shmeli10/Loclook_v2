@@ -1,10 +1,11 @@
 package com.androiditgroup.loclook.v2;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 
-import com.androiditgroup.loclook.v2.controllers.AppManager;
+import com.androiditgroup.loclook.v2.data.AppManager;
 
 /**
  * Created by Serghei Ostrovschi on on 7/5/16.
@@ -12,7 +13,7 @@ import com.androiditgroup.loclook.v2.controllers.AppManager;
 
 public class LocLookApp_NEW extends Application {
 
-    private AppManager appManager;
+    private AppManager  appManager;
 
     public static Typeface  fontBold,
                             fontBoldItalic,
@@ -35,15 +36,14 @@ public class LocLookApp_NEW extends Application {
     // ------------------------------------- GETTERS ----------------------------------------- //
 
     public AppManager getAppManager() {
-        LocLookApp_NEW.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("LocLookApp_NEW: getAppManager(): appManager is null: " +(appManager == null));
+        //LocLookApp_NEW.showLog("-------------------------------------");
+        //LocLookApp_NEW.showLog("LocLookApp_NEW: getAppManager(): appManager is null: " +(appManager == null));
 
         if(appManager == null) {
             appManager = new AppManager(this);
         }
         return appManager;
     }
-
 
     // ------------------------------------- SETTERS ----------------------------------------- //
 
