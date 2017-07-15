@@ -45,11 +45,7 @@ public class SharedPreferencesController {
             addBooleanParam("is_undefined_user_mode",       true);
 
             // login status
-<<<<<<< HEAD:app/src/main/java/com/androiditgroup/loclook/v2/controllers/SharedPreferencesController.java
-            addBooleanParam("is_user_logged",                false);
-=======
             addBooleanParam("is_user_logged",               false);
->>>>>>> master:app/src/main/java/com/androiditgroup/loclook/v2/data/SharedPreferencesController.java
 
             // language
             addStringParam("ui_language",                   SettingsConstants.RUSSIAN);

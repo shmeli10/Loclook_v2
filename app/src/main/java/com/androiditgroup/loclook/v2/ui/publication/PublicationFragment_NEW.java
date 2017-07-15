@@ -37,17 +37,15 @@ import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.adapters.AddPublicationQuizAnswersAdapter;
 import com.androiditgroup.loclook.v2.adapters.BadgesAdapter;
-import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter;
 import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter_NEW;
+import com.androiditgroup.loclook.v2.constants.ErrorConstants;
 import com.androiditgroup.loclook.v2.constants.SettingsConstants;
 import com.androiditgroup.loclook.v2.data.BadgeController;
+import com.androiditgroup.loclook.v2.data.PublicationController;
 import com.androiditgroup.loclook.v2.interfaces.PublicationCreateInterface;
-import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.BadgeModel;
-import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity_NEW;
 import com.androiditgroup.loclook.v2.utils.Constants;
-import com.androiditgroup.loclook.v2.utils.DBManager;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightGridView;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
 import com.androiditgroup.loclook.v2.utils.ImageDelivery;
@@ -85,6 +83,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
     private Handler                             mHandler;
 
     private BadgeController                     badgeController;
+    private PublicationController               publicationController;
 
     private RelativeLayout                      mBadgeBlock;
     private RelativeLayout                      mQuizAnswersBlock;
@@ -175,23 +174,28 @@ public class PublicationFragment_NEW    extends     ParentFragment
         mMainActivity   = (MainActivity_NEW) getActivity();
         locLookApp_NEW  = ((LocLookApp_NEW) mMainActivity.getApplication());
 
-        badgeController = locLookApp_NEW.getAppManager().getBadgeController();
+        badgeController         = locLookApp_NEW.getAppManager().getBadgeController();
+
+        if(badgeController != null) {
+            badgeMap = badgeController.getBadgeMap();
+
+            // if(!LocLookApp.badgesMap.isEmpty()) {
+            if((badgeMap != null) && (!badgeMap.isEmpty())) {
+
+                Integer mapKey  = badgeMap.keySet().iterator().next();
+                selectedBadge   = badgeMap.get(mapKey);
+            }
+
+            badgeImageResIdMap = badgeController.getBadgeImageResIdMap();
+        }
+        else
+            locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): error: " +ErrorConstants.BADGE_CONTROLLER_NULL_ERROR);
+
+        publicationController   = locLookApp_NEW.getAppManager().getPublicationController();
 
         View view = inflater.inflate(R.layout.fragment_send_publication,
                                      container,
                                      false);
-
-
-        badgeMap = badgeController.getBadgeMap();
-
-        // if(!LocLookApp.badgesMap.isEmpty()) {
-        if((badgeMap != null) && (!badgeMap.isEmpty())) {
-
-            Integer mapKey  = badgeMap.keySet().iterator().next();
-            selectedBadge   = badgeMap.get(mapKey);
-        }
-
-        badgeImageResIdMap = badgeController.getBadgeImageResIdMap();
 
         mHandler = new Handler() {
             public void handleMessage(android.os.Message msg) {
@@ -408,8 +412,10 @@ public class PublicationFragment_NEW    extends     ParentFragment
     private void sendPublication() {
         LocLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication()");
 
+        final String publicationText = mPublicationText.getText().toString();
+
         // если публикация без текста
-        if (TextUtils.isEmpty(mPublicationText.getText())) {
+        if (TextUtils.isEmpty(publicationText)) {
             showSimpleSnakeBar(mScroll, "empty_publication_text");
             return;
         }
@@ -431,6 +437,24 @@ public class PublicationFragment_NEW    extends     ParentFragment
                         return;
                     }
                 }
+
+                if(publicationController != null) {
+                    try {
+                        if(publicationController.createPublication(publicationText,
+                                                                selectedBadge.getBadgeId(),
+                                                                realQuizAnswersList,
+                                                                mPhotosList,
+                                                                mAnonymousSwitch.isChecked()))
+                            locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): publication created successfully");
+                        else
+                            locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): publication NOT created");
+
+                    } catch (Exception exc) {
+                        locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): error: " +exc.getMessage());
+                    }
+                }
+                else
+                    locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): error: " +ErrorConstants.PUBLICATION_CONTROLLER_NULL_ERROR);
 
                 // boolean publicationCreated = DBManager.getInstance().createPublication(mPublicationText.getText().toString(), selectedBadge, realQuizAnswersList, mPhotosList, mAnonymousSwitch.isChecked());
 

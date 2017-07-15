@@ -39,7 +39,12 @@ public class ErrorConstants {
     public static final String PUBLICATION_POPULATE_INTERFACE_NULL_ERROR    = "PublicationsPopulateInterface is null";
 
     public static final String DATABASE_HANDLER_NULL_ERROR                  = "DatabaseHandler is null";
-    public static final String SHARED_PREFERENCES_CONTROLLER_NULL_ERROR     = "SharedPreferencesController is null";
     public static final String SQLITE_DATABASE_NULL_ERROR                   = "SQLiteDatabase is null";
+
+    public static final String BADGE_CONTROLLER_NULL_ERROR                  = "BadgeController is null";
+    public static final String PUBLICATION_CONTROLLER_NULL_ERROR            = "PublicationController is null";
+    public static final String SHARED_PREFERENCES_CONTROLLER_NULL_ERROR     = "SharedPreferencesController is null";
+    public static final String USER_CONTROLLER_NULL_ERROR                   = "UserController is null";
+
 
 }

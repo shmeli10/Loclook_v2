@@ -4,12 +4,15 @@ package com.androiditgroup.loclook.v2.data;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.text.TextUtils;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;
 import com.androiditgroup.loclook.v2.interfaces.PublicationCreateInterface;
 import com.androiditgroup.loclook.v2.interfaces.PublicationsPopulateInterface;
 import com.androiditgroup.loclook.v2.models.PublicationModel;
+import com.androiditgroup.loclook.v2.models.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +20,15 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Created by Serghei Ostrovschi on 7/4/17.
+ * Created by Serghei Ostrovschi on 7/4/16.
  */
 
 public class PublicationController {
 
     private DatabaseHandler                 databaseHandler;
     private SQLiteDatabase                  sqLiteDatabase;
+
+    private UserController                  userController;
 
     private PublicationsPopulateInterface   publicationsPopulateListener;
 
@@ -32,7 +37,8 @@ public class PublicationController {
     private List<PublicationModel>          allPublicationsList = new ArrayList<>();
 
     public PublicationController(DatabaseHandler    databaseHandler,
-                                 SQLiteDatabase     sqLiteDatabase) throws Exception {
+                                 SQLiteDatabase     sqLiteDatabase,
+                                 UserController     userController) throws Exception {
         //LocLookApp.showLog("-------------------------------------");
         //LocLookApp.showLog("PublicationController: constructor.");
 
@@ -42,8 +48,12 @@ public class PublicationController {
         if(sqLiteDatabase == null)
             throw new Exception(ErrorConstants.SQLITE_DATABASE_NULL_ERROR);
 
+        if(userController == null)
+            throw new Exception(ErrorConstants.USER_CONTROLLER_NULL_ERROR);
+
         this.databaseHandler    = databaseHandler;
         this.sqLiteDatabase     = sqLiteDatabase;
+        this.userController     = userController;
 
         //populateAllPublicationCollections();
     }
@@ -218,26 +228,93 @@ public class PublicationController {
         }
     }
 
-    public void createPublication(PublicationCreateInterface publicationCreateListener) throws Exception {
+    public boolean createPublication(   String                        publicationText,
+                                        int                           badgeId,
+                                        ArrayList<String>             quizAnswerList,
+                                        ArrayList<Bitmap>             photoList,
+                                        boolean                       isPublicationAnonymous) throws Exception {
 
-        if(publicationCreateListener == null)
-            throw new Exception(ErrorConstants.PUBLICATION_CREATE_INTERFACE_NULL_ERROR);
+//        if(publicationCreateListener == null)
+//            throw new Exception(ErrorConstants.PUBLICATION_CREATE_INTERFACE_NULL_ERROR);
+
+        Cursor cursor = null;
+
+        boolean result = false;
 
         sqLiteDatabase.beginTransaction();
 
         try {
 
+            UserModel currentUser = userController.getCurrentUser();
+
+            if(currentUser != null) {
+
+                String publicationLatitude  = "";
+                String publicationLongitude = "";
+
+                String userMapLatitude  = currentUser.getUserMapLatitude();
+                String userMapLongitude = currentUser.getUserMapLongitude();
+
+                if((!TextUtils.isEmpty(userMapLatitude)) && (!TextUtils.isEmpty(userMapLongitude))) {
+                    publicationLatitude  = userMapLatitude;
+                    publicationLongitude = userMapLongitude;
+                }
+
+                String[] columnsArr = { DatabaseConstants.PUBLICATION_TEXT,
+                                        DatabaseConstants.PUBLICATION_AUTHOR_ID,
+                                        DatabaseConstants.PUBLICATION_BADGE_ID,
+                                        DatabaseConstants.PUBLICATION_CREATED_AT,
+                                        DatabaseConstants.PUBLICATION_LATITUDE,
+                                        DatabaseConstants.PUBLICATION_LONGITUDE,
+                                        DatabaseConstants.PUBLICATION_REGION_NAME,
+                                        DatabaseConstants.PUBLICATION_STREET_NAME,
+                                        DatabaseConstants.PUBLICATION_HAS_QUIZ,
+                                        DatabaseConstants.PUBLICATION_HAS_IMAGES,
+                                        DatabaseConstants.PUBLICATION_IS_ANONYMOUS};
+
+                String[] dataArr  = {   publicationText,
+                                        String.valueOf(currentUser.getUserId()),
+                                        String.valueOf(badgeId),
+                                        String.valueOf(System.currentTimeMillis()),
+                                        publicationLatitude,
+                                        publicationLongitude,
+                                        currentUser.getUserRegionName(),
+                                        currentUser.getUserStreetName(),
+                                        (quizAnswerList.size() == 0)  ? "0" : "1",
+                                        (photoList.size() == 0)  ? "0" : "1",
+                                        (!isPublicationAnonymous) ? "0" : "1"};
+
+                cursor = databaseHandler.insertRow(sqLiteDatabase, DatabaseConstants.PUBLICATION_TABLE, columnsArr, dataArr);
+
+
+
+            }
+            else
+                throw new Exception(ErrorConstants.USER_NULL_ERROR);
 
             sqLiteDatabase.setTransactionSuccessful();
-            publicationCreateListener.onPublicationCreateSuccess();
+            //publicationCreateListener.onPublicationCreateSuccess();
         } catch(SQLiteException sqliteExc) {
-            publicationCreateListener.onPublicationCreateError(sqliteExc.toString());
+            //publicationCreateListener.onPublicationCreateError(sqliteExc.toString());
         } catch(Exception exc) {
             //Error in between database transaction
-            publicationCreateListener.onPublicationCreateError(exc.getMessage());
+            //publicationCreateListener.onPublicationCreateError(exc.getMessage());
         } finally {
             sqLiteDatabase.endTransaction();
         }
+
+        if((cursor != null) && (cursor.getCount() > 0)) {
+            cursor.moveToFirst();
+
+//            int userId = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.ROW_ID));
+
+//            addUserToMap(cursor);
+//            setCurrentUser(userMap.get(userId));
+
+            result = true;
+        }
+
+        return result;
     }
 
     /*public static PublicationController getInstance()  {

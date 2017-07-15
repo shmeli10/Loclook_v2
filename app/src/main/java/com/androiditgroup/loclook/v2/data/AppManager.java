@@ -127,7 +127,9 @@ public class AppManager implements DatabaseCreateInterface {
 
         if(publicationController == null) {
             try {
-                publicationController = new PublicationController(databaseHandler, sqLiteDatabase);
+                publicationController = new PublicationController(databaseHandler,
+                                                                  sqLiteDatabase,
+                                                                  userController);
             } catch (Exception exc) {
                 LocLookApp.showLog("AppManager: get PublicationController instance error: " +exc.getMessage());
             }
