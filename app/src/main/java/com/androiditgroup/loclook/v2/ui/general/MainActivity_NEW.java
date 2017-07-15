@@ -379,8 +379,7 @@ public class MainActivity_NEW   extends     ParentActivity
         FragmentManager fragmentManager = getFragmentManager();
         int backStackSize = fragmentManager.getBackStackEntryCount();
         if (backStackSize == 0) {
-            //setToolbarTitle(LocLookApp.getInstance().getResources().getString(R.string.feed_text));
-            setToolbarTitle("111111");
+            setToolbarTitle(LocLookApp_NEW.getInstance().getString(R.string.feed_text));
             selectedFragment = SelectedFragment.feedFragment;
             return;
         }

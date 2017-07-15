@@ -86,7 +86,7 @@ public class FeedFragment_NEW extends ParentFragment {
 
     @Override
     public String getFragmentTitle() {
-        return "1111111"; // locLookApp_NEW.getString(R.string.feed_text);
+        return LocLookApp_NEW.getInstance().getString(R.string.feed_text);
     }
 
     private void refreshFeedData() {

@@ -13,6 +13,8 @@ import com.androiditgroup.loclook.v2.data.AppManager;
 
 public class LocLookApp_NEW extends Application {
 
+    protected static LocLookApp_NEW appInstance;
+
     private AppManager  appManager;
 
     public static Typeface  fontBold,
@@ -29,11 +31,16 @@ public class LocLookApp_NEW extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        appInstance  = this;
 
         setFonts();
     }
 
     // ------------------------------------- GETTERS ----------------------------------------- //
+
+    public static LocLookApp_NEW getInstance() {
+        return appInstance;
+    }
 
     public AppManager getAppManager() {
         //LocLookApp_NEW.showLog("-------------------------------------");

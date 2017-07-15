@@ -35,6 +35,7 @@ public class ErrorConstants {
 
     public static final String DATABASE_CREATE_INTERFACE_NULL_ERROR         = "DatabaseCreateInterface is null";
     public static final String PUBLICATION_MAP_NULL_ERROR                   = "Publication map is null";
+    public static final String PUBLICATION_CREATE_INTERFACE_NULL_ERROR      = "PublicationCreateInterface is null";
     public static final String PUBLICATION_POPULATE_INTERFACE_NULL_ERROR    = "PublicationsPopulateInterface is null";
 
     public static final String DATABASE_HANDLER_NULL_ERROR                  = "DatabaseHandler is null";

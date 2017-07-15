@@ -41,6 +41,7 @@ import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter;
 import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter_NEW;
 import com.androiditgroup.loclook.v2.constants.SettingsConstants;
 import com.androiditgroup.loclook.v2.data.BadgeController;
+import com.androiditgroup.loclook.v2.interfaces.PublicationCreateInterface;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.BadgeModel;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
@@ -73,6 +74,7 @@ import static android.view.View.VISIBLE;
 public class PublicationFragment_NEW    extends     ParentFragment
                                         implements  //View.OnClickListener,
                                                     //TextWatcher,
+                                                    PublicationCreateInterface,
                                                     CompoundButton.OnCheckedChangeListener,
                                                     AddPublicationQuizAnswersAdapter.QuizAnswerCallback {
 
@@ -294,7 +296,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
 
     @Override
     public String getFragmentTitle() {
-        return "2222222"; // LocLookApp.getInstance().getString(R.string.publication_text);
+        return LocLookApp_NEW.getInstance().getString(R.string.publication_text);
     }
 
     @Override
@@ -665,4 +667,16 @@ public class PublicationFragment_NEW    extends     ParentFragment
         @Override
         public void afterTextChanged(Editable s) { }
     };
+
+    @Override
+    public void onPublicationCreateSuccess() {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("PublicationFragment_NEW: onPublicationCreateSuccess()");
+    }
+
+    @Override
+    public void onPublicationCreateError(String error) {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("PublicationFragment_NEW: onPublicationCreateError(): error: " +error);
+    }
 }
