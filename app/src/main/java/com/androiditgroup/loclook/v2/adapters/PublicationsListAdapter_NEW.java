@@ -1,5 +1,6 @@
 package com.androiditgroup.loclook.v2.adapters;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.data.BadgeController;
+import com.androiditgroup.loclook.v2.data.PhotoController;
 import com.androiditgroup.loclook.v2.data.UserController;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.BadgeModel;
+import com.androiditgroup.loclook.v2.models.PhotoModel;
 import com.androiditgroup.loclook.v2.models.PublicationModel;
 import com.androiditgroup.loclook.v2.models.Quiz;
 import com.androiditgroup.loclook.v2.models.User;
@@ -27,6 +30,7 @@ import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity_NEW;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
 import com.androiditgroup.loclook.v2.utils.FavoritesUtility;
+import com.androiditgroup.loclook.v2.utils.ImageDelivery;
 import com.androiditgroup.loclook.v2.utils.LikesUtility;
 import com.androiditgroup.loclook.v2.utils.QuizUtility;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
@@ -44,6 +48,7 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
     private LocLookApp_NEW      locLookApp_NEW;
 
     private BadgeController     badgeController;
+    private PhotoController     photoController;
     private UserController      userController;
 
     private ArrayList<PublicationModel> mPublicationList;
@@ -63,6 +68,7 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
         locLookApp_NEW  = ((LocLookApp_NEW) mMainActivity.getApplication());
 
         badgeController = locLookApp_NEW.getAppManager().getBadgeController();
+        photoController = locLookApp_NEW.getAppManager().getPhotoController();
         userController  = locLookApp_NEW.getAppManager().getUserController();
     }
 
@@ -140,17 +146,18 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
                 // отобразить фото-блок
                 holder.mPhotoBlock.setVisibility(View.VISIBLE);
 
-//            ArrayList<Bitmap> photosList = new ArrayList<>();
-//            photosList.addAll(ImageDelivery.getPhotosListById(publication.getPublicationPhotosIdsList()));
+                ArrayList<PhotoModel> photosList = photoController.getPublicationPhotoList(publication.getPublicationId()); // new ArrayList<>();
 
-                // LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): photosList size= " +photosList.size()+ ", tumbnailsList size= " +tumbnailsList.size());
+                /*photosList.addAll(ImageDelivery.getPhotosListById(publication.getPublicationPhotosIdsList()));
 
-//            GalleryListAdapter_NEW galleryAdapter = new GalleryListAdapter_NEW(mMainActivity, photosList);
-//            holder.mGalleryPhotosRV.setAdapter(galleryAdapter);
+                    // LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): photosList size= " +photosList.size()+ ", tumbnailsList size= " +tumbnailsList.size());
+
+                GalleryListAdapter_NEW galleryAdapter = new GalleryListAdapter_NEW(mMainActivity, photosList);
+                holder.mGalleryPhotosRV.setAdapter(galleryAdapter);*/
             }
 
             // если есть опрос
-            if (publication.isPublicationHasQuiz()) {
+            /*if (publication.isPublicationHasQuiz()) {
                 // отобразить блок с опросом
                 holder.mQuizBlock.setVisibility(View.VISIBLE);
 
@@ -198,7 +205,7 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
                     // задаем общее кол-во ответов в опросе
                     holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
                 }
-            }
+            }*/
 
             // --------------------------------- FAVORITES ---------------------------------------- //
 

@@ -5,7 +5,7 @@ import android.location.Location;
 import java.util.ArrayList;
 
 /**
- * Created by OS1 on 26.02.2017.
+ * Created by OS1 on 26.02.2016.
  */
 public class Publication {
 

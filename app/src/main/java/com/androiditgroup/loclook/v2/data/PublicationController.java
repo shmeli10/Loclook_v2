@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;
@@ -32,9 +33,11 @@ public class PublicationController {
 
     private PublicationsPopulateInterface   publicationsPopulateListener;
 
-    private Map<Integer, PublicationModel>  publicationMap      = new TreeMap<>();
+    private Map<Integer, PublicationModel>  publicationMap          = new TreeMap<>();
+    private Map<Integer, ArrayList<Bitmap>> publicationPhotosMap    = new TreeMap<>();
 
     private List<PublicationModel>          allPublicationsList = new ArrayList<>();
+
 
     public PublicationController(DatabaseHandler    databaseHandler,
                                  SQLiteDatabase     sqLiteDatabase,
@@ -75,8 +78,8 @@ public class PublicationController {
     }
 
     private void addPublicationToCollections(Cursor cursor) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("PublicationController: addPublicationToCollections()");
+        Log.e("LOG", "-------------------------------------");
+        Log.e("LOG", "PublicationController: addPublicationToCollections()");
 
         boolean noErrors = true;
 
@@ -86,84 +89,84 @@ public class PublicationController {
             publication.setPublicationId(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.ROW_ID)));
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: addPublicationToCollections(): set publication id error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: addPublicationToCollections(): set publication id error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationAuthorId(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_AUTHOR_ID)));
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: addPublicationToCollections(): set publication author id error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: addPublicationToCollections(): set publication author id error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationBadgeId(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_BADGE_ID)));
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: addPublicationToCollections(): set publication badge id error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: addPublicationToCollections(): set publication badge id error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationCreatedAt(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_CREATED_AT)));
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: PublicationController(): set publication created at error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: PublicationController(): set publication created at error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationLatitude(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_LATITUDE)));
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: PublicationController(): set publication latitude error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: PublicationController(): set publication latitude error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationLongitude(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_LONGITUDE)));
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: PublicationController(): set publication longitude error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: PublicationController(): set publication longitude error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationRegionName(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_REGION_NAME)));
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: PublicationController(): set publication region name error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: PublicationController(): set publication region name error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationStreetName(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_STREET_NAME)));
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: PublicationController(): set publication street name error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: PublicationController(): set publication street name error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationText(cursor.getString(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_TEXT)));
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: PublicationController(): set publication text error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: PublicationController(): set publication text error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationHasQuiz(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_HAS_QUIZ)) > 0);
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: addPublicationToCollections(): set publication has quiz error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: addPublicationToCollections(): set publication has quiz error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationHasImages(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_HAS_IMAGES)) > 0);
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: addPublicationToCollections(): set publication has images error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: addPublicationToCollections(): set publication has images error: " +exc.getMessage());
         }
 
         try {
             publication.setPublicationIsAnonymous(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.PUBLICATION_IS_ANONYMOUS)) > 0);
         } catch (Exception exc) {
             noErrors = false;
-            LocLookApp.showLog("PublicationController: addPublicationToCollections(): set publication is anonymous error: " +exc.getMessage());
+            Log.e("LOG", "PublicationController: addPublicationToCollections(): set publication is anonymous error: " +exc.getMessage());
         }
 
         // ------------------------------------------------------------------------------- //
@@ -171,32 +174,44 @@ public class PublicationController {
         if(noErrors){
             publicationMap.put(publication.getPublicationId(), publication);
             allPublicationsList.add(publication);
-            LocLookApp.showLog("PublicationController: addPublicationToCollections(): publication: " +publication.getPublicationId()+ " added");
+            Log.e("LOG", "PublicationController: addPublicationToCollections(): publication: " +publication.getPublicationId()+ " added");
         }
         else {
-            LocLookApp.showLog("PublicationController: addPublicationToCollections(): publication will not be added, error occured");
+            Log.e("LOG", "PublicationController: addPublicationToCollections(): publication will not be added, error occured");
         }
     }
 
+    private void addPublicationPhotos(int publicationId) {
+        //Log.e("LOG", "-------------------------------------");
+        //Log.e("LOG", "PublicationController: addPublicationPhotos()");
+
+        if(publicationId > 0) {
+
+        }
+        else
+            Log.e("LOG", "PublicationController: addPublicationPhotos(): publicationId is incorrect");
+
+    }
+
     public void populateAllPublicationCollections() {
-        //LocLookApp.showLog("-------------------------------------");
-        //LocLookApp.showLog("PublicationController: populateAllPublicationCollections()");
+        //Log.e("LOG", "-------------------------------------");
+        //Log.e("LOG", "PublicationController: populateAllPublicationCollections()");
 
         Cursor cursor = databaseHandler.queryColumns(sqLiteDatabase, DatabaseConstants.PUBLICATION_TABLE, null);
 
         // ------------------------------------------------------------------------------------ //
 
-        //LocLookApp.showLog("PublicationController: populateAllPublicationCollections(): cursor is null: " +(cursor == null));
+        //Log.e("LOG", "PublicationController: populateAllPublicationCollections(): cursor is null: " +(cursor == null));
 
 //        if(cursor != null)
-//            LocLookApp.showLog("PublicationController: populateAllPublicationCollections(): cursor rows: " +cursor.getCount());
+//            Log.e("LOG", "PublicationController: populateAllPublicationCollections(): cursor rows: " +cursor.getCount());
 
         // ------------------------------------------------------------------------------------ //
 
         if((cursor != null) && (cursor.getCount() > 0)) {
             cursor.moveToFirst();
 
-            // LocLookApp.showLog("UserController: populateUserMap(): cursor rows: " +cursor.getCount());
+            // Log.e("LOG", "UserController: populateUserMap(): cursor rows: " +cursor.getCount());
 
             do{
                 addPublicationToCollections(cursor);
@@ -204,27 +219,27 @@ public class PublicationController {
 
             if((publicationMap != null) && (publicationMap.size() >= 0)) {
                 if(publicationMap.size() == cursor.getCount())
-                    LocLookApp.showLog("PublicationController: populateAllPublicationCollections(): all publications inserted successfully");
+                    Log.e("LOG", "PublicationController: populateAllPublicationCollections(): all publications inserted successfully");
                 else
-                    LocLookApp.showLog("PublicationController: populateAllPublicationCollections(): was inserted " + publicationMap.size() + " publications");
+                    Log.e("LOG", "PublicationController: populateAllPublicationCollections(): was inserted " + publicationMap.size() + " publications");
 
                 if(publicationsPopulateListener != null)
                     publicationsPopulateListener.onPublicationsPopulateSuccess();
                 else
-                    LocLookApp.showLog("PublicationController: populateAllPublicationCollections(): publicationsPopulateListener is null");
+                    Log.e("LOG", "PublicationController: populateAllPublicationCollections(): publicationsPopulateListener is null");
             }
             else {
-                //LocLookApp.showLog("PublicationController: populateAllPublicationCollections(): publicationMap is null");
+                //Log.e("LOG", "PublicationController: populateAllPublicationCollections(): publicationMap is null");
                 publicationsPopulateListener.onPublicationsPopulateError(ErrorConstants.PUBLICATION_MAP_NULL_ERROR);
             }
         }
         else {
-            //LocLookApp.showLog("PublicationController: populateAllPublicationCollections(): cursor size = 0");
+            //Log.e("LOG", "PublicationController: populateAllPublicationCollections(): cursor size = 0");
 
             if(publicationsPopulateListener != null)
                 publicationsPopulateListener.onPublicationsPopulateSuccess();
             else
-                LocLookApp.showLog("PublicationController: populateAllPublicationCollections(): publicationsPopulateListener is null");
+                Log.e("LOG", "PublicationController: populateAllPublicationCollections(): publicationsPopulateListener is null");
         }
     }
 
@@ -329,8 +344,8 @@ public class PublicationController {
     }*/
 
     /*public void populateAllPublicationsList() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("PublicationController: populateAllPublicationsList()");
+        Log.e("LOG", "-------------------------------------");
+        Log.e("LOG", "PublicationController: populateAllPublicationsList()");
 
         allPublicationsList.clear();
 
@@ -339,7 +354,7 @@ public class PublicationController {
                                                              null);
 
         if((cursor != null) && (cursor.getCount() > 0)) {
-            LocLookApp.showLog("PublicationController: populateAllPublicationsList(): cursor.getCount()= " + cursor.getCount());
+            Log.e("LOG", "PublicationController: populateAllPublicationsList(): cursor.getCount()= " + cursor.getCount());
             cursor.moveToFirst();
 
             try {
@@ -366,10 +381,10 @@ public class PublicationController {
 
                 } while (cursor.moveToNext());
 
-                LocLookApp.showLog("PublicationController: populateAllPublicationsList(): allPublicationsList size= " +allPublicationsList.size());
+                Log.e("LOG", "PublicationController: populateAllPublicationsList(): allPublicationsList size= " +allPublicationsList.size());
 
             } catch(Exception exc) {
-                LocLookApp.showLog("PublicationController: populateAllPublicationsList(): error: " +exc.toString());
+                Log.e("LOG", "PublicationController: populateAllPublicationsList(): error: " +exc.toString());
             } finally {
                 cursor.close();
             }

@@ -17,6 +17,7 @@ import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.data.BadgeController;
+import com.androiditgroup.loclook.v2.data.PhotoController;
 import com.androiditgroup.loclook.v2.data.PublicationController;
 import com.androiditgroup.loclook.v2.data.SharedPreferencesController;
 import com.androiditgroup.loclook.v2.interfaces.PublicationsPopulateInterface;
@@ -30,6 +31,7 @@ public class SMSCodeFragment_NEW    extends     Fragment
 
     private LocLookApp_NEW              locLookApp_NEW;
     private BadgeController             badgeController;
+    private PhotoController             photoController;
     private PublicationController       publicationController;
     private SharedPreferencesController sharedPreferencesController;
 
@@ -186,6 +188,9 @@ public class SMSCodeFragment_NEW    extends     Fragment
 
             badgeController = locLookApp_NEW.getAppManager().getBadgeController();
             badgeController.populateBadgeMap();
+
+            photoController = locLookApp_NEW.getAppManager().getPhotoController();
+            photoController.populatePhotosMap();
 
             publicationController = locLookApp_NEW.getAppManager().getPublicationController();
             try {

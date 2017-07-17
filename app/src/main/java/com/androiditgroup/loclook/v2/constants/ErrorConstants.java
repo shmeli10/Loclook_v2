@@ -8,6 +8,7 @@ public class ErrorConstants {
 
     public static final String AUTHOR_ID_ERROR                              = "Author identifier is incorrect";
     public static final String BADGE_ID_ERROR                               = "Badge identifier is incorrect";
+    public static final String PHOTO_ID_ERROR                               = "Photo identifier is incorrect";
     public static final String PUBLICATION_ID_ERROR                         = "Publication identifier is incorrect";
     public static final String USER_ID_ERROR                                = "User identifier is incorrect";
     public static final String USER_RATE_ERROR                              = "User rate is incorrect";
@@ -21,6 +22,7 @@ public class ErrorConstants {
     public static final String LONGITUDE_NULL_ERROR                         = "Longitude is null";
     public static final String REGION_NAME_NULL_ERROR                       = "Region name is null";
     public static final String STREET_NAME_NULL_ERROR                       = "Street name is null";
+    public static final String PHOTO_BITMAP_NULL_ERROR                      = "Photo bitmap is null";
     public static final String PUBLICATION_TEXT_NULL_ERROR                  = "Publication text is null";
     public static final String USER_NAME_NULL_ERROR                         = "User name is null";
     public static final String USER_PHONE_NUMBER_NULL_ERROR                 = "User phone number is null";

@@ -18,6 +18,7 @@ public class AppManager implements DatabaseCreateInterface {
 
     private BadgeController             badgeController;
     //private InitAppController           initAppController;
+    private PhotoController             photoController;
     private PublicationController       publicationController;
     private SharedPreferencesController sharedPreferencesController;
     private UserController              userController;
@@ -116,6 +117,25 @@ public class AppManager implements DatabaseCreateInterface {
         //LocLookApp.showLog("AppManager: getSharedPreferencesController()");
 
         return sharedPreferencesController;
+    }
+
+    /**
+     * Method gets link on instance of {@link PhotoController} class
+     *
+     * @return  link on instance of {@link PhotoController} class
+     */
+    public PhotoController getPhotoController() {
+
+        if(photoController == null) {
+            try {
+                photoController = new PhotoController(  databaseHandler,
+                                                        sqLiteDatabase);
+            } catch (Exception exc) {
+                LocLookApp.showLog("AppManager: get PhotoController instance error: " +exc.getMessage());
+            }
+        }
+
+        return photoController;
     }
 
     /**
