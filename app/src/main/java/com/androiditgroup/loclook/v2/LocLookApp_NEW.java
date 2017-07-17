@@ -3,7 +3,9 @@ package com.androiditgroup.loclook.v2;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 
 import com.androiditgroup.loclook.v2.data.AppManager;
 
@@ -52,6 +54,18 @@ public class LocLookApp_NEW extends Application {
         return appManager;
     }
 
+    public static int getDrawableResId(String resource) {
+        return appInstance.getResources().getIdentifier("@drawable/" +resource,
+                                                        null,
+                                                        appInstance.getPackageName());
+    }
+
+    public static int getColorResId(String resource) {
+        return appInstance.getResources().getColor( appInstance.getResources().getIdentifier("@color/" +resource,
+                                                    null,
+                                                    appInstance.getPackageName()));
+    }
+
     // ------------------------------------- SETTERS ----------------------------------------- //
 
     private void setFonts() {
@@ -70,5 +84,15 @@ public class LocLookApp_NEW extends Application {
 
     public static void showLog(String msg) {
         Log.e("LOG", msg);
+    }
+
+    public static void showSimpleSnakeBar(View view, String resName) {
+        int resId   = appInstance.getResources().getIdentifier( "@string/" +resName,
+                                                                null,
+                                                                appInstance.getPackageName());
+
+        String text = appInstance.getResources().getString(resId);
+
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
     }
 }

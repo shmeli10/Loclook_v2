@@ -134,14 +134,14 @@ public class PublicationFragment_NEW    extends     ParentFragment
 //    private final int SMALL_PHOTO_WIDTH_LIMIT   = (int) LocLookApp.getInstance().getResources().getDimension(R.dimen.small_photo_max_width);
 //    private final int SMOOTH_ON                 = 2 * SMALL_PHOTO_WIDTH_LIMIT;
 
-    private BadgeModel          selectedBadge;
+    private BadgeModel selectedBadge;
 
-    private ArrayList<String>   mAnswersList    = new ArrayList<>();
-    private List<Bitmap>        mTumbnailsList  = new ArrayList<>();
-    private ArrayList<Bitmap>   mPhotosList     = new ArrayList<>();
+    private ArrayList<String>           mAnswersList        = new ArrayList<>();
+    private List<Bitmap>                mTumbnailsList      = new ArrayList<>();
+    private ArrayList<Bitmap>           mPhotosList         = new ArrayList<>();
 
-    private Map<Integer, BadgeModel>    badgeMap           = new LinkedHashMap<>();
-    private Map<Integer, Integer>       badgeImageResIdMap = new LinkedHashMap<>();
+    private Map<Integer, BadgeModel>    badgeMap            = new LinkedHashMap<>();
+    private Map<Integer, Integer>       badgeImageResIdMap  = new LinkedHashMap<>();
 
     private String mCreatedPhotoPath;
 
@@ -171,19 +171,28 @@ public class PublicationFragment_NEW    extends     ParentFragment
                              ViewGroup      container,
                              Bundle         savedInstanceState) {
 
+        locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView()");
+
         mMainActivity   = (MainActivity_NEW) getActivity();
         locLookApp_NEW  = ((LocLookApp_NEW) mMainActivity.getApplication());
 
         badgeController         = locLookApp_NEW.getAppManager().getBadgeController();
 
+        locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): badgeController is null: " +(badgeController == null));
+
         if(badgeController != null) {
             badgeMap = badgeController.getBadgeMap();
+
+            locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): badgeMap is null: " +(badgeMap == null));
+            locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): badgeMap is empty: " +badgeMap.isEmpty());
 
             // if(!LocLookApp.badgesMap.isEmpty()) {
             if((badgeMap != null) && (!badgeMap.isEmpty())) {
 
                 Integer mapKey  = badgeMap.keySet().iterator().next();
                 selectedBadge   = badgeMap.get(mapKey);
+
+                locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): selectedBadge is null: " +(selectedBadge == null));
             }
 
             badgeImageResIdMap = badgeController.getBadgeImageResIdMap();
@@ -191,7 +200,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
         else
             locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): error: " +ErrorConstants.BADGE_CONTROLLER_NULL_ERROR);
 
-        publicationController   = locLookApp_NEW.getAppManager().getPublicationController();
+        publicationController  = locLookApp_NEW.getAppManager().getPublicationController();
 
         View view = inflater.inflate(R.layout.fragment_send_publication,
                                      container,
@@ -205,7 +214,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
                         break;
                     case -1:
                     default:
-                        LocLookApp.showSimpleSnakeBar(mScroll, "publication_send_error_text");
+                        locLookApp_NEW.showSimpleSnakeBar(mScroll, "publication_send_error_text");
                         break;
                 }
                 mMainActivity.hidePD();
@@ -410,7 +419,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
     }
 
     private void sendPublication() {
-        LocLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication()");
+        locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication()");
 
         final String publicationText = mPublicationText.getText().toString();
 
@@ -420,7 +429,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
             return;
         }
 
-        mMainActivity.showPD();
+        //mMainActivity.showPD();
 
         Thread t = new Thread(new Runnable() {
             public void run() {
@@ -439,19 +448,28 @@ public class PublicationFragment_NEW    extends     ParentFragment
                 }
 
                 if(publicationController != null) {
-                    try {
-                        if(publicationController.createPublication(publicationText,
-                                                                selectedBadge.getBadgeId(),
-                                                                realQuizAnswersList,
-                                                                mPhotosList,
-                                                                mAnonymousSwitch.isChecked()))
-                            locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): publication created successfully");
-                        else
-                            locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): publication NOT created");
 
-                    } catch (Exception exc) {
-                        locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): error: " +exc.getMessage());
+                    if(selectedBadge != null) {
+
+                        try {
+                            if (publicationController.createPublication(publicationText,
+                                    selectedBadge.getBadgeId(),
+                                    realQuizAnswersList,
+                                    mPhotosList,
+                                    mAnonymousSwitch.isChecked())) {
+                                locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): publication created successfully");
+                                mHandler.sendEmptyMessage(1);
+                            } else {
+                                locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): publication NOT created");
+                                mHandler.sendEmptyMessage(-1);
+                            }
+
+                        } catch (Exception exc) {
+                            locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): error: " + exc.getMessage());
+                        }
                     }
+                    else
+                        locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): error: selectedBadge is null");
                 }
                 else
                     locLookApp_NEW.showLog("PublicationFragment_NEW: sendPublication(): error: " +ErrorConstants.PUBLICATION_CONTROLLER_NULL_ERROR);

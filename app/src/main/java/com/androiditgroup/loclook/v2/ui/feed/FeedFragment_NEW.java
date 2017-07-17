@@ -1,6 +1,5 @@
 package com.androiditgroup.loclook.v2.ui.feed;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -55,6 +54,8 @@ public class FeedFragment_NEW extends ParentFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        locLookApp_NEW.showLog("FeedFragment_NEW: onCreateView()");
+
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
 
         mMainActivity   = (MainActivity_NEW) getActivity();
@@ -90,9 +91,12 @@ public class FeedFragment_NEW extends ParentFragment {
     }
 
     private void refreshFeedData() {
-        mPublicationsList.clear();
+        locLookApp_NEW.showLog("FeedFragment_NEW: refreshFeedData(): _before_ mPublicationsList size= " +mPublicationsList.size());
 
+        mPublicationsList.clear();
         mPublicationsList.addAll(publicationController.getAllPublicationsList());
+
+        locLookApp_NEW.showLog("FeedFragment_NEW: refreshFeedData(): _after_ mPublicationsList size= " +mPublicationsList.size());
 
         if(mPublicationsList.size() > 0) {
             Collections.reverse(mPublicationsList);

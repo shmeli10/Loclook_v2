@@ -62,6 +62,14 @@ public class UserController {
         return currentUser;
     }
 
+    public UserModel getUserById(int userId) {
+
+        if((userId > 0) && (userMap.containsKey(userId)))
+            return userMap.get(userId);
+        else
+            return null;
+    }
+
     private void setCurrentUser(UserModel user) throws Exception {
         LocLookApp.showLog("-------------------------------------");
         LocLookApp.showLog("UserController: setCurrentUser()");

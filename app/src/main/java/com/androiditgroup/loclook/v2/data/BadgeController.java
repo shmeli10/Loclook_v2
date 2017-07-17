@@ -11,6 +11,7 @@ import com.androiditgroup.loclook.v2.data.DatabaseConstants;
 import com.androiditgroup.loclook.v2.data.DatabaseHandler;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.BadgeModel;
+import com.androiditgroup.loclook.v2.models.UserModel;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -63,6 +64,22 @@ public class BadgeController {
             return new LinkedHashMap<>();
 
         return badgeImageResIdMap;
+    }
+
+    public Integer getBadgeImageById(int badgeId) {
+
+        if((badgeId > 0) && (badgeImageResIdMap.containsKey(badgeId)))
+            return badgeImageResIdMap.get(badgeId);
+        else
+            return null;
+    }
+
+    public BadgeModel getBadgeById(int badgeId) {
+
+        if((badgeId > 0) && (badgeMap.containsKey(badgeId)))
+            return badgeMap.get(badgeId);
+        else
+            return null;
     }
 
     protected void populateBadgesTable() {

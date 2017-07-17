@@ -228,18 +228,18 @@ public class PublicationController {
         }
     }
 
-    public boolean createPublication(   String                        publicationText,
-                                        int                           badgeId,
-                                        ArrayList<String>             quizAnswerList,
-                                        ArrayList<Bitmap>             photoList,
-                                        boolean                       isPublicationAnonymous) throws Exception {
+    public boolean createPublication(String              publicationText,
+                                     int                 badgeId,
+                                     ArrayList<String>   quizAnswerList,
+                                     ArrayList<Bitmap>   photoList,
+                                     boolean             isPublicationAnonymous) throws Exception {
 
 //        if(publicationCreateListener == null)
 //            throw new Exception(ErrorConstants.PUBLICATION_CREATE_INTERFACE_NULL_ERROR);
 
-        Cursor cursor = null;
+        Cursor cursor   = null;
 
-        boolean result = false;
+        boolean result  = false;
 
         sqLiteDatabase.beginTransaction();
 
@@ -305,6 +305,8 @@ public class PublicationController {
 
         if((cursor != null) && (cursor.getCount() > 0)) {
             cursor.moveToFirst();
+
+            addPublicationToCollections(cursor);
 
 //            int userId = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.ROW_ID));
 
