@@ -311,9 +311,11 @@ public class PublicationController {
             //publicationCreateListener.onPublicationCreateSuccess();
         } catch(SQLiteException sqliteExc) {
             //publicationCreateListener.onPublicationCreateError(sqliteExc.toString());
+            Log.e("LOG", "PublicationController: createPublication(): SQLiteException: " +sqliteExc.getMessage());
         } catch(Exception exc) {
             //Error in between database transaction
             //publicationCreateListener.onPublicationCreateError(exc.getMessage());
+            Log.e("LOG", "PublicationController: createPublication(): Exception: " +exc.getMessage());
         } finally {
             sqLiteDatabase.endTransaction();
         }

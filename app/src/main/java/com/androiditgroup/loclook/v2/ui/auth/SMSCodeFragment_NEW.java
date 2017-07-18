@@ -30,7 +30,7 @@ public class SMSCodeFragment_NEW    extends     Fragment
                                     implements  PublicationsPopulateInterface {
 
     private LocLookApp_NEW              locLookApp_NEW;
-    private BadgeController             badgeController;
+//    private BadgeController             badgeController;
     private PhotoController             photoController;
     private PublicationController       publicationController;
     private SharedPreferencesController sharedPreferencesController;
@@ -186,8 +186,8 @@ public class SMSCodeFragment_NEW    extends     Fragment
             // LocLookApp.getInstance().setLoginStatus(true);
             sharedPreferencesController.setNewBooleanValue("is_undefined_user_mode", false);
 
-            badgeController = locLookApp_NEW.getAppManager().getBadgeController();
-            badgeController.populateBadgeMap();
+//            badgeController = locLookApp_NEW.getAppManager().getBadgeController();
+//            badgeController.populateBadgeMap();
 
             photoController = locLookApp_NEW.getAppManager().getPhotoController();
             photoController.populatePhotosMap();

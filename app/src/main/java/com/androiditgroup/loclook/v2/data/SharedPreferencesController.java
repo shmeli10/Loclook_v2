@@ -53,6 +53,8 @@ public class SharedPreferencesController {
             // phone
             addStringParam("user_phone_number",             "");
             addStringParam("user_name",                     "");
+
+            addIntParam("user_id",                          0);
         }
         else {
             LocLookApp.showLog("SharedPreferencesController: init(): do not init");

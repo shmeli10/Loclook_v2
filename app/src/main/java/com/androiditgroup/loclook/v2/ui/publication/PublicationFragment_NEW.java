@@ -134,7 +134,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
 //    private final int SMALL_PHOTO_WIDTH_LIMIT   = (int) LocLookApp.getInstance().getResources().getDimension(R.dimen.small_photo_max_width);
 //    private final int SMOOTH_ON                 = 2 * SMALL_PHOTO_WIDTH_LIMIT;
 
-    private BadgeModel selectedBadge;
+    private BadgeModel                  selectedBadge;
 
     private ArrayList<String>           mAnswersList        = new ArrayList<>();
     private List<Bitmap>                mTumbnailsList      = new ArrayList<>();
@@ -176,7 +176,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
         mMainActivity   = (MainActivity_NEW) getActivity();
         locLookApp_NEW  = ((LocLookApp_NEW) mMainActivity.getApplication());
 
-        badgeController         = locLookApp_NEW.getAppManager().getBadgeController();
+        badgeController = locLookApp_NEW.getAppManager().getBadgeController();
 
         locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): badgeController is null: " +(badgeController == null));
 
@@ -398,6 +398,8 @@ public class PublicationFragment_NEW    extends     ParentFragment
         @Override
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             selectedBadge = badgeMap.get(position+1);  // LocLookApp.badgesMap.get(String.valueOf(position+1));
+
+            locLookApp_NEW.showLog("PublicationFragment_NEW: onBadgeClickListener: onItemClick(): selectedBadge is null: " +(selectedBadge == null));
 
             if(selectedBadge != null) {
 

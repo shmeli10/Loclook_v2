@@ -107,7 +107,7 @@ public class PublicationsListAdapter extends RecyclerView.Adapter<PublicationsLi
             holder.mPhotoBlock.setVisibility(View.VISIBLE);
 
             ArrayList<Bitmap> photosList = new ArrayList<>();
-            photosList.addAll(ImageDelivery.getPhotosListById(publication.getPublicationPhotosIdsList()));
+            //photosList.addAll(ImageDelivery.getPhotosListById(publication.getPublicationPhotosIdsList()));
 
             // LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): photosList size= " +photosList.size()+ ", tumbnailsList size= " +tumbnailsList.size());
 

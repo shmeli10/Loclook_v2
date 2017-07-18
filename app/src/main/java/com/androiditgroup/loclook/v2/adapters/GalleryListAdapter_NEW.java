@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.ui.gallery.PhotoGalleryFragment;
+import com.androiditgroup.loclook.v2.ui.gallery.PhotoGalleryFragment_NEW;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity_NEW;
 
@@ -80,7 +81,7 @@ public class GalleryListAdapter_NEW extends RecyclerView.Adapter<GalleryListAdap
 //                        mGalleryItemInteractionListener.onImageClick(mGalleryPhotos.get(position), position, mGalleryPhotos);
 
                     MainActivity.selectedFragment = MainActivity.SelectedFragment.photo_gallery;
-                    mMainActivity.setFragment(PhotoGalleryFragment.newInstance(position, mGalleryPhotos), false, true);
+                    mMainActivity.setFragment(PhotoGalleryFragment_NEW.newInstance(position, mGalleryPhotos), false, true);
                 }
             });
     }

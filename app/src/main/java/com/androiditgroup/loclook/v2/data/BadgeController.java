@@ -44,6 +44,8 @@ public class BadgeController {
         this.databaseHandler    = databaseHandler;
         this.sqLiteDatabase     = sqLiteDatabase;
         this.context            = context;
+
+        populateBadgeMap();
     }
 
     public Map<Integer, BadgeModel> getBadgeMap() {
@@ -102,8 +104,10 @@ public class BadgeController {
                 insertedBadgesSum++;
         }
 
-        if(insertedBadgesSum == badgesArray.length)
+        if(insertedBadgesSum == badgesArray.length) {
+            populateBadgeMap();
             LocLookApp.showLog("BadgeController: populateBadgesTable(): all badges inserted successfully");
+        }
         else
             LocLookApp.showLog("BadgeController: populateBadgesTable(): was inserted " +insertedBadgesSum+ " badges");
     }

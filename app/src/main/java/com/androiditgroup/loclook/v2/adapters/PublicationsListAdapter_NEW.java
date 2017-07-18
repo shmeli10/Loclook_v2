@@ -146,14 +146,17 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
                 // отобразить фото-блок
                 holder.mPhotoBlock.setVisibility(View.VISIBLE);
 
-                ArrayList<PhotoModel> photosList = photoController.getPublicationPhotoList(publication.getPublicationId()); // new ArrayList<>();
+                ArrayList<Bitmap> publicationPhotoList = null; // new ArrayList<>();
+                try {
+                    publicationPhotoList = photoController.getPublicationPhotoList(publication.getPublicationId());
 
-                /*photosList.addAll(ImageDelivery.getPhotosListById(publication.getPublicationPhotosIdsList()));
-
-                    // LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): photosList size= " +photosList.size()+ ", tumbnailsList size= " +tumbnailsList.size());
-
-                GalleryListAdapter_NEW galleryAdapter = new GalleryListAdapter_NEW(mMainActivity, photosList);
-                holder.mGalleryPhotosRV.setAdapter(galleryAdapter);*/
+                    if((publicationPhotoList != null) && (!publicationPhotoList.isEmpty())) {
+                        GalleryListAdapter_NEW galleryAdapter = new GalleryListAdapter_NEW(mMainActivity, publicationPhotoList);
+                        holder.mGalleryPhotosRV.setAdapter(galleryAdapter);
+                    }
+                } catch (Exception exc) {
+                    locLookApp_NEW.showLog("PublicationsListAdapter: onBindViewHolder: getPublicationPhotoList error: " +exc.getMessage());
+                }
             }
 
             // если есть опрос

@@ -36,6 +36,8 @@ public class AppManager implements DatabaseCreateInterface {
 
         this.context = context;
 
+        sharedPreferencesController = new SharedPreferencesController(context);
+
         try {
             databaseHandler = new DatabaseHandler(context, this);
         } catch (Exception exc) {
@@ -55,7 +57,9 @@ public class AppManager implements DatabaseCreateInterface {
             }
 
             try {
-                userController = new UserController(databaseHandler, sqLiteDatabase);
+                userController = new UserController(databaseHandler,
+                                                    sqLiteDatabase,
+                                                    sharedPreferencesController);
             } catch (Exception exc) {
                 LocLookApp.showLog("AppManager: get UserController instance error: " +exc.getMessage());
             }
@@ -70,7 +74,7 @@ public class AppManager implements DatabaseCreateInterface {
             LocLookApp.showLog("AppManager: constructor: databaseHandler is null");
         }
 
-        sharedPreferencesController = new SharedPreferencesController(context);
+        //sharedPreferencesController = new SharedPreferencesController(context);
         sharedPreferencesController.init();
 
         /*try {

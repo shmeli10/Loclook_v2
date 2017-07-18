@@ -3,6 +3,7 @@ package com.androiditgroup.loclook.v2.data;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;
@@ -34,12 +35,15 @@ public class UserController {
     private DatabaseHandler databaseHandler;
     private SQLiteDatabase  sqLiteDatabase;
 
+    private SharedPreferencesController sharedPreferencesController;
+
     private Map<Integer, UserModel> userMap = new HashMap<>();
 
     private UserModel currentUser;
 
-    public UserController(DatabaseHandler databaseHandler,
-                          SQLiteDatabase sqLiteDatabase) throws Exception {
+    public UserController(DatabaseHandler               databaseHandler,
+                          SQLiteDatabase                sqLiteDatabase,
+                          SharedPreferencesController   sharedPreferencesController) throws Exception {
         //LocLookApp.showLog("-------------------------------------");
         //LocLookApp.showLog("UserController: constructor.");
 
@@ -49,10 +53,28 @@ public class UserController {
         if(sqLiteDatabase == null)
             throw new Exception(ErrorConstants.SQLITE_DATABASE_NULL_ERROR);
 
-        this.databaseHandler    = databaseHandler;
-        this.sqLiteDatabase     = sqLiteDatabase;
+        if(sharedPreferencesController == null)
+            throw new Exception(ErrorConstants.SHARED_PREFERENCES_CONTROLLER_NULL_ERROR);
+
+        this.databaseHandler             = databaseHandler;
+        this.sqLiteDatabase              = sqLiteDatabase;
+        this.sharedPreferencesController = sharedPreferencesController;
 
         populateUserMap();
+
+        int currentUserId = sharedPreferencesController.getIntValue("user_id");
+
+        if(currentUserId > 0) {
+            //Log.e("LOG", "UserController: constructor: userId= " +currentUserId);
+
+            if(userMap.containsKey(currentUserId))
+                setCurrentUser(userMap.get(currentUserId));
+            else
+                Log.e("LOG", "UserController: constructor: currentUserId not exists in userMap");
+        }
+        else {
+            Log.e("LOG", "UserController: constructor: userId is incorrect");
+        }
     }
 
     public UserModel getCurrentUser() {
@@ -266,6 +288,8 @@ public class UserController {
             UserModel user = entry.getValue();
 
             if(user.getUserPhoneNumber().equals(phoneNumber)) {
+                sharedPreferencesController.setNewIntValue("user_id", user.getUserId());
+
                 setCurrentUser(user);
                 result = true;
                 break;
@@ -293,7 +317,11 @@ public class UserController {
             int userId = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.ROW_ID));
 
             addUserToMap(cursor);
-            setCurrentUser(userMap.get(userId));
+
+            UserModel user = userMap.get(userId);
+
+            sharedPreferencesController.setNewIntValue("user_id", user.getUserId());
+            setCurrentUser(user);
 
             result = true;
         }

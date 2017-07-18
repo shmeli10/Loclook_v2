@@ -22,7 +22,8 @@ public class PhotoController {
     private DatabaseHandler databaseHandler;
     private SQLiteDatabase  sqLiteDatabase;
 
-    private Map<Integer, PhotoModel> photoMap = new TreeMap<>();
+    private Map<Integer, PhotoModel>        photoMap            = new TreeMap<>();
+    private Map<Integer, ArrayList<Bitmap>> publicationPhotoMap = new TreeMap<>();
 
     public PhotoController(DatabaseHandler    databaseHandler,
                            SQLiteDatabase     sqLiteDatabase) throws Exception {
@@ -77,6 +78,18 @@ public class PhotoController {
 
         if(noErrors){
             photoMap.put(photo.getPhotoId(), photo);
+
+            if(publicationPhotoMap.containsKey(photo.getPublicationId())) {
+                ArrayList<Bitmap> publicationPhotoList = publicationPhotoMap.get(photo.getPublicationId());
+                publicationPhotoList.add(photo.getPhotoImg());
+            }
+            else {
+                ArrayList<Bitmap> publicationPhotoList = new ArrayList<>();
+                publicationPhotoList.add(photo.getPhotoImg());
+
+                publicationPhotoMap.put(photo.getPublicationId(), publicationPhotoList);
+            }
+
             Log.e("LOG", "PhotoController: addPhotoToMap(): photo: " +photo.getPhotoId()+ " added");
         }
         else {
@@ -101,10 +114,16 @@ public class PhotoController {
             Log.e("LOG", "PublicationController: populateAllPublicationCollections(): publicationsPopulateListener is null");
     }
 
-    public ArrayList<PhotoModel> getPublicationPhotoList(int publicationId) {
+    public ArrayList<Bitmap> getPublicationPhotoList(int publicationId) throws Exception {
         //Log.e("LOG", "-------------------------------------");
         //Log.e("LOG", "PhotoController: getPublicationPhotoList()");
 
-        return null;
+        if(publicationId <= 0)
+            throw new Exception(ErrorConstants.PUBLICATION_ID_ERROR);
+
+        if(publicationPhotoMap.containsKey(publicationId))
+            return publicationPhotoMap.get(publicationId);
+        else
+            return new ArrayList<>();
     }
 }

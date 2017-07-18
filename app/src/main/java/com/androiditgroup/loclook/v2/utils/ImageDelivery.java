@@ -13,14 +13,14 @@ import com.androiditgroup.loclook.v2.LocLookApp;
 
 public class ImageDelivery {
 
-    public static Bitmap getPhotoById(String id) {
+/*    public static Bitmap getPhotoById(String id) {
 //        LocLookApp.showLog("ImageDelivery: getPhotoById(): id is null:" +(id == null));
 
         if((id != null) && (LocLookApp.imagesMap.containsKey(id)))
             return LocLookApp.imagesMap.get(id);
 
         return null;
-    }
+    }*/
 
 //    public static Bitmap getTumbnailById(String id) {
 //        if((id != null) && (LocLookApp.tumbnailsMap.containsKey(id)))
@@ -29,7 +29,7 @@ public class ImageDelivery {
 //        return null;
 //    }
 
-    public static ArrayList<Bitmap> getPhotosListById(ArrayList<String> photosIdsList) {
+/*    public static ArrayList<Bitmap> getPhotosListById(ArrayList<String> photosIdsList) {
 
         ArrayList<Bitmap> result = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class ImageDelivery {
         }
 
         return result;
-    }
+    }*/
 
 //    public static ArrayList<Bitmap> getTumbnailsListById(ArrayList<String> photosIdsList) {
 //
