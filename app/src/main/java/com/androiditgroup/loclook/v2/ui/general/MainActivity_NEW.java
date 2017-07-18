@@ -23,8 +23,11 @@ import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.data.AppManager;
+import com.androiditgroup.loclook.v2.data.PublicationController;
 import com.androiditgroup.loclook.v2.data.SharedPreferencesController;
+import com.androiditgroup.loclook.v2.data.UserController;
 import com.androiditgroup.loclook.v2.models.User;
+import com.androiditgroup.loclook.v2.models.UserModel;
 import com.androiditgroup.loclook.v2.ui.SplashActivity;
 import com.androiditgroup.loclook.v2.ui.badges.BadgesFragment;
 import com.androiditgroup.loclook.v2.ui.favorites.FavoritesFragment;
@@ -53,8 +56,11 @@ public class MainActivity_NEW   extends     ParentActivity
                                 implements  FragmentManager.OnBackStackChangedListener {
 
     private LocLookApp_NEW              locLookApp_NEW;
-    private AppManager appManager;
+    private AppManager                  appManager;
+
+    private PublicationController       publicationController;
     private SharedPreferencesController sharedPreferencesController;
+    private UserController              userController;
 
     private TextView                    mToolbarTitle;
     private ImageButton                 mNavigationBtn;
@@ -176,6 +182,7 @@ public class MainActivity_NEW   extends     ParentActivity
         mLocationDefiner = new DefineUserLocationName((LocationManager) getSystemService(LOCATION_SERVICE));
 
         sharedPreferencesController = appManager.getSharedPreferencesController();
+        userController              = appManager.getUserController();
 
         showStartFragment();
 
@@ -329,9 +336,10 @@ public class MainActivity_NEW   extends     ParentActivity
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                User user = LocLookApp.usersMap.get(LocLookApp.appUserId);
+                UserModel user = userController.getCurrentUser(); // LocLookApp.usersMap.get(LocLookApp.appUserId);
+
                 if(user != null) {
-                    mLeftMenuUserName.setText(user.getName());
+                    mLeftMenuUserName.setText(user.getUserName());
                 }
 
                 // if(LocLookApp.user != null) {
@@ -415,11 +423,22 @@ public class MainActivity_NEW   extends     ParentActivity
 //        if (sharedPreferencesController.containsParam("is_undefined_user_mode")) {
 //            LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): this is not a first application start");
 
+
             boolean isUndefinedUserMode = sharedPreferencesController.isUserUndefinedMode();
 
             // if user is logged in
             if(!isUndefinedUserMode) {
                 LocLookApp_NEW.showLog("MainActivity_NEW: onCreate(): user is logged in");
+
+                setLeftMenuUserData();
+
+                publicationController = locLookApp_NEW.getAppManager().getPublicationController();
+                try {
+                    //publicationController.setPublicationsPopulateListener(MainActivity_NEW.this);
+                    publicationController.populateAllPublicationCollections();
+                } catch (Exception exc) {
+                    LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener(): setPublicationsPopulateListener error: " +exc.getMessage());
+                }
             }
             // if user is not logged in
             else {

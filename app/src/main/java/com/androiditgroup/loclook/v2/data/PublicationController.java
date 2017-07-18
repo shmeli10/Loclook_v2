@@ -197,6 +197,10 @@ public class PublicationController {
         //Log.e("LOG", "-------------------------------------");
         //Log.e("LOG", "PublicationController: populateAllPublicationCollections()");
 
+        publicationMap.clear();
+        publicationPhotosMap.clear();
+        allPublicationsList.clear();
+
         Cursor cursor = databaseHandler.queryColumns(sqLiteDatabase, DatabaseConstants.PUBLICATION_TABLE, null);
 
         // ------------------------------------------------------------------------------------ //

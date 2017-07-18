@@ -32,7 +32,7 @@ public class SMSCodeFragment_NEW    extends     Fragment
     private LocLookApp_NEW              locLookApp_NEW;
 //    private BadgeController             badgeController;
     private PhotoController             photoController;
-    private PublicationController       publicationController;
+//    private PublicationController       publicationController;
     private SharedPreferencesController sharedPreferencesController;
 
     private AuthActivity_NEW    mAuthActivity;
@@ -192,13 +192,15 @@ public class SMSCodeFragment_NEW    extends     Fragment
             photoController = locLookApp_NEW.getAppManager().getPhotoController();
             photoController.populatePhotosMap();
 
-            publicationController = locLookApp_NEW.getAppManager().getPublicationController();
+            mAuthActivity.moveForward();
+
+            /*publicationController = locLookApp_NEW.getAppManager().getPublicationController();
             try {
                 publicationController.setPublicationsPopulateListener(SMSCodeFragment_NEW.this);
                 publicationController.populateAllPublicationCollections();
             } catch (Exception exc) {
                 LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener(): setPublicationsPopulateListener error: " +exc.getMessage());
-            }
+            }*/
         }
     };
 
@@ -208,7 +210,7 @@ public class SMSCodeFragment_NEW    extends     Fragment
         LocLookApp_NEW.showLog("SMSCodeFragment_NEW: onPublicationsPopulateSuccess()");
 
         // двигаемся к следующему окну приложения
-        mAuthActivity.moveForward();
+//        mAuthActivity.moveForward();
     }
 
     @Override
