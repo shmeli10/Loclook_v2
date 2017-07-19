@@ -151,9 +151,8 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
                 // отобразить фото-блок
                 holder.mPhotoBlock.setVisibility(View.VISIBLE);
 
-                ArrayList<Bitmap> publicationPhotoList = null; // new ArrayList<>();
                 try {
-                    publicationPhotoList = photoController.getPublicationPhotoList(publication.getPublicationId());
+                    ArrayList<Bitmap> publicationPhotoList = photoController.getPublicationPhotoList(publication.getPublicationId());
 
                     if((publicationPhotoList != null) && (!publicationPhotoList.isEmpty())) {
                         GalleryListAdapter_NEW galleryAdapter = new GalleryListAdapter_NEW(mMainActivity, publicationPhotoList);
@@ -165,7 +164,7 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
             }
 
             // если есть опрос
-            /*if (publication.isPublicationHasQuiz()) {
+            if (publication.isPublicationHasQuiz()) {
                 // отобразить блок с опросом
                 holder.mQuizBlock.setVisibility(View.VISIBLE);
 
@@ -213,7 +212,7 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
                     // задаем общее кол-во ответов в опросе
                     holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
                 }
-            }*/
+            }
 
             // --------------------------------- FAVORITES ---------------------------------------- //
 

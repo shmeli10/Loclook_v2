@@ -18,7 +18,7 @@ public class QuizController {
 
     private static QuizController quizController = null;
 
-    private Map<Integer, Quiz> sortedByPublicationIdQuizesMap = new HashMap<>();
+    private Map<Integer, Quiz> sortedByPublicationIdQuizeMap = new HashMap<>();
 
     public static QuizController getQuizControllerInstance()  {
 
@@ -33,7 +33,7 @@ public class QuizController {
         LocLookApp.showLog("-------------------------------------");
         LocLookApp.showLog("LikeController: populateSortedByPublicationIdLikesMap()");
 
-        sortedByPublicationIdQuizesMap.clear();
+        sortedByPublicationIdQuizeMap.clear();
 
         // select distinct publicationId
         Cursor cursor = DBManager.getInstance().getDataBase().query(true,
