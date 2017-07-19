@@ -15,7 +15,9 @@ import com.androiditgroup.loclook.v2.interfaces.PublicationsPopulateInterface;
 import com.androiditgroup.loclook.v2.models.PublicationModel;
 import com.androiditgroup.loclook.v2.models.UserModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -36,7 +38,7 @@ public class PublicationController {
     private Map<Integer, PublicationModel>  publicationMap          = new TreeMap<>();
     private Map<Integer, ArrayList<Bitmap>> publicationPhotosMap    = new TreeMap<>();
 
-    private List<PublicationModel>          allPublicationsList = new ArrayList<>();
+    private List<PublicationModel>          allPublicationsList     = new ArrayList<>();
 
 
     public PublicationController(DatabaseHandler    databaseHandler,
@@ -294,7 +296,7 @@ public class PublicationController {
                 String[] dataArr  = {   publicationText,
                                         String.valueOf(currentUser.getUserId()),
                                         String.valueOf(badgeId),
-                                        String.valueOf(System.currentTimeMillis()),
+                                        getFormattedDate(System.currentTimeMillis()),
                                         publicationLatitude,
                                         publicationLongitude,
                                         currentUser.getUserRegionName(),
@@ -338,6 +340,17 @@ public class PublicationController {
         }
 
         return result;
+    }
+
+    private String getFormattedDate(long dateInMillis) throws Exception {
+
+        if(dateInMillis <= 0)
+            throw new Exception(ErrorConstants.DATE_ERROR);
+
+        SimpleDateFormat sdf    = new SimpleDateFormat("dd.MM.yy HH:mm");
+        Date now                = new Date(dateInMillis);
+
+        return sdf.format(now);
     }
 
     /*public static PublicationController getInstance()  {

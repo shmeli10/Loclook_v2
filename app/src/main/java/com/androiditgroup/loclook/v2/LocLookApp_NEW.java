@@ -4,10 +4,15 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.androiditgroup.loclook.v2.constants.ErrorConstants;
 import com.androiditgroup.loclook.v2.data.AppManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Serghei Ostrovschi on on 7/5/16.
@@ -54,13 +59,19 @@ public class LocLookApp_NEW extends Application {
         return appManager;
     }
 
-    public static int getDrawableResId(String resource) {
+    public static int getDrawableResId(String resource) throws Exception {
+        if(TextUtils.isEmpty(resource))
+            throw new Exception(ErrorConstants.RESOURCE_NULL_ERROR);
+
         return appInstance.getResources().getIdentifier("@drawable/" +resource,
                                                         null,
                                                         appInstance.getPackageName());
     }
 
-    public static int getColorResId(String resource) {
+    public static int getColorResId(String resource) throws Exception {
+        if(TextUtils.isEmpty(resource))
+            throw new Exception(ErrorConstants.RESOURCE_NULL_ERROR);
+
         return appInstance.getResources().getColor( appInstance.getResources().getIdentifier("@color/" +resource,
                                                     null,
                                                     appInstance.getPackageName()));

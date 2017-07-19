@@ -2,6 +2,7 @@ package com.androiditgroup.loclook.v2.adapters;
 
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,8 +92,12 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
                                  int    position) {
 //        LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): publication(" +position+ ")");
 
-        final int textColorActive = locLookApp_NEW.getColorResId("colorPrimary");
-        final int textColorSimple = locLookApp_NEW.getColorResId("dark_grey");
+        try {
+            final int textColorActive = locLookApp_NEW.getColorResId("colorPrimary");
+            final int textColorSimple = locLookApp_NEW.getColorResId("dark_grey");
+        } catch (Exception exc) {
+            Log.e("LOG", "PublicationsListAdapter_NEW: onBindViewHolder(): getColorResId error: " +exc.getMessage());
+        }
 
         final PublicationModel publication = mPublicationList.get(position);
 
