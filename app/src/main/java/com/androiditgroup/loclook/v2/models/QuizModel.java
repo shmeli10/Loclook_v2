@@ -10,17 +10,17 @@ import java.util.ArrayList;
 
 public class QuizModel {
 
-    private ArrayList<QuizModel> quizAnswerList = new ArrayList<>();
+    private ArrayList<QuizAnswerModel> quizAnswerList = new ArrayList<>();
 
     // ------------------------------------- GETTERS ----------------------------------------- //
 
-    public ArrayList<QuizModel> getQuizAnswerList() {
+    public ArrayList<QuizAnswerModel> getQuizAnswerList() {
         return quizAnswerList;
     }
 
     // ------------------------------------- SETTERS ----------------------------------------- //
 
-    public void setQuizAnswerList(ArrayList<QuizModel> quizAnswerList) throws Exception {
+    public void setQuizAnswerList(ArrayList<QuizAnswerModel> quizAnswerList) throws Exception {
 
         if(quizAnswerList == null)
             throw new Exception(ErrorConstants.QUIZ_ANSWER_LIST_NULL_ERROR);

@@ -237,7 +237,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 result = queryColumns(sqLiteDatabase,
                                       tableName,
                                       null,
-                                      "_ID",
+                                      DatabaseConstants.ROW_ID,
                                       String.valueOf(rowID));
             }
         }

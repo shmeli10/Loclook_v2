@@ -20,6 +20,7 @@ public class AppManager implements DatabaseCreateInterface {
     //private InitAppController           initAppController;
     private PhotoController             photoController;
     private PublicationController       publicationController;
+    private QuizController              quizController;
     private SharedPreferencesController sharedPreferencesController;
     private UserController              userController;
 
@@ -62,6 +63,13 @@ public class AppManager implements DatabaseCreateInterface {
                                                     sharedPreferencesController);
             } catch (Exception exc) {
                 LocLookApp.showLog("AppManager: get UserController instance error: " +exc.getMessage());
+            }
+
+            try {
+                quizController = new QuizController(databaseHandler,
+                                                    sqLiteDatabase);
+            } catch (Exception exc) {
+                LocLookApp.showLog("AppManager: get QuizController instance error: " +exc.getMessage());
             }
 
             // ---------------------------------------------------------------------------- //
@@ -153,13 +161,33 @@ public class AppManager implements DatabaseCreateInterface {
             try {
                 publicationController = new PublicationController(databaseHandler,
                                                                   sqLiteDatabase,
-                                                                  userController);
+                                                                  userController,
+                                                                  quizController);
             } catch (Exception exc) {
                 LocLookApp.showLog("AppManager: get PublicationController instance error: " +exc.getMessage());
             }
         }
 
         return publicationController;
+    }
+
+    /**
+     * Method gets link on instance of {@link QuizController} class
+     *
+     * @return  link on instance of {@link QuizController} class
+     */
+    public QuizController getQuizController() {
+
+//        if(quizController == null) {
+//            try {
+//                quizController = new QuizController(databaseHandler,
+//                                                    sqLiteDatabase);
+//            } catch (Exception exc) {
+//                LocLookApp.showLog("AppManager: get QuizController instance error: " +exc.getMessage());
+//            }
+//        }
+
+        return quizController;
     }
 
     /**

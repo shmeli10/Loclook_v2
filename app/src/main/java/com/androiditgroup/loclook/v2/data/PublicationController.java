@@ -8,9 +8,7 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;
-import com.androiditgroup.loclook.v2.interfaces.PublicationCreateInterface;
 import com.androiditgroup.loclook.v2.interfaces.PublicationsPopulateInterface;
 import com.androiditgroup.loclook.v2.models.PublicationModel;
 import com.androiditgroup.loclook.v2.models.UserModel;
@@ -31,6 +29,7 @@ public class PublicationController {
     private DatabaseHandler                 databaseHandler;
     private SQLiteDatabase                  sqLiteDatabase;
 
+    private QuizController                  quizController;
     private UserController                  userController;
 
     private PublicationsPopulateInterface   publicationsPopulateListener;
@@ -43,7 +42,8 @@ public class PublicationController {
 
     public PublicationController(DatabaseHandler    databaseHandler,
                                  SQLiteDatabase     sqLiteDatabase,
-                                 UserController     userController) throws Exception {
+                                 UserController     userController,
+                                 QuizController     quizController) throws Exception {
         //LocLookApp.showLog("-------------------------------------");
         //LocLookApp.showLog("PublicationController: constructor.");
 
@@ -59,6 +59,7 @@ public class PublicationController {
         this.databaseHandler    = databaseHandler;
         this.sqLiteDatabase     = sqLiteDatabase;
         this.userController     = userController;
+        this.quizController     = quizController;
 
         //populateAllPublicationCollections();
     }
@@ -255,12 +256,16 @@ public class PublicationController {
                                      ArrayList<Bitmap>   photoList,
                                      boolean             isPublicationAnonymous) throws Exception {
 
+        Log.e("LOG", "PublicationController: createPublication(): quizAnswerList size= " +quizAnswerList.size());
+
 //        if(publicationCreateListener == null)
 //            throw new Exception(ErrorConstants.PUBLICATION_CREATE_INTERFACE_NULL_ERROR);
 
         Cursor cursor   = null;
 
         boolean result  = false;
+
+        boolean noErrors = true;
 
         sqLiteDatabase.beginTransaction();
 
@@ -307,13 +312,36 @@ public class PublicationController {
 
                 cursor = databaseHandler.insertRow(sqLiteDatabase, DatabaseConstants.PUBLICATION_TABLE, columnsArr, dataArr);
 
+                Log.e("LOG", "PublicationController: createPublication(): (cursor == null): "           +(cursor == null));
+                Log.e("LOG", "PublicationController: createPublication(): cursor.getCount() <= 0): "    +(cursor.getCount() <= 0));
 
+                if((cursor == null) || (cursor.getCount() <= 0)) {
+                    noErrors = false;
+                }
+                else {
+                    cursor.moveToFirst();
 
+                    boolean createdQuiz = quizController.createQuiz(cursor.getInt(cursor.getColumnIndex(DatabaseConstants.ROW_ID)),
+                                                                    quizAnswerList);
+
+                    Log.e("LOG", "PublicationController: createPublication(): createdQuiz: " +createdQuiz);
+
+                    if(!createdQuiz)
+                        noErrors = false;
+                }
             }
             else
                 throw new Exception(ErrorConstants.USER_NULL_ERROR);
 
-            sqLiteDatabase.setTransactionSuccessful();
+            if(noErrors) {
+                sqLiteDatabase.setTransactionSuccessful();
+
+                //cursor.moveToFirst();
+                addPublicationToCollections(cursor);
+
+                result = true;
+            }
+
             //publicationCreateListener.onPublicationCreateSuccess();
         } catch(SQLiteException sqliteExc) {
             //publicationCreateListener.onPublicationCreateError(sqliteExc.toString());
@@ -324,9 +352,10 @@ public class PublicationController {
             Log.e("LOG", "PublicationController: createPublication(): Exception: " +exc.getMessage());
         } finally {
             sqLiteDatabase.endTransaction();
+            cursor.close();
         }
 
-        if((cursor != null) && (cursor.getCount() > 0)) {
+/*        if((cursor != null) && (cursor.getCount() > 0)) {
             cursor.moveToFirst();
 
             addPublicationToCollections(cursor);
@@ -337,7 +366,7 @@ public class PublicationController {
 //            setCurrentUser(userMap.get(userId));
 
             result = true;
-        }
+        }*/
 
         return result;
     }
@@ -352,62 +381,4 @@ public class PublicationController {
 
         return sdf.format(now);
     }
-
-    /*public static PublicationController getInstance()  {
-
-        if(publicationController == null) {
-            publicationController = new PublicationController();
-        }
-
-        return publicationController;
-    }*/
-
-    /*public void populateAllPublicationsList() {
-        Log.e("LOG", "-------------------------------------");
-        Log.e("LOG", "PublicationController: populateAllPublicationsList()");
-
-        allPublicationsList.clear();
-
-        Cursor cursor = DBManager.getInstance().queryColumns(DBManager.getInstance().getDataBase(),
-                                                             Constants.DataBase.PUBLICATION_TABLE,
-                                                             null);
-
-        if((cursor != null) && (cursor.getCount() > 0)) {
-            Log.e("LOG", "PublicationController: populateAllPublicationsList(): cursor.getCount()= " + cursor.getCount());
-            cursor.moveToFirst();
-
-            try {
-
-                do {
-
-                    int publicationId = cursor.getInt(cursor.getColumnIndex("_ID"));
-
-                    Publication.Builder publicationBuilder = new Publication.Builder();
-                    publicationBuilder.publicationId(publicationId);
-                    publicationBuilder.publicationAuthorId(cursor.getInt(cursor.getColumnIndex("AUTHOR_ID")));
-                    publicationBuilder.publicationBadgeId(cursor.getInt(cursor.getColumnIndex("BADGE_ID")));
-                    publicationBuilder.publicationCommentsSum(CommentController.getCommentsControllerInstance().getPublicationCommentsSum(publicationId));
-                    publicationBuilder.publicationLikesSum(LikeController.getInstance().getPublicationLikesSum(publicationId));
-                    publicationBuilder.publicationText(cursor.getString(cursor.getColumnIndex("TEXT")));
-                    publicationBuilder.publicationLatitude(cursor.getString(cursor.getColumnIndex("LATITUDE")));
-                    publicationBuilder.publicationLongitude(cursor.getString(cursor.getColumnIndex("LONGITUDE")));
-                    publicationBuilder.publicationRegionName(cursor.getString(cursor.getColumnIndex("REGION_NAME")));
-                    publicationBuilder.publicationStreetName(cursor.getString(cursor.getColumnIndex("STREET_NAME")));
-                    publicationBuilder.publicationCreatedAt(cursor.getString(cursor.getColumnIndex("CREATED_AT")));
-                    publicationBuilder.publicationHasQuiz(cursor.getInt(cursor.getColumnIndex("HAS_QUIZ")) > 0);
-                    publicationBuilder.publicationHasImages(cursor.getInt(cursor.getColumnIndex("HAS_IMAGES")) > 0);
-                    publicationBuilder.publicationIsAnonymous(cursor.getInt(cursor.getColumnIndex("IS_ANONYMOUS")) > 0);
-
-                } while (cursor.moveToNext());
-
-                Log.e("LOG", "PublicationController: populateAllPublicationsList(): allPublicationsList size= " +allPublicationsList.size());
-
-            } catch(Exception exc) {
-                Log.e("LOG", "PublicationController: populateAllPublicationsList(): error: " +exc.toString());
-            } finally {
-                cursor.close();
-            }
-
-        }
-    }*/
 }

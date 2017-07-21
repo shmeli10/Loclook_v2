@@ -19,12 +19,14 @@ import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.data.BadgeController;
 import com.androiditgroup.loclook.v2.data.PhotoController;
+import com.androiditgroup.loclook.v2.data.QuizController;
 import com.androiditgroup.loclook.v2.data.UserController;
 import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.BadgeModel;
 import com.androiditgroup.loclook.v2.models.PhotoModel;
 import com.androiditgroup.loclook.v2.models.PublicationModel;
 import com.androiditgroup.loclook.v2.models.Quiz;
+import com.androiditgroup.loclook.v2.models.QuizModel;
 import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.models.UserModel;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity;
@@ -50,6 +52,7 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
 
     private BadgeController     badgeController;
     private PhotoController     photoController;
+    private QuizController      quizController;
     private UserController      userController;
 
     private ArrayList<PublicationModel> mPublicationList;
@@ -70,6 +73,7 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
 
         badgeController = locLookApp_NEW.getAppManager().getBadgeController();
         photoController = locLookApp_NEW.getAppManager().getPhotoController();
+        quizController  = locLookApp_NEW.getAppManager().getQuizController();
         userController  = locLookApp_NEW.getAppManager().getUserController();
     }
 
@@ -169,48 +173,57 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
                 holder.mQuizBlock.setVisibility(View.VISIBLE);
 
                 // получаем опрос
-                final Quiz quiz = null; // publication.getPublicationQuiz();
+                //final QuizModel quiz = null; // publication.getPublicationQuiz();
 
-                if (quiz != null) {
-                    final ShowPublicationQuizAnswersAdapter quizAnswersAdapter = new ShowPublicationQuizAnswersAdapter(mMainActivity.getLayoutInflater(), quiz, quiz.getAnswersList());
+                try {
+                    final QuizModel quiz = quizController.getPublicationQuiz(publication.getPublicationId());
 
-                    // настраиваем список С ответами
-                    holder.mQuizAnswersList.setAdapter(quizAnswersAdapter);
+                    if (quiz != null) {
+                        final ShowPublicationQuizAnswersAdapter_NEW quizAnswersAdapter = new ShowPublicationQuizAnswersAdapter_NEW(mMainActivity.getLayoutInflater(),
+                                                                                                                                   quiz,
+                                                                                                                                   quiz.getQuizAnswerList());
 
-                    // если пользователь еще не отвечал в опросе
-                    if (!quiz.userSelectedAnswer()) {
-                        holder.mQuizAnswersList.setOnItemClickListener(new ListView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        // настраиваем список С ответами
+                        holder.mQuizAnswersList.setAdapter(quizAnswersAdapter);
+
+                        // если пользователь еще не отвечал в опросе
+                        /*if (!quiz.userSelectedAnswer()) {
+                            holder.mQuizAnswersList.setOnItemClickListener(new ListView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                            LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): answer was not selected: click on answer(" +quiz.getAnswersList().get(position).getId()+ "): " +quiz.getAnswersList().get(position).getText());
 
-                                boolean saveResult = QuizUtility.saveUserAnswer(quiz.getAnswersList().get(position).getId());
+                                    boolean saveResult = QuizUtility.saveUserAnswer(quiz.getAnswersList().get(position).getId());
 
-                                if (saveResult) {
+                                    if (saveResult) {
 //                                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): user answer saved successfully");
 
-                                    // получаем из БД обновленные данные и задаем их опросу
-                                    QuizUtility.setQuizAnswersVotesSum(quiz);
-                                    QuizUtility.setQuizAnswersVotesInPercents(quiz);
-                                    QuizUtility.setUserSelectedQuizAnswer(quiz, false);
+                                        // получаем из БД обновленные данные и задаем их опросу
+                                        QuizUtility.setQuizAnswersVotesSum(quiz);
+                                        QuizUtility.setQuizAnswersVotesInPercents(quiz);
+                                        QuizUtility.setUserSelectedQuizAnswer(quiz, false);
 
-                                    // обновляем данные в опросе
-                                    quizAnswersAdapter.notifyDataSetChanged();
+                                        // обновляем данные в опросе
+                                        quizAnswersAdapter.notifyDataSetChanged();
 
-                                    // задаем общее кол-во ответов в опросе
-                                    holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
+                                        // задаем общее кол-во ответов в опросе
+                                        holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
 
-                                    // отключаем слушателя клика по вариантам ответов опроса
-                                    holder.mQuizAnswersList.setOnItemClickListener(null);
-                                }
+                                        // отключаем слушателя клика по вариантам ответов опроса
+                                        holder.mQuizAnswersList.setOnItemClickListener(null);
+                                    }
 //                            else
 //                                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): user answer save error");
-                            }
-                        });
+                                }
+                            });
+                        }*/
+
+                        // задаем общее кол-во ответов в опросе
+                        //holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
                     }
 
-                    // задаем общее кол-во ответов в опросе
-                    holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
+                } catch (Exception exc) {
+                    locLookApp_NEW.showLog("PublicationsListAdapter: onBindViewHolder: getPublicationQuiz error: " +exc.getMessage());
                 }
             }
 

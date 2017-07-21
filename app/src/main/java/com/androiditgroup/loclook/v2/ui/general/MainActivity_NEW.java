@@ -24,6 +24,7 @@ import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.data.AppManager;
 import com.androiditgroup.loclook.v2.data.PublicationController;
+import com.androiditgroup.loclook.v2.data.QuizController;
 import com.androiditgroup.loclook.v2.data.SharedPreferencesController;
 import com.androiditgroup.loclook.v2.data.UserController;
 import com.androiditgroup.loclook.v2.models.User;
@@ -59,6 +60,7 @@ public class MainActivity_NEW   extends     ParentActivity
     private AppManager                  appManager;
 
     private PublicationController       publicationController;
+    private QuizController              quizController;
     private SharedPreferencesController sharedPreferencesController;
     private UserController              userController;
 
@@ -433,12 +435,11 @@ public class MainActivity_NEW   extends     ParentActivity
                 setLeftMenuUserData();
 
                 publicationController = locLookApp_NEW.getAppManager().getPublicationController();
-                try {
-                    //publicationController.setPublicationsPopulateListener(MainActivity_NEW.this);
-                    publicationController.populateAllPublicationCollections();
-                } catch (Exception exc) {
-                    LocLookApp_NEW.showLog("SMSCodeFragment_NEW: forwardButtonClickListener(): setPublicationsPopulateListener error: " +exc.getMessage());
-                }
+                publicationController.populateAllPublicationCollections();
+
+                quizController = locLookApp_NEW.getAppManager().getQuizController();
+                quizController.populateQuizCollections();
+
             }
             // if user is not logged in
             else {
