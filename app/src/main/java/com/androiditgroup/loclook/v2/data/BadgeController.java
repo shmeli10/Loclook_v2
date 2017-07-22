@@ -85,8 +85,8 @@ public class BadgeController {
     }
 
     protected void populateBadgesTable() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("BadgeController: populateBadgesTable()");
+//        LocLookApp.showLog("-------------------------------------");
+//        LocLookApp.showLog("BadgeController: populateBadgesTable()");
 
         String[] badgesArray  = context.getResources().getStringArray(R.array.badges);
         String[] columnsArray = {"NAME"};
@@ -113,8 +113,8 @@ public class BadgeController {
     }
 
     private void addBadge(Cursor cursor) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("BadgeController: addBadge()");
+//        LocLookApp.showLog("-------------------------------------");
+//        LocLookApp.showLog("BadgeController: addBadge()");
 
         boolean noErrors = true;
 
@@ -144,7 +144,7 @@ public class BadgeController {
                                                                        context.getPackageName());
 
             badgeImageResIdMap.put(badge.getBadgeId(), badgeImageResId);
-            LocLookApp.showLog("BadgeController: addBadge(): badge: " +badge.getBadgeId()+ " added");
+            //LocLookApp.showLog("BadgeController: addBadge(): badge: " +badge.getBadgeId()+ " added");
         }
         else {
             LocLookApp.showLog("BadgeController: addBadge(): badge will not be added, error occured");
@@ -152,17 +152,17 @@ public class BadgeController {
     }
 
     public void populateBadgeMap() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("BadgeController: populateBadgeMap()");
+        //LocLookApp.showLog("-------------------------------------");
+        //LocLookApp.showLog("BadgeController: populateBadgeMap()");
 
         Cursor cursor = databaseHandler.queryColumns(sqLiteDatabase, DatabaseConstants.BADGE_TABLE, null);
 
         // ------------------------------------------------------------------------------------ //
 
-        LocLookApp.showLog("BadgeController: populateBadgeMap(): cursor is null: " +(cursor == null));
+        //LocLookApp.showLog("BadgeController: populateBadgeMap(): cursor is null: " +(cursor == null));
 
-        if(cursor != null)
-            LocLookApp.showLog("BadgeController: populateBadgeMap(): cursor rows: " +cursor.getCount());
+//        if(cursor != null)
+//            LocLookApp.showLog("BadgeController: populateBadgeMap(): cursor rows: " +cursor.getCount());
 
         // ------------------------------------------------------------------------------------ //
 

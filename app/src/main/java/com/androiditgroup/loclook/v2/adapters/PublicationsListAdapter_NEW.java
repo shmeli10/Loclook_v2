@@ -14,35 +14,25 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.data.BadgeController;
 import com.androiditgroup.loclook.v2.data.PhotoController;
 import com.androiditgroup.loclook.v2.data.QuizController;
 import com.androiditgroup.loclook.v2.data.UserController;
-import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.BadgeModel;
-import com.androiditgroup.loclook.v2.models.PhotoModel;
 import com.androiditgroup.loclook.v2.models.PublicationModel;
-import com.androiditgroup.loclook.v2.models.Quiz;
 import com.androiditgroup.loclook.v2.models.QuizModel;
-import com.androiditgroup.loclook.v2.models.User;
 import com.androiditgroup.loclook.v2.models.UserModel;
-import com.androiditgroup.loclook.v2.ui.general.MainActivity;
 import com.androiditgroup.loclook.v2.ui.general.MainActivity_NEW;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
-import com.androiditgroup.loclook.v2.utils.FavoritesUtility;
-import com.androiditgroup.loclook.v2.utils.ImageDelivery;
-import com.androiditgroup.loclook.v2.utils.LikesUtility;
-import com.androiditgroup.loclook.v2.utils.QuizUtility;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
 
 /**
- * Created by sostrovschi on 3/2/17.
+ * Created by Serghei Ostrovschi on 3/2/17.
  */
 
 public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<PublicationsListAdapter_NEW.ViewHolder> {
@@ -56,8 +46,6 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
     private UserController      userController;
 
     private ArrayList<PublicationModel> mPublicationList;
-
-    //private User user = LocLookApp.usersMap.get(LocLookApp.appUserId);
 
     private ArrayList<String> userFavoritesList             = new ArrayList<>(); // user.getFavoritesList();
     private ArrayList<String> userCommentedPublicationsList = new ArrayList<>(); // user.getCommentedPublicationsList();
@@ -80,13 +68,18 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
     @Override
     public PublicationsListAdapter_NEW.ViewHolder onCreateViewHolder(ViewGroup  parent,
                                                                      int        viewType) {
-        // View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.publication_list_item_not_used, parent, false);
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.publication_item, parent, false);
 
-        LinearLayout footerBlock = UiUtils.findView(view, R.id.Publication_LI_FooterBlock);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.publication_item,
+                                                                     parent,
+                                                                     false);
+
+        LinearLayout footerBlock = UiUtils.findView(view,
+                                                    R.id.Publication_LI_FooterBlock);
         footerBlock.setWeightSum(4f);
 
-        View footerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.publication_footer_ext, footerBlock, true);
+        View footerView = LayoutInflater.from(parent.getContext()).inflate( R.layout.publication_footer_ext,
+                                                                            footerBlock,
+                                                                            true);
 
         return new ViewHolder(view);
     }
@@ -175,51 +168,65 @@ public class PublicationsListAdapter_NEW extends RecyclerView.Adapter<Publicatio
                 // получаем опрос
                 //final QuizModel quiz = null; // publication.getPublicationQuiz();
 
+                final UserModel currentUser = userController.getCurrentUser();
+
                 try {
                     final QuizModel quiz = quizController.getPublicationQuiz(publication.getPublicationId());
 
                     if (quiz != null) {
-                        final ShowPublicationQuizAnswersAdapter_NEW quizAnswersAdapter = new ShowPublicationQuizAnswersAdapter_NEW(mMainActivity.getLayoutInflater(),
-                                                                                                                                   quiz,
-                                                                                                                                   quiz.getQuizAnswerList());
+                        final ShowPublicationQuizAnswersAdapter_NEW quizAnswersAdapter = new ShowPublicationQuizAnswersAdapter_NEW( mMainActivity.getLayoutInflater(),
+                                                                                                                                    quiz,
+                                                                                                                                    quizController,
+                                                                                                                                    currentUser.getUserId(),
+                                                                                                                                    quiz.getQuizAnswerList());
 
                         // настраиваем список С ответами
                         holder.mQuizAnswersList.setAdapter(quizAnswersAdapter);
 
                         // если пользователь еще не отвечал в опросе
-                        /*if (!quiz.userSelectedAnswer()) {
+                        if (!quizController.isQuizAnsweredByUser(   quiz,
+                                                                    currentUser.getUserId())) {
+
                             holder.mQuizAnswersList.setOnItemClickListener(new ListView.OnItemClickListener() {
                                 @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                public void onItemClick(AdapterView<?>  parent,
+                                                        View            view,
+                                                        int             position,
+                                                        long            id) {
+
 //                            LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): answer was not selected: click on answer(" +quiz.getAnswersList().get(position).getId()+ "): " +quiz.getAnswersList().get(position).getText());
 
-                                    boolean saveResult = QuizUtility.saveUserAnswer(quiz.getAnswersList().get(position).getId());
+                                    final int selectedQuizAnswer = quiz.getQuizAnswerList().get(position).getQuizAnswerId();
 
-                                    if (saveResult) {
-//                                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): user answer saved successfully");
+                                    try {
+                                        boolean saveResult = quizController.saveQuizAnswerVote( quiz,
+                                                                                                selectedQuizAnswer,
+                                                                                                currentUser.getUserId());
 
-                                        // получаем из БД обновленные данные и задаем их опросу
-                                        QuizUtility.setQuizAnswersVotesSum(quiz);
-                                        QuizUtility.setQuizAnswersVotesInPercents(quiz);
-                                        QuizUtility.setUserSelectedQuizAnswer(quiz, false);
+                                        if (saveResult) {
+                                            Log.e("LOG", "PublicationsListAdapter: onBindViewHolder:  user answer saved successfully");
 
-                                        // обновляем данные в опросе
-                                        quizAnswersAdapter.notifyDataSetChanged();
+                                            // обновляем данные в опросе
+                                            quizAnswersAdapter.notifyDataSetChanged();
 
-                                        // задаем общее кол-во ответов в опросе
-                                        holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
+                                            // задаем общее кол-во ответов в опросе
+                                            holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
 
-                                        // отключаем слушателя клика по вариантам ответов опроса
-                                        holder.mQuizAnswersList.setOnItemClickListener(null);
+                                            // отключаем слушателя клика по вариантам ответов опроса
+                                            holder.mQuizAnswersList.setOnItemClickListener(null);
+                                        }
+                                        else
+                                            Log.e("LOG", "PublicationsListAdapter: onBindViewHolder:  user answer save error");
+
+                                    } catch (Exception exc) {
+                                        Log.e("LOG", "PublicationsListAdapter: onBindViewHolder: saveQuizAnswerVote error: " +exc.getMessage());
                                     }
-//                            else
-//                                LocLookApp.showLog("PublicationsListAdapter: onBindViewHolder(): user answer save error");
                                 }
                             });
-                        }*/
+                        }
 
                         // задаем общее кол-во ответов в опросе
-                        //holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
+                        holder.mQuizAnswersSum.setText("" + quiz.getAllVotesSum());
                     }
 
                 } catch (Exception exc) {

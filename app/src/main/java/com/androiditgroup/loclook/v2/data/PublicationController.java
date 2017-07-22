@@ -310,7 +310,10 @@ public class PublicationController {
                                         (photoList.size() == 0)  ? "0" : "1",
                                         (!isPublicationAnonymous) ? "0" : "1"};
 
-                cursor = databaseHandler.insertRow(sqLiteDatabase, DatabaseConstants.PUBLICATION_TABLE, columnsArr, dataArr);
+                cursor = databaseHandler.insertRow( sqLiteDatabase,
+                                                    DatabaseConstants.PUBLICATION_TABLE,
+                                                    columnsArr,
+                                                    dataArr);
 
                 Log.e("LOG", "PublicationController: createPublication(): (cursor == null): "           +(cursor == null));
                 Log.e("LOG", "PublicationController: createPublication(): cursor.getCount() <= 0): "    +(cursor.getCount() <= 0));
@@ -354,19 +357,6 @@ public class PublicationController {
             sqLiteDatabase.endTransaction();
             cursor.close();
         }
-
-/*        if((cursor != null) && (cursor.getCount() > 0)) {
-            cursor.moveToFirst();
-
-            addPublicationToCollections(cursor);
-
-//            int userId = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.ROW_ID));
-
-//            addUserToMap(cursor);
-//            setCurrentUser(userMap.get(userId));
-
-            result = true;
-        }*/
 
         return result;
     }

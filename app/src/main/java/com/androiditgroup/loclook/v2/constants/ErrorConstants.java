@@ -21,14 +21,18 @@ public class ErrorConstants {
 
     public static final String BADGE_NAME_NULL_ERROR                        = "Badge name is null";
     public static final String CREATED_AT_NULL_ERROR                        = "Created at is null";
+    public static final String LAYOUT_INFLATER_NULL_ERROR                   = "LayoutInflater is null";
     public static final String LATITUDE_NULL_ERROR                          = "Latitude is null";
     public static final String LONGITUDE_NULL_ERROR                         = "Longitude is null";
     public static final String REGION_NAME_NULL_ERROR                       = "Region name is null";
     public static final String STREET_NAME_NULL_ERROR                       = "Street name is null";
     public static final String PHOTO_BITMAP_NULL_ERROR                      = "Photo bitmap is null";
     public static final String PUBLICATION_TEXT_NULL_ERROR                  = "Publication text is null";
+    public static final String QUIZ_ANSWER_NULL_ERROR                       = "QuizAnswerModel is null";
     public static final String QUIZ_ANSWER_LIST_NULL_ERROR                  = "Quiz answer list is null";
     public static final String QUIZ_ANSWER_TEXT_NULL_ERROR                  = "Quiz answer text is null";
+    public static final String QUIZ_CONTROLLER_NULL_ERROR                   = "QuizController is null";
+    public static final String QUIZ_NULL_ERROR                              = "QuizModel is null";
     public static final String RESOURCE_NULL_ERROR                          = "Resource is null";
     public static final String USER_NAME_NULL_ERROR                         = "User name is null";
     public static final String USER_PHONE_NUMBER_NULL_ERROR                 = "User phone number is null";

@@ -32,14 +32,14 @@ public class UserController {
         return userController;
     }*/
 
-    private DatabaseHandler databaseHandler;
-    private SQLiteDatabase  sqLiteDatabase;
+    private DatabaseHandler             databaseHandler;
+    private SQLiteDatabase              sqLiteDatabase;
 
     private SharedPreferencesController sharedPreferencesController;
 
-    private Map<Integer, UserModel> userMap = new HashMap<>();
+    private Map<Integer, UserModel>     userMap = new HashMap<>();
 
-    private UserModel currentUser;
+    private UserModel                   currentUser;
 
     public UserController(DatabaseHandler               databaseHandler,
                           SQLiteDatabase                sqLiteDatabase,

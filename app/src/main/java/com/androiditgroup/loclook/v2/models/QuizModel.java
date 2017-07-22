@@ -10,12 +10,18 @@ import java.util.ArrayList;
 
 public class QuizModel {
 
+    private int allVotesSum = 0;
+
     private ArrayList<QuizAnswerModel> quizAnswerList = new ArrayList<>();
 
     // ------------------------------------- GETTERS ----------------------------------------- //
 
     public ArrayList<QuizAnswerModel> getQuizAnswerList() {
         return quizAnswerList;
+    }
+
+    public int getAllVotesSum() {
+        return allVotesSum;
     }
 
     // ------------------------------------- SETTERS ----------------------------------------- //
@@ -26,5 +32,11 @@ public class QuizModel {
             throw new Exception(ErrorConstants.QUIZ_ANSWER_LIST_NULL_ERROR);
 
         this.quizAnswerList = quizAnswerList;
+    }
+
+    public void setAllVotesSum(int allVotesSum) {
+
+        if(allVotesSum >= 0)
+            this.allVotesSum = allVotesSum;
     }
 }

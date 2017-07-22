@@ -1,5 +1,6 @@
 package com.androiditgroup.loclook.v2.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androiditgroup.loclook.v2.R;
-import com.androiditgroup.loclook.v2.models.Quiz;
-import com.androiditgroup.loclook.v2.models.QuizAnswer;
+import com.androiditgroup.loclook.v2.constants.ErrorConstants;
+import com.androiditgroup.loclook.v2.data.QuizController;
 import com.androiditgroup.loclook.v2.models.QuizAnswerModel;
 import com.androiditgroup.loclook.v2.models.QuizModel;
 import com.androiditgroup.loclook.v2.utils.UiUtils;
@@ -26,13 +27,37 @@ public class ShowPublicationQuizAnswersAdapter_NEW extends BaseAdapter {
 
     private LayoutInflater inflater;
 
+    private QuizController quizController;
+
     private ArrayList<QuizAnswerModel> quizAnswerList;
+
+    int currentUserId = 0;
 
     public ShowPublicationQuizAnswersAdapter_NEW(LayoutInflater             inflater,
                                                  QuizModel                  quiz,
-                                                 ArrayList<QuizAnswerModel> quizAnswerList) {
+                                                 QuizController             quizController,
+                                                 int                        currentUserId,
+                                                 ArrayList<QuizAnswerModel> quizAnswerList) throws Exception {
+
+        if(inflater == null)
+            throw new Exception(ErrorConstants.LAYOUT_INFLATER_NULL_ERROR);
+
+        if(quiz == null)
+            throw new Exception(ErrorConstants.QUIZ_NULL_ERROR);
+
+        if(quizController == null)
+            throw new Exception(ErrorConstants.QUIZ_CONTROLLER_NULL_ERROR);
+
+        if(currentUserId <= 0)
+            throw new Exception(ErrorConstants.USER_ID_ERROR);
+
+        if(quizAnswerList == null)
+            throw new Exception(ErrorConstants.QUIZ_ANSWER_LIST_NULL_ERROR);
+
         this.inflater       = inflater;
         this.quiz           = quiz;
+        this.quizController = quizController;
+        this.currentUserId  = currentUserId;
         this.quizAnswerList = quizAnswerList;
     }
 
@@ -67,22 +92,31 @@ public class ShowPublicationQuizAnswersAdapter_NEW extends BaseAdapter {
 
         mQuizAnswerText.setText(quizAnswer.getQuizAnswerText());
 
-        // если пользователь уже выбрал ответ в опросе
-        /*if(quiz.userSelectedAnswer()) {
-            // больше голосвать нельзя
-            FrameLayout answerBlock = UiUtils.findView(view, R.id.ShowPublication_QI_AnswerBlock);
-            answerBlock.setClickable(false);
+        try {
+            // если пользователь уже выбрал ответ в опросе
+            if(quizController.isQuizAnsweredByUser( quiz,
+                                                    currentUserId)) {
+                // больше голосовать нельзя
+                FrameLayout answerBlock = UiUtils.findView( view,
+                                                            R.id.ShowPublication_QI_AnswerBlock);
+                answerBlock.setClickable(false);
 
-            // отображаем прогресс голосования за данные ответ
-            ProgressBar mProgress = UiUtils.findView(view, R.id.ShowPublication_QI_Progress);
-            mProgress.setVisibility(View.VISIBLE);
-            mProgress.setProgress(answer.getVotesInPercents());
+                // отображаем прогресс голосования за данные ответ
+                ProgressBar mProgress = UiUtils.findView(   view,
+                                                            R.id.ShowPublication_QI_Progress);
+                mProgress.setVisibility(View.VISIBLE);
+                mProgress.setProgress(quizController.getQuizAnswerVotesInPercent(quiz,
+                                                                                 quizAnswer));
 
-            // отображаем кол-во пользователей выбравших данный ответ
-            TextView mQuizAnswersSum = UiUtils.findView(view, R.id.ShowPublication_QI_AnswersSum);
-            mQuizAnswersSum.setVisibility(View.VISIBLE);
-            mQuizAnswersSum.setText("" +answer.getVotesSum());
-        }*/
+                // отображаем кол-во пользователей выбравших данный ответ
+                TextView mQuizAnswersSum = UiUtils.findView(view,
+                                                            R.id.ShowPublication_QI_AnswersSum);
+                mQuizAnswersSum.setVisibility(View.VISIBLE);
+                mQuizAnswersSum.setText("" +quizController.getQuizAnswerVotesSum(quizAnswer));
+            }
+        } catch (Exception exc) {
+            Log.e("LOG", "ShowPublicationQuizAnswersAdapter_NEW: getView(): isQuizAnsweredByUser error: " +exc.getMessage());
+        }
 
         return view;
     }
