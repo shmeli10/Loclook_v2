@@ -37,6 +37,7 @@ import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.adapters.AddPublicationQuizAnswersAdapter;
 import com.androiditgroup.loclook.v2.adapters.BadgesAdapter;
+import com.androiditgroup.loclook.v2.adapters.BadgesAdapter_NEW;
 import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter_NEW;
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;
 import com.androiditgroup.loclook.v2.constants.SettingsConstants;
@@ -50,6 +51,7 @@ import com.androiditgroup.loclook.v2.utils.ExpandableHeightGridView;
 import com.androiditgroup.loclook.v2.utils.ExpandableHeightListView;
 import com.androiditgroup.loclook.v2.utils.ImageDelivery;
 import com.androiditgroup.loclook.v2.utils.ParentFragment;
+import com.androiditgroup.loclook.v2.utils.UiUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +73,6 @@ import static android.view.View.VISIBLE;
 
 public class PublicationFragment_NEW    extends     ParentFragment
                                         implements  //View.OnClickListener,
-                                                    //TextWatcher,
                                                     PublicationCreateInterface,
                                                     CompoundButton.OnCheckedChangeListener,
                                                     AddPublicationQuizAnswersAdapter.QuizAnswerCallback {
@@ -115,7 +116,8 @@ public class PublicationFragment_NEW    extends     ParentFragment
     private RecyclerView                        mGalleryPhotosRV;
 
     private AddPublicationQuizAnswersAdapter    mQuizAnswersAdapter;
-    private BadgesAdapter                       mBadgesAdapter;
+    //private BadgesAdapter                       mBadgesAdapter;
+    private BadgesAdapter_NEW                   mBadgesAdapter;
     private GalleryListAdapter_NEW              mGalleryPhotosAdapter;
 
     private final int anonymousSwitchResId      = R.id.Publication_AnonymousSwitchBTN;
@@ -176,133 +178,11 @@ public class PublicationFragment_NEW    extends     ParentFragment
         mMainActivity   = (MainActivity_NEW) getActivity();
         locLookApp_NEW  = ((LocLookApp_NEW) mMainActivity.getApplication());
 
-        badgeController = locLookApp_NEW.getAppManager().getBadgeController();
-
-        locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): badgeController is null: " +(badgeController == null));
-
-        if(badgeController != null) {
-            badgeMap = badgeController.getBadgeMap();
-
-            locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): badgeMap is null: " +(badgeMap == null));
-            locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): badgeMap is empty: " +badgeMap.isEmpty());
-
-            // if(!LocLookApp.badgesMap.isEmpty()) {
-            if((badgeMap != null) && (!badgeMap.isEmpty())) {
-
-                Integer mapKey  = badgeMap.keySet().iterator().next();
-                selectedBadge   = badgeMap.get(mapKey);
-
-                locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): selectedBadge is null: " +(selectedBadge == null));
-            }
-
-            badgeImageResIdMap = badgeController.getBadgeImageResIdMap();
-        }
-        else
-            locLookApp_NEW.showLog("PublicationFragment_NEW: onCreateView(): error: " +ErrorConstants.BADGE_CONTROLLER_NULL_ERROR);
-
-        publicationController  = locLookApp_NEW.getAppManager().getPublicationController();
-
         View view = inflater.inflate(R.layout.fragment_send_publication,
-                                     container,
-                                     false);
+                container,
+                false);
 
-        mHandler = new Handler() {
-            public void handleMessage(android.os.Message msg) {
-                switch (msg.what) {
-                    case 1:
-                        mMainActivity.onBackPressed();
-                        break;
-                    case -1:
-                    default:
-                        locLookApp_NEW.showSimpleSnakeBar(mScroll, "publication_send_error_text");
-                        break;
-                }
-                mMainActivity.hidePD();
-            }
-        };
-
-        mScroll             = (ScrollView) view.findViewById(R.id.Publication_ScrollView);
-
-        mPublicationText    = (EditText) view.findViewById(R.id.Publication_PublicationTextET);
-        //mPublicationText.addTextChangedListener(this);
-        mPublicationText.addTextChangedListener(onPublicationTextChangeListener);
-
-        mQuizAnswersBlock   = (RelativeLayout) view.findViewById(R.id.Publication_QuizAnswersBlock);
-        mPhotoBlockRL       = (RelativeLayout) view.findViewById(R.id.Publication_PhotoBlock);
-
-        mBadgeBlock         = (RelativeLayout) view.findViewById(badgeBlockResId);
-        //mBadgeBlock.setOnClickListener(this);
-        mBadgeBlock.setOnClickListener(badgeBlockClickListener);
-
-        mShowPhotoBlockRL   = (RelativeLayout) view.findViewById(showPhotoBlockResId);
-        // mShowPhotoBlockRL.setOnClickListener(this);
-        mShowPhotoBlockRL.setOnClickListener(photoBlockClickListener);
-
-        mAnonymousStateTV   = (TextView) view.findViewById(R.id.Publication_AnonymousStateTV);
-        mQuizStateTV        = (TextView) view.findViewById(R.id.Publication_QuizStateTV);
-        mPhotosAddedSumTV   = (TextView) view.findViewById(R.id.Publication_PhotosAddedSumTV);
-
-        mLeftCharactersBody = (TextView) view.findViewById(R.id.Publication_LeftCharactersBodyTV);
-        //mLeftCharactersBody.setText("" +PUBLICATION_TEXT_LIMIT);
-        mLeftCharactersBody.setText("" +SettingsConstants.PUBLICATION_MAX_LENGTH);
-
-        mOpenGalleryTV      = (TextView) view.findViewById(openGalleryResId);
-        //mOpenGalleryTV.setOnClickListener(this);
-        mOpenGalleryTV.setOnClickListener(openGalleryClickListener);
-
-        mCreatePhotoTV      = (TextView) view.findViewById(R.id.Publication_CreatePhoto);
-        //mCreatePhotoTV.setOnClickListener(this);
-        mCreatePhotoTV.setOnClickListener(createPhotoClickListener);
-
-        mAnonymousSwitch    = (SwitchCompat) view.findViewById(anonymousSwitchResId);
-        mAnonymousSwitch.setOnCheckedChangeListener(this);
-
-        mQuizSwitch         = (SwitchCompat) view.findViewById(R.id.Publication_QuizSwitchBTN);
-        mQuizSwitch.setOnCheckedChangeListener(this);
-
-        mAddAnswerTV        = (TextView) view.findViewById(addAnswerResId);
-        //mAddAnswerTV.setOnClickListener(this);
-        mAddAnswerTV.setOnClickListener(addAnswerClickListener);
-
-        for(int i=0; i<Constants.QUIZ_MIN_ANSWERS; i++)
-            mAnswersList.add(null);
-
-        mQuizAnswersAdapter = new AddPublicationQuizAnswersAdapter(mInflater, mAnswersList, this);
-        mQuizAnswersList    = (ExpandableHeightListView) view.findViewById(R.id.Publication_QuizAnswersList);
-        mQuizAnswersList.setExpanded(true);
-        mQuizAnswersList.setAdapter(mQuizAnswersAdapter);
-
-        isAvailableToDelete = true;
-        isBadgesBlockHidden = true;
-        isPhotoBlockHidden  = true;
-
-        mSelectedBadgeIV    = (ImageView) view.findViewById(R.id.Publication_BadgeImageIV);
-        mShowBadgesIV       = (ImageView) view.findViewById(R.id.Publication_ShowBadges);
-        mShowPhotoBlockIV   = (ImageView) view.findViewById(R.id.Publication_ShowPhotos);
-        mSelectedBadgeTV    = (TextView) view.findViewById(R.id.Publication_BadgeNameTV);
-
-        mChooseBadgeBlockGV = (ExpandableHeightGridView) view.findViewById(R.id.Publication_ChooseBadgeBlockGV);
-
-        mBadgesAdapter      = new BadgesAdapter(mInflater);
-        mChooseBadgeBlockGV.setAdapter(mBadgesAdapter);
-        mChooseBadgeBlockGV.setOnItemClickListener(onBadgeClickListener);
-
-        //mGalleryPhotosAdapter = new GalleryListAdapter(mMainActivity, mPhotosList);
-        mGalleryPhotosAdapter   = new GalleryListAdapter_NEW(mMainActivity, mPhotosList);
-        mGalleryPhotosRV        = (RecyclerView) view.findViewById(R.id.Publication_GalleryRecyclerView);
-        mGalleryPhotosRV.setAdapter(mGalleryPhotosAdapter);
-
-        mGalleryLeftScrollIV    = (ImageView) view.findViewById(galleryLeftScrollResId);
-        //mGalleryLeftScrollIV.setOnClickListener(this);
-        mGalleryLeftScrollIV.setOnClickListener(galleryLeftScrollClickListener);
-
-        mGalleryRightScrollIV   = (ImageView) view.findViewById(galleryRightScrollResId);
-        //mGalleryRightScrollIV.setOnClickListener(this);
-        mGalleryRightScrollIV.setOnClickListener(galleryRightScrollClickListener);
-
-        setHasOptionsMenu(true);
-
-        setSmoothOn();
+        init(view);
 
         return view;
     }
@@ -330,19 +210,6 @@ public class PublicationFragment_NEW    extends     ParentFragment
                 return super.onOptionsItemSelected(item);
         }
     }
-
-/*    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        // вычисляем и отображаем кол-во символов, которые еще можно внести в поле
-        //mLeftCharactersBody.setText("" + (PUBLICATION_TEXT_LIMIT - mPublicationText.length()));
-        mLeftCharactersBody.setText("" + (SettingsConstants.PUBLICATION_MAX_LENGTH - mPublicationText.length()));
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) { }*/
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -722,5 +589,187 @@ public class PublicationFragment_NEW    extends     ParentFragment
     public void onPublicationCreateError(String error) {
         LocLookApp.showLog("-------------------------------------");
         LocLookApp_NEW.showLog("PublicationFragment_NEW: onPublicationCreateError(): error: " +error);
+    }
+
+    private void init(View view) {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("PublicationFragment_NEW: init()");
+
+        initBadges();
+
+        publicationController  = locLookApp_NEW.getAppManager().getPublicationController();
+
+        mHandler = new Handler() {
+            public void handleMessage(android.os.Message msg) {
+                switch (msg.what) {
+                    case 1:
+                        mMainActivity.onBackPressed();
+                        break;
+                    case -1:
+                    default:
+                        locLookApp_NEW.showSimpleSnakeBar(mScroll, "publication_send_error_text");
+                        break;
+                }
+                mMainActivity.hidePD();
+            }
+        };
+
+        //mScroll             = (ScrollView) view.findViewById(R.id.Publication_ScrollView);
+        mScroll             = UiUtils.findView(view, R.id.Publication_ScrollView);
+
+        //mPublicationText    = (EditText) view.findViewById(R.id.Publication_PublicationTextET);
+        //mPublicationText.addTextChangedListener(this);
+
+        mPublicationText    = UiUtils.findView(view, R.id.Publication_PublicationTextET);
+        mPublicationText.addTextChangedListener(onPublicationTextChangeListener);
+
+        //mQuizAnswersBlock   = (RelativeLayout) view.findViewById(R.id.Publication_QuizAnswersBlock);
+        mQuizAnswersBlock   = UiUtils.findView(view, R.id.Publication_QuizAnswersBlock);
+
+        //mPhotoBlockRL       = (RelativeLayout) view.findViewById(R.id.Publication_PhotoBlock);
+        mPhotoBlockRL       = UiUtils.findView(view, R.id.Publication_PhotoBlock);
+
+        //mBadgeBlock         = (RelativeLayout) view.findViewById(badgeBlockResId);
+        //mBadgeBlock.setOnClickListener(this);
+
+        mBadgeBlock         = UiUtils.findView(view, badgeBlockResId);
+        mBadgeBlock.setOnClickListener(badgeBlockClickListener);
+
+        //mShowPhotoBlockRL   = (RelativeLayout) view.findViewById(showPhotoBlockResId);
+        // mShowPhotoBlockRL.setOnClickListener(this);
+
+        mShowPhotoBlockRL   = UiUtils.findView(view, showPhotoBlockResId);
+        mShowPhotoBlockRL.setOnClickListener(photoBlockClickListener);
+
+        //mAnonymousStateTV   = (TextView) view.findViewById(R.id.Publication_AnonymousStateTV);
+        mAnonymousStateTV   = UiUtils.findView(view, R.id.Publication_AnonymousStateTV);
+
+        //mQuizStateTV        = (TextView) view.findViewById(R.id.Publication_QuizStateTV);
+        mQuizStateTV        = UiUtils.findView(view, R.id.Publication_QuizStateTV);
+
+        //mPhotosAddedSumTV   = (TextView) view.findViewById(R.id.Publication_PhotosAddedSumTV);
+        mPhotosAddedSumTV   = UiUtils.findView(view, R.id.Publication_PhotosAddedSumTV);
+
+        //mLeftCharactersBody = (TextView) view.findViewById(R.id.Publication_LeftCharactersBodyTV);
+        //mLeftCharactersBody.setText("" +PUBLICATION_TEXT_LIMIT);
+
+        mLeftCharactersBody = UiUtils.findView(view, R.id.Publication_LeftCharactersBodyTV);
+        mLeftCharactersBody.setText("" +SettingsConstants.PUBLICATION_MAX_LENGTH);
+
+        //mOpenGalleryTV      = (TextView) view.findViewById(openGalleryResId);
+        //mOpenGalleryTV.setOnClickListener(this);
+
+        mOpenGalleryTV      = UiUtils.findView(view, openGalleryResId);
+        mOpenGalleryTV.setOnClickListener(openGalleryClickListener);
+
+        //mCreatePhotoTV      = (TextView) view.findViewById(R.id.Publication_CreatePhoto);
+        //mCreatePhotoTV.setOnClickListener(this);
+
+        mCreatePhotoTV      = UiUtils.findView(view, R.id.Publication_CreatePhoto);
+        mCreatePhotoTV.setOnClickListener(createPhotoClickListener);
+
+        //mAnonymousSwitch    = (SwitchCompat) view.findViewById(anonymousSwitchResId);
+        mAnonymousSwitch    = UiUtils.findView(view, anonymousSwitchResId);
+        mAnonymousSwitch.setOnCheckedChangeListener(this);
+
+        //mQuizSwitch         = (SwitchCompat) view.findViewById(R.id.Publication_QuizSwitchBTN);
+        mQuizSwitch         = UiUtils.findView(view, R.id.Publication_QuizSwitchBTN);
+        mQuizSwitch.setOnCheckedChangeListener(this);
+
+        //mAddAnswerTV        = (TextView) view.findViewById(addAnswerResId);
+        //mAddAnswerTV.setOnClickListener(this);
+
+        mAddAnswerTV        = UiUtils.findView(view, addAnswerResId);
+        mAddAnswerTV.setOnClickListener(addAnswerClickListener);
+
+        for(int i=0; i<Constants.QUIZ_MIN_ANSWERS; i++)
+            mAnswersList.add(null);
+
+        mQuizAnswersAdapter = new AddPublicationQuizAnswersAdapter(mInflater, mAnswersList, this);
+
+        //mQuizAnswersList    = (ExpandableHeightListView) view.findViewById(R.id.Publication_QuizAnswersList);
+        mQuizAnswersList    = UiUtils.findView(view, R.id.Publication_QuizAnswersList);
+        mQuizAnswersList.setExpanded(true);
+        mQuizAnswersList.setAdapter(mQuizAnswersAdapter);
+
+        isAvailableToDelete = true;
+        isBadgesBlockHidden = true;
+        isPhotoBlockHidden  = true;
+
+        //mSelectedBadgeIV    = (ImageView) view.findViewById(R.id.Publication_BadgeImageIV);
+        mSelectedBadgeIV    = UiUtils.findView(view, R.id.Publication_BadgeImageIV);
+
+        //mShowBadgesIV       = (ImageView) view.findViewById(R.id.Publication_ShowBadges);
+        mShowBadgesIV       = UiUtils.findView(view, R.id.Publication_ShowBadges);
+
+        //mShowPhotoBlockIV   = (ImageView) view.findViewById(R.id.Publication_ShowPhotos);
+        mShowPhotoBlockIV   = UiUtils.findView(view, R.id.Publication_ShowPhotos);
+
+        //mSelectedBadgeTV    = (TextView) view.findViewById(R.id.Publication_BadgeNameTV);
+        mSelectedBadgeTV    = UiUtils.findView(view, R.id.Publication_BadgeNameTV);
+
+        //mChooseBadgeBlockGV = (ExpandableHeightGridView) view.findViewById(R.id.Publication_ChooseBadgeBlockGV);
+        mChooseBadgeBlockGV = UiUtils.findView(view, R.id.Publication_ChooseBadgeBlockGV);
+
+        //mBadgesAdapter      = new BadgesAdapter(mInflater);
+        mBadgesAdapter      = new BadgesAdapter_NEW(mInflater,
+                                                    locLookApp_NEW);
+
+        mChooseBadgeBlockGV.setAdapter(mBadgesAdapter);
+        mChooseBadgeBlockGV.setOnItemClickListener(onBadgeClickListener);
+
+        //mGalleryPhotosAdapter = new GalleryListAdapter(mMainActivity, mPhotosList);
+        mGalleryPhotosAdapter   = new GalleryListAdapter_NEW(mMainActivity, mPhotosList);
+
+        //mGalleryPhotosRV        = (RecyclerView) view.findViewById(R.id.Publication_GalleryRecyclerView);
+        mGalleryPhotosRV        = UiUtils.findView(view, R.id.Publication_GalleryRecyclerView);
+        mGalleryPhotosRV.setAdapter(mGalleryPhotosAdapter);
+
+        //mGalleryLeftScrollIV    = (ImageView) view.findViewById(galleryLeftScrollResId);
+        //mGalleryLeftScrollIV.setOnClickListener(this);
+
+        mGalleryLeftScrollIV    = UiUtils.findView(view, galleryLeftScrollResId);
+        mGalleryLeftScrollIV.setOnClickListener(galleryLeftScrollClickListener);
+
+        //mGalleryRightScrollIV   = (ImageView) view.findViewById(galleryRightScrollResId);
+        //mGalleryRightScrollIV.setOnClickListener(this);
+
+        mGalleryRightScrollIV   = UiUtils.findView(view, galleryRightScrollResId);
+        mGalleryRightScrollIV.setOnClickListener(galleryRightScrollClickListener);
+
+        setHasOptionsMenu(true);
+
+        setSmoothOn();
+    }
+
+    private void initBadges() {
+        LocLookApp.showLog("-------------------------------------");
+        LocLookApp_NEW.showLog("PublicationFragment_NEW: initBadges()");
+
+        badgeController = locLookApp_NEW.getAppManager().getBadgeController();
+
+        locLookApp_NEW.showLog("PublicationFragment_NEW: initBadges(): badgeController is null: " +(badgeController == null));
+
+        if(badgeController != null) {
+            badgeMap = badgeController.getBadgeMap();
+
+            locLookApp_NEW.showLog("PublicationFragment_NEW: initBadges(): badgeMap is null: " +(badgeMap == null));
+            locLookApp_NEW.showLog("PublicationFragment_NEW: initBadges(): badgeMap is empty: " +badgeMap.isEmpty());
+
+            // if(!LocLookApp.badgesMap.isEmpty()) {
+            if((badgeMap != null) && (!badgeMap.isEmpty())) {
+
+                locLookApp_NEW.showLog("PublicationFragment_NEW: initBadges(): badgeMap size: " +badgeMap.size());
+
+                Integer mapKey  = badgeMap.keySet().iterator().next();
+                selectedBadge   = badgeMap.get(mapKey);
+
+                locLookApp_NEW.showLog("PublicationFragment_NEW: initBadges(): selectedBadge is null: " +(selectedBadge == null));
+            }
+
+            badgeImageResIdMap = badgeController.getBadgeImageResIdMap();
+        }
+        else
+            locLookApp_NEW.showLog("PublicationFragment_NEW: initBadges(): error: " +ErrorConstants.BADGE_CONTROLLER_NULL_ERROR);
     }
 }
