@@ -205,8 +205,7 @@ public class QuizController {
         //Log.e("LOG", "-------------------------------------");
         //Log.e("LOG", "QuizController: createQuiz()");
 
-        boolean result  = false;
-
+        boolean result   = false;
         boolean noErrors = true;
 
         int addedAnswersSum = 0;

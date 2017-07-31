@@ -29,6 +29,7 @@ public class PublicationController {
     private DatabaseHandler                 databaseHandler;
     private SQLiteDatabase                  sqLiteDatabase;
 
+    private PhotoController                 photoController;
     private QuizController                  quizController;
     private UserController                  userController;
 
@@ -43,7 +44,8 @@ public class PublicationController {
     public PublicationController(DatabaseHandler    databaseHandler,
                                  SQLiteDatabase     sqLiteDatabase,
                                  UserController     userController,
-                                 QuizController     quizController) throws Exception {
+                                 QuizController     quizController,
+                                 PhotoController    photoController) throws Exception {
         //LocLookApp.showLog("-------------------------------------");
         //LocLookApp.showLog("PublicationController: constructor.");
 
@@ -60,6 +62,7 @@ public class PublicationController {
         this.sqLiteDatabase     = sqLiteDatabase;
         this.userController     = userController;
         this.quizController     = quizController;
+        this.photoController    = photoController;
 
         //populateAllPublicationCollections();
     }
@@ -330,6 +333,16 @@ public class PublicationController {
                     Log.e("LOG", "PublicationController: createPublication(): createdQuiz: " +createdQuiz);
 
                     if(!createdQuiz)
+                        noErrors = false;
+
+                    // ------------------------------------------------------------------------- //
+
+                    boolean addedPhotos = photoController.addPublicationPhotos( cursor.getInt(cursor.getColumnIndex(DatabaseConstants.ROW_ID)),
+                                                                                photoList);
+
+                    Log.e("LOG", "PublicationController: createPublication(): addedPhotos: " +addedPhotos);
+
+                    if(!addedPhotos)
                         noErrors = false;
                 }
             }

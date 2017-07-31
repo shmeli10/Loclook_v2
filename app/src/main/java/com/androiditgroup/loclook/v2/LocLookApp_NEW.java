@@ -6,7 +6,9 @@ import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;
 import com.androiditgroup.loclook.v2.data.AppManager;
@@ -75,6 +77,11 @@ public class LocLookApp_NEW extends Application {
         return appInstance.getResources().getColor( appInstance.getResources().getIdentifier("@color/" +resource,
                                                     null,
                                                     appInstance.getPackageName()));
+    }
+
+    public static Display getScreenResolution() {
+        WindowManager wm = (WindowManager) appInstance.getSystemService(Context.WINDOW_SERVICE);
+        return wm.getDefaultDisplay();
     }
 
     // ------------------------------------- SETTERS ----------------------------------------- //

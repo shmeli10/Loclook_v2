@@ -14,6 +14,7 @@ import com.androiditgroup.loclook.v2.models.Badge;
 import com.androiditgroup.loclook.v2.models.QuizAnswer;
 import com.androiditgroup.loclook.v2.models.User;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static com.androiditgroup.loclook.v2.LocLookApp.context;
@@ -27,7 +28,10 @@ public class DBManager {
     private SQLiteOpenHelper mOpenHelper;
 
     private DBManager(Context context) {
-        mOpenHelper = new SQLiteOpenHelper(context, Constants.DB_CACHE_DIR + Constants.DataBase.DATABASE_NAME, null, Constants.DataBase.DB_VERSION) {
+
+        final String DB_CACHE_DIR = context.getCacheDir().getPath() + File.separator + "dbcache" + File.separator;
+
+        mOpenHelper = new SQLiteOpenHelper(context, DB_CACHE_DIR + Constants.DataBase.DATABASE_NAME, null, Constants.DataBase.DB_VERSION) {
             @Override
             public void onCreate(SQLiteDatabase sqLiteDatabase) {
                 try {

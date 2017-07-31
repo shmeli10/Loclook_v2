@@ -2,6 +2,7 @@ package com.androiditgroup.loclook.v2.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.interfaces.DatabaseCreateInterface;
@@ -13,7 +14,7 @@ import com.androiditgroup.loclook.v2.interfaces.DatabaseCreateInterface;
 public class AppManager implements DatabaseCreateInterface {
 
     private Context                     context;
-    private DatabaseHandler databaseHandler;
+    private DatabaseHandler             databaseHandler;
     private SQLiteDatabase              sqLiteDatabase;
 
     private BadgeController             badgeController;
@@ -42,19 +43,26 @@ public class AppManager implements DatabaseCreateInterface {
         try {
             databaseHandler = new DatabaseHandler(context, this);
         } catch (Exception exc) {
-            LocLookApp.showLog("AppManager: constructor: get DatabaseHandler instance error: " +exc.getMessage());
+            Log.e("LOG", "AppManager: constructor: get DatabaseHandler instance error: " +exc.getMessage());
         }
 
         if(databaseHandler != null) {
-            //LocLookApp.showLog("AppManager: constructor: databaseHandler is not null");
+            //Log.e("LOG", "AppManager: constructor: databaseHandler is not null");
 
             sqLiteDatabase = databaseHandler.getWritableDatabase();
-            //LocLookApp.showLog("AppManager: constructor: sqLiteDatabase is null: " +(sqLiteDatabase == null));
+            //Log.e("LOG", "AppManager: constructor: sqLiteDatabase is null: " +(sqLiteDatabase == null));
 
             try {
                 badgeController = new BadgeController(context, databaseHandler, sqLiteDatabase);
             } catch (Exception exc) {
-                LocLookApp.showLog("AppManager: get BadgeController instance error: " +exc.getMessage());
+                Log.e("LOG", "AppManager: get BadgeController instance error: " +exc.getMessage());
+            }
+
+            try {
+                photoController = new PhotoController(databaseHandler,
+                                                      sqLiteDatabase);
+            } catch (Exception exc) {
+                Log.e("LOG", "AppManager: get PhotoController instance error: " +exc.getMessage());
             }
 
             try {
@@ -62,14 +70,14 @@ public class AppManager implements DatabaseCreateInterface {
                                                     sqLiteDatabase,
                                                     sharedPreferencesController);
             } catch (Exception exc) {
-                LocLookApp.showLog("AppManager: get UserController instance error: " +exc.getMessage());
+                Log.e("LOG", "AppManager: get UserController instance error: " +exc.getMessage());
             }
 
             try {
                 quizController = new QuizController(databaseHandler,
                                                     sqLiteDatabase);
             } catch (Exception exc) {
-                LocLookApp.showLog("AppManager: get QuizController instance error: " +exc.getMessage());
+                Log.e("LOG", "AppManager: get QuizController instance error: " +exc.getMessage());
             }
 
             // ---------------------------------------------------------------------------- //
@@ -79,7 +87,7 @@ public class AppManager implements DatabaseCreateInterface {
             }
         }
         else {
-            LocLookApp.showLog("AppManager: constructor: databaseHandler is null");
+            Log.e("LOG", "AppManager: constructor: databaseHandler is null");
         }
 
         //sharedPreferencesController = new SharedPreferencesController(context);
@@ -93,7 +101,7 @@ public class AppManager implements DatabaseCreateInterface {
 //                    settingsAccountModelController,
 //                    settingsAppDataController);
         } catch (Exception exc) {
-            LocLookApp.showLog("AppManager: Create InitAppController instance error: " +exc.getMessage());
+            Log.e("LOG", "AppManager: Create InitAppController instance error: " +exc.getMessage());
             return;
         }*/
     }
@@ -106,15 +114,15 @@ public class AppManager implements DatabaseCreateInterface {
 //            try {
 //                badgeController = new BadgeController(context, databaseHandler, sqLiteDatabase);
 //            } catch (Exception exc) {
-//                LocLookApp.showLog("AppManager: getBadgeController(): error: " +exc.getMessage());
+//                Log.e("LOG", "AppManager: getBadgeController(): error: " +exc.getMessage());
 //            }
 //        }
         return badgeController;
     }
 
     public UserController getUserController() {
-        //LocLookApp.showLog("-------------------------------------");
-        //LocLookApp.showLog("AppManager: getUserController()");
+        //Log.e("LOG", "-------------------------------------");
+        //Log.e("LOG", "AppManager: getUserController()");
 
         return userController;
     }
@@ -125,8 +133,8 @@ public class AppManager implements DatabaseCreateInterface {
      * @return  link on existing instance of {@link SharedPreferencesController} class
      */
     public SharedPreferencesController getSharedPreferencesController() {
-        //LocLookApp.showLog("-------------------------------------");
-        //LocLookApp.showLog("AppManager: getSharedPreferencesController()");
+        //Log.e("LOG", "-------------------------------------");
+        //Log.e("LOG", "AppManager: getSharedPreferencesController()");
 
         return sharedPreferencesController;
     }
@@ -138,14 +146,14 @@ public class AppManager implements DatabaseCreateInterface {
      */
     public PhotoController getPhotoController() {
 
-        if(photoController == null) {
-            try {
-                photoController = new PhotoController(  databaseHandler,
-                                                        sqLiteDatabase);
-            } catch (Exception exc) {
-                LocLookApp.showLog("AppManager: get PhotoController instance error: " +exc.getMessage());
-            }
-        }
+//        if(photoController == null) {
+//            try {
+//                photoController = new PhotoController(  databaseHandler,
+//                                                        sqLiteDatabase);
+//            } catch (Exception exc) {
+//                Log.e("LOG", "AppManager: get PhotoController instance error: " +exc.getMessage());
+//            }
+//        }
 
         return photoController;
     }
@@ -159,12 +167,13 @@ public class AppManager implements DatabaseCreateInterface {
 
         if(publicationController == null) {
             try {
-                publicationController = new PublicationController(databaseHandler,
-                                                                  sqLiteDatabase,
-                                                                  userController,
-                                                                  quizController);
+                publicationController = new PublicationController(  databaseHandler,
+                                                                    sqLiteDatabase,
+                                                                    userController,
+                                                                    quizController,
+                                                                    photoController);
             } catch (Exception exc) {
-                LocLookApp.showLog("AppManager: get PublicationController instance error: " +exc.getMessage());
+                Log.e("LOG", "AppManager: get PublicationController instance error: " +exc.getMessage());
             }
         }
 
@@ -183,7 +192,7 @@ public class AppManager implements DatabaseCreateInterface {
 //                quizController = new QuizController(databaseHandler,
 //                                                    sqLiteDatabase);
 //            } catch (Exception exc) {
-//                LocLookApp.showLog("AppManager: get QuizController instance error: " +exc.getMessage());
+//                Log.e("LOG", "AppManager: get QuizController instance error: " +exc.getMessage());
 //            }
 //        }
 
@@ -196,30 +205,30 @@ public class AppManager implements DatabaseCreateInterface {
      * @return  link on existing instance of {@link InitAppController} class
      */
     /*public InitAppController getInitAppController() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("AppManager: getInitAppController()");
+        Log.e("LOG", "-------------------------------------");
+        Log.e("LOG", "AppManager: getInitAppController()");
 
         return initAppController;
     }*/
 
     private void populateDatabase() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("AppManager: populateDatabase()");
+        Log.e("LOG", "-------------------------------------");
+        Log.e("LOG", "AppManager: populateDatabase()");
 
         badgeController.populateBadgesTable();
     }
 
     @Override
     public void onDatabaseCreateSuccess() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("AppManager: onDatabaseCreateSuccess()");
+        Log.e("LOG", "-------------------------------------");
+        Log.e("LOG", "AppManager: onDatabaseCreateSuccess()");
 
         databaseIsCreated = true;
     }
 
     @Override
     public void onDatabaseCreateError(String error) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("AppManager: onDatabaseCreateError(): error: " +error);
+        Log.e("LOG", "-------------------------------------");
+        Log.e("LOG", "AppManager: onDatabaseCreateError(): error: " +error);
     }
 }

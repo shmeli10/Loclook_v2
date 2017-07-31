@@ -16,7 +16,7 @@ public class Constants {
     public static final String LONG_RUSSIAN = "Russian";
     public static final String LONG_ENGLISH = "English";
 
-    public static final String DB_CACHE_DIR = LocLookApp.getInstance().getBaseContext().getCacheDir().getPath() + File.separator + "dbcache" + File.separator;
+    //public static final String DB_CACHE_DIR = LocLookApp.getInstance().getBaseContext().getCacheDir().getPath() + File.separator + "dbcache" + File.separator;
 
     public static final int QUIZ_MIN_ANSWERS = 2;
     public static final int QUIZ_MAX_ANSWERS = 10;

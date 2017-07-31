@@ -32,11 +32,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.androiditgroup.loclook.v2.LocLookApp;
 import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.adapters.AddPublicationQuizAnswersAdapter;
-import com.androiditgroup.loclook.v2.adapters.BadgesAdapter;
 import com.androiditgroup.loclook.v2.adapters.BadgesAdapter_NEW;
 import com.androiditgroup.loclook.v2.adapters.GalleryListAdapter_NEW;
 import com.androiditgroup.loclook.v2.constants.ErrorConstants;
@@ -367,28 +365,43 @@ public class PublicationFragment_NEW    extends     ParentFragment
             if (requestCode == Constants.PICK_FILE_RC) {
                 try {
                     // get image from intent
-                    InputStream inputStream = LocLookApp.context.getContentResolver().openInputStream(data.getData());
+                    InputStream inputStream = locLookApp_NEW.getContentResolver().openInputStream(data.getData());
 
                     byte[] buffer = new byte[inputStream.available()];
                     inputStream.read(buffer);
                     inputStream.close();
 
                     // create a cropped bitmap                    
-                    tumbnailBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length), Constants.TUMBNAIL_WIDTH, Constants.TUMBNAIL_HEIGHT);
-                    photoBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length), Constants.PHOTO_WIDTH, Constants.PHOTO_HEIGHT);
+                    tumbnailBitmap  = ImageDelivery.getResizedBitmap(   BitmapFactory.decodeByteArray(  buffer,
+                                                                                                        0,
+                                                                                                        buffer.length),
+                                                                        Constants.TUMBNAIL_WIDTH,
+                                                                        Constants.TUMBNAIL_HEIGHT);
+
+                    photoBitmap     = ImageDelivery.getResizedBitmap(   BitmapFactory.decodeByteArray(  buffer,
+                                                                                                        0,
+                                                                                                        buffer.length),
+                                                                        locLookApp_NEW.getScreenResolution().getWidth(),
+                                                                        locLookApp_NEW.getScreenResolution().getHeight());
                 } catch (Exception exc) {
-                    exc.printStackTrace();
-                    LocLookApp.showSimpleSnakeBar(mScroll, "get_photo_error_text");
+                    //exc.printStackTrace();
+                    locLookApp_NEW.showLog("PublicationFragment_NEW: onActivityResult(): error: " +exc.getMessage());
+                    locLookApp_NEW.showSimpleSnakeBar(mScroll, "get_photo_error_text");
                 }
             } else if (requestCode == Constants.TAKE_PHOTO_RC) {
                 try {
                     // create a cropped bitmap
                     if(mCreatedPhotoPath != null)                        
-                        tumbnailBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath), Constants.TUMBNAIL_WIDTH, Constants.TUMBNAIL_HEIGHT);
-                        photoBitmap = ImageDelivery.getResizedBitmap(BitmapFactory.decodeFile(mCreatedPhotoPath), Constants.PHOTO_WIDTH, Constants.PHOTO_HEIGHT);
+                        tumbnailBitmap  = ImageDelivery.getResizedBitmap(   BitmapFactory.decodeFile(mCreatedPhotoPath),
+                                                                            Constants.TUMBNAIL_WIDTH,
+                                                                            Constants.TUMBNAIL_HEIGHT);
+
+                        photoBitmap     = ImageDelivery.getResizedBitmap(   BitmapFactory.decodeFile(mCreatedPhotoPath),
+                                                                            locLookApp_NEW.getScreenResolution().getWidth(),
+                                                                            locLookApp_NEW.getScreenResolution().getHeight());
                 } catch (Exception exc) {
-                    exc.printStackTrace();
-                    LocLookApp.showSimpleSnakeBar(mScroll, "get_photo_error_text");
+                    //exc.printStackTrace();
+                    locLookApp_NEW.showSimpleSnakeBar(mScroll, "get_photo_error_text");
                 }
             }
 
@@ -404,10 +417,10 @@ public class PublicationFragment_NEW    extends     ParentFragment
 
                 //if(photosSum == (VISIBLE_PHOTOS_LIMIT + 1)) {
                 if(photosSum == (SettingsConstants.VISIBLE_PHOTO_MAX_SUM + 1)) {
-                    mGalleryLeftScrollIV.setColorFilter(LocLookApp.getInstance().getResources().getColor(R.color.dark_grey));
+                    mGalleryLeftScrollIV.setColorFilter(locLookApp_NEW.getResources().getColor(R.color.dark_grey));
                     mGalleryLeftScrollIV.setClickable(true);
 
-                    mGalleryRightScrollIV.setColorFilter(LocLookApp.getInstance().getResources().getColor(R.color.dark_grey));
+                    mGalleryRightScrollIV.setColorFilter(locLookApp_NEW.getResources().getColor(R.color.dark_grey));
                     mGalleryRightScrollIV.setClickable(true);
                 }
 
@@ -426,13 +439,13 @@ public class PublicationFragment_NEW    extends     ParentFragment
     public void getFile() {
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-        if (captureIntent.resolveActivity(LocLookApp.context.getPackageManager()) != null) {
+        if (captureIntent.resolveActivity(locLookApp_NEW.getPackageManager()) != null) {
             // Create the File where the photo should go
             try {
                 // создаем временный файл
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
                 String imageFileName = "JPEG_" + timeStamp + "_";
-                File storageDir = LocLookApp.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                File storageDir = locLookApp_NEW.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                 File image  = File.createTempFile(
                         imageFileName,  /* prefix */
                         ".jpg",         /* suffix */
@@ -512,7 +525,7 @@ public class PublicationFragment_NEW    extends     ParentFragment
         @Override
         public void onClick(View v) {
 
-            if (ActivityCompat.checkSelfPermission(LocLookApp.context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(locLookApp_NEW, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 getFile();
             } else {
                 String[] permissions = new String[]{Manifest.permission.CAMERA};
@@ -581,19 +594,19 @@ public class PublicationFragment_NEW    extends     ParentFragment
 
     @Override
     public void onPublicationCreateSuccess() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("PublicationFragment_NEW: onPublicationCreateSuccess()");
+        locLookApp_NEW.showLog("-------------------------------------");
+        locLookApp_NEW.showLog("PublicationFragment_NEW: onPublicationCreateSuccess()");
     }
 
     @Override
     public void onPublicationCreateError(String error) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("PublicationFragment_NEW: onPublicationCreateError(): error: " +error);
+        locLookApp_NEW.showLog("-------------------------------------");
+        locLookApp_NEW.showLog("PublicationFragment_NEW: onPublicationCreateError(): error: " +error);
     }
 
     private void init(View view) {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("PublicationFragment_NEW: init()");
+        locLookApp_NEW.showLog("-------------------------------------");
+        locLookApp_NEW.showLog("PublicationFragment_NEW: init()");
 
         initBadges();
 
@@ -743,8 +756,8 @@ public class PublicationFragment_NEW    extends     ParentFragment
     }
 
     private void initBadges() {
-        LocLookApp.showLog("-------------------------------------");
-        LocLookApp_NEW.showLog("PublicationFragment_NEW: initBadges()");
+        locLookApp_NEW.showLog("-------------------------------------");
+        locLookApp_NEW.showLog("PublicationFragment_NEW: initBadges()");
 
         badgeController = locLookApp_NEW.getAppManager().getBadgeController();
 

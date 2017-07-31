@@ -73,10 +73,13 @@ public class DatabaseConstants {
                                                                                 QUIZ_ANSWER_PUBLICATION_ID          + " INTEGER NOT NULL";
 
     protected static final String PHOTO_TABLE                               =   "PHOTO_DATA";
-    protected static final String PHOTO_DATA                                =   "DATA";
+    protected static final String PHOTO_DATA                                =   "PHOTO_DATA";
     protected static final String PHOTO_PUBLICATION_ID                      =   "PUBLICATION_ID";
     protected static final String PHOTOS_TABLE_COLUMNS                      =   PHOTO_DATA                          + " BLOB NOT NULL,      " +
                                                                                 PHOTO_PUBLICATION_ID                + " INTEGER NOT NULL";
+//    protected static final String PHOTO_BIN                                =   "PHOTO_BIN";
+//    protected static final String PHOTOS_TABLE_COLUMNS                      =   PHOTO_BIN                           + " TEXT NOT NULL,      " +
+//                                                                                PHOTO_PUBLICATION_ID                + " INTEGER NOT NULL";
 
     protected static final String USER_QUIZ_ANSWER_TABLE                    =   "USER_QUIZ_ANSWER_DATA";
     protected static final String USER_QUIZ_ANSWER_QUIZ_ANSWER_ID           =   "QUIZ_ANSWER_ID";

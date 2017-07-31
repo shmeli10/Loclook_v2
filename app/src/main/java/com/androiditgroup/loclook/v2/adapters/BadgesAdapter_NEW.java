@@ -76,7 +76,7 @@ public class BadgesAdapter_NEW extends BaseAdapter {
         }
 
         imageView.setImageResource(badgeImageResIdMap.get(position+1));
-        
+
         return imageView;
     }
 }

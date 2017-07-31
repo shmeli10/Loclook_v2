@@ -190,6 +190,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(sqlQuery.toString());
 
             createDataBaseSuccess = true;
+
+//            if(tableName.equals(DatabaseConstants.PHOTO_TABLE))
+//                showAllTableData(sqLiteDatabase, tableName);
         }
         catch(Exception exc) {
             databaseCreateListener.onDatabaseCreateError(exc.getMessage() + ", table: " +tableName);
@@ -299,7 +302,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void showAllTableData(SQLiteDatabase sqLiteDatabase,
                                  String         tableName) {
         LocLookApp.showLog("-------------------------------------");
-        LocLookApp.showLog("DatabaseHandler: insertRow(): tableName= " +tableName);
+        LocLookApp.showLog("DatabaseHandler: showAllTableData(): tableName= " +tableName);
 
         Cursor cursor = sqLiteDatabase.query(tableName,
                                              null, null, null, null, null, null);

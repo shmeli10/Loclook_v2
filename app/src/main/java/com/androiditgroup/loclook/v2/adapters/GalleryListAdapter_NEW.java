@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.androiditgroup.loclook.v2.LocLookApp;
+import com.androiditgroup.loclook.v2.LocLookApp_NEW;
 import com.androiditgroup.loclook.v2.R;
 import com.androiditgroup.loclook.v2.ui.gallery.PhotoGalleryFragment;
 import com.androiditgroup.loclook.v2.ui.gallery.PhotoGalleryFragment_NEW;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 
 public class GalleryListAdapter_NEW extends RecyclerView.Adapter<GalleryListAdapter_NEW.ViewHolder> {
 
+    private LocLookApp_NEW      locLookAppNew;
     private MainActivity_NEW    mMainActivity;
 
 //    private ArrayList<Bitmap> mGalleryTumbnails = new ArrayList<>();
@@ -34,6 +36,8 @@ public class GalleryListAdapter_NEW extends RecyclerView.Adapter<GalleryListAdap
     public GalleryListAdapter_NEW(MainActivity_NEW mainActivity, ArrayList<Bitmap> photosList) {
 //    public GalleryListAdapter(MainActivity mainActivity, ArrayList<Bitmap> tumbnailsList, ArrayList<Bitmap> photosList) {
         mMainActivity       = mainActivity;
+
+        this.locLookAppNew  = ((LocLookApp_NEW) mMainActivity.getApplication());
 //        mGalleryTumbnails   = tumbnailsList;
         mGalleryPhotos      = photosList;
 
@@ -88,7 +92,8 @@ public class GalleryListAdapter_NEW extends RecyclerView.Adapter<GalleryListAdap
 
     @Override
     public int getItemCount() {
-        int visiblePhotosSum = LocLookApp.getInstance().getResources().getInteger(R.integer.visible_photos_sum);
+        int visiblePhotosSum = locLookAppNew.getResources().getInteger(R.integer.visible_photos_sum);
+                //LocLookApp.getInstance().getResources().getInteger(R.integer.visible_photos_sum);
 
         if(mGalleryPhotos.size() < visiblePhotosSum)
             return visiblePhotosSum;
